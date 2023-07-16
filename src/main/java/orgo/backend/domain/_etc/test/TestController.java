@@ -1,4 +1,4 @@
-package orgo.backend;
+package orgo.backend.domain._etc.test;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
