@@ -1,0 +1,28 @@
+ifndef::snippets[]
+:snippets: {docdir}
+endif::[]
+
+
+= ORGO API Docs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:doctype: book
+:icons: font
+:source-highlighter: highlight.js
+
+[.gray]#{last-update-label} in {docdatetime}#
+
+
+//----------------------------------------------//
+== 🦒 TEST
+
+=== 🟢테스트
+----
+테스트 API입니다.
+----
+==== HTTP request
+include::{snippets}/test/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/test/http-response.adoc[]

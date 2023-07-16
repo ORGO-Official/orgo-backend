@@ -2,7 +2,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.1'
 	id 'io.spring.dependency-management' version '1.1.0'
-	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	id("org.asciidoctor.base") version "3.3.2"
+	id "org.asciidoctor.jvm.convert" version "3.3.2" // (1) //asciidoctor 플러그인 적용
 }
 
 group = 'orgo'
@@ -13,6 +14,7 @@ java {
 }
 
 configurations {
+	asciidoctorExt // (2) asciidoctor를 확장하는 asciidoctorExt 에 대한 종속성 구성을 선언한다.
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
@@ -27,22 +29,50 @@ ext {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	//restdoc
+	asciidoctorExt "org.springframework.restdocs:spring-restdocs-asciidoctor" // (3) asciidoctorExt에 spring-restdocs-asciidoctor 의존성을 추가한다. build/generated-snippets 에 있는 .adoc 파일을 읽어들여 .html 파일로 만들어내기 위함
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // (4) RestDcos 의존성
+
+	//jpa
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
-tasks.named('test') {
+ext { // (5) 생성되는 스니펫들이 생성되는 디렉토리를 설정
+	snippetsDir = file('build/generated-snippets')
+}
+
+tasks.named('test') { // (6) 스니펫을 snippetsDir로 생성하도록 test 태스크를 설정한다.
 	outputs.dir snippetsDir
 	useJUnitPlatform()
 }
 
+asciidoctor.doFirst {
+	delete file('src/main/resources/static/docs')
+}
+
 tasks.named('asciidoctor') {
+	configurations 'asciidoctorExt'
 	inputs.dir snippetsDir
 	dependsOn test
+}
+
+task copyDocument(type: Copy){
+	dependsOn asciidoctor
+	from file("build/docs/asciidoc/")
+	into file("src/main/resources/static/docs")
+}
+
+bootJar {
+	dependsOn copyDocument // bootJar 태스크가 실행될 때 먼저 asciidoctor 태스크가 실행되도록 하여 미리 html 파일을 생성한다.
+	from ("${asciidoctor.outputDir}/html5")  {        // /html5를 사용하지 않는다!
+		into 'src/main/resources/static/docs'    // /static/docs로 복사!
+	}
 }
