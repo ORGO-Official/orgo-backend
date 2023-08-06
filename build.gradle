@@ -29,6 +29,9 @@ ext {
 }
 
 dependencies {
+	//security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
 	//restdoc
 	asciidoctorExt "org.springframework.restdocs:spring-restdocs-asciidoctor" // (3) asciidoctorExt에 spring-restdocs-asciidoctor 의존성을 추가한다. build/generated-snippets 에 있는 .adoc 파일을 읽어들여 .html 파일로 만들어내기 위함
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // (4) RestDcos 의존성
