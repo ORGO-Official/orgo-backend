@@ -29,6 +29,18 @@ ext {
 }
 
 dependencies {
+	//restdocs-dsl
+	implementation 'io.github.lhs8701:restdocs-dsl:1.2.1'
+
+	//test lombok
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	//jwt
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
 	//security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
