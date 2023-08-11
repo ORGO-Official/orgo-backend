@@ -29,6 +29,9 @@ ext {
 }
 
 dependencies {
+	//web client
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 	//restdocs-dsl
 	implementation 'io.github.lhs8701:restdocs-dslized-library:1.2.1'
 
