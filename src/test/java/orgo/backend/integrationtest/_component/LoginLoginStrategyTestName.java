@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import orgo.backend.domain._1auth.application.NaverLoginStrategy;
+import orgo.backend.domain._1auth.application.loginstrategy.NaverLoginStrategy;
 import orgo.backend.domain._1auth.domain.PersonalData;
 import orgo.backend.setting.IntegrationTest;
 

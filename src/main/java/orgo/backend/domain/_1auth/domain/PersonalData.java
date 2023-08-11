@@ -3,8 +3,8 @@ package orgo.backend.domain._1auth.domain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import orgo.backend.domain._1auth.application.KakaoLoginStrategy;
-import orgo.backend.domain._1auth.application.NaverLoginStrategy;
+import orgo.backend.domain._1auth.application.loginstrategy.KakaoLoginStrategy;
+import orgo.backend.domain._1auth.application.loginstrategy.NaverLoginStrategy;
 import orgo.backend.domain._2user.domain.Gender;
 
 import java.time.LocalDate;

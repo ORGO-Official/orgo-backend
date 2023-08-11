@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import orgo.backend.domain._1auth.application.loginstrategy.LoginStrategy;
+import orgo.backend.domain._1auth.application.loginstrategy.LoginStrategyFactory;
 import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._1auth.domain.PersonalData;
 import orgo.backend.domain._1auth.domain.ServiceToken;

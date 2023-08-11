@@ -1,4 +1,4 @@
-package orgo.backend.domain._1auth.application;
+package orgo.backend.domain._1auth.application.loginstrategy;
 
 import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._1auth.domain.PersonalData;

@@ -1,11 +1,10 @@
-package orgo.backend.domain._1auth.application;
+package orgo.backend.domain._1auth.application.loginstrategy;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
-import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._1auth.domain.PersonalData;
 
 import java.util.Objects;
