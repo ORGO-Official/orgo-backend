@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.ResultActions;
+import orgo.backend.domain._1auth.application.KakaoLoginStrategy;
 import orgo.backend.domain._1auth.application.NaverLoginStrategy;
 import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._1auth.domain.PersonalData;
@@ -31,6 +32,10 @@ public class AuthControllerTest extends IntegrationTest {
     private final static String LOGIN_API = "/api/auth/login/{loginType}";
     @MockBean
     NaverLoginStrategy naverLoginStrategy;
+
+    @MockBean
+    KakaoLoginStrategy kakaoLoginStrategy;
+
     @Autowired
     UserRepository userRepository;
 
@@ -57,5 +62,22 @@ public class AuthControllerTest extends IntegrationTest {
                         )));
 
         assertThat(userRepository.findBySocialIdAndLoginType("11111", LoginType.NAVER)).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("[소셜 로그인(카카오) - 성공]")
+    void test1() throws Exception {
+        // given
+        String socialToken = "test_social_token";
+        PersonalData personalData = new PersonalData("김민수", "test@kakao.com", Gender.MALE, LocalDate.of(1999, 3, 11), "11111", LoginType.KAKAO);
+        given(kakaoLoginStrategy.getPersonalData(socialToken)).willReturn(personalData);
+
+        // when
+        ResultActions actions = mvc.perform(post(LOGIN_API, "kakao")
+                .header("socialToken", socialToken));
+
+        // then
+        actions.andExpect(status().isOk());
+        assertThat(userRepository.findBySocialIdAndLoginType("11111", LoginType.KAKAO)).isNotEmpty();
     }
 }

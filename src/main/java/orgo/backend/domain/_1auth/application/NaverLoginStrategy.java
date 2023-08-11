@@ -14,34 +14,29 @@ import java.util.Objects;
 public class NaverLoginStrategy implements LoginStrategy {
 
     /**
-     * 프로필 조회 API를 호출하여, 사용자의 개인 정보를 추출합니다.
+     * 네이버 프로필 조회 API를 호출하여, 사용자의 개인 정보를 추출합니다.
      *
-     * @param socialToken 서드파티 액세스 토큰
-     * @return 개인 정보
+     * @param socialToken 네이버에서 발급한 토큰
+     * @return 네이버 프로필 정보
      */
     @Override
     public PersonalData getPersonalData(String socialToken) {
         String PROFILE_API = "https://openapi.naver.com/v1/nid/me";
         WebClient webClient = WebClient.create();
-        ResponseData responseData = webClient.method(HttpMethod.POST)
+        NaverProfile naverProfile = webClient.method(HttpMethod.POST)
                 .uri(PROFILE_API)
                 .header("Authorization", "Bearer " + socialToken)
                 .retrieve()
-                .bodyToMono(ResponseData.class)
+                .bodyToMono(NaverProfile.class)
                 .block();
 
-        Objects.requireNonNull(responseData).validate();
-        return PersonalData.fromNaver(responseData);
-    }
-
-    @Override
-    public LoginType getLoginType() {
-        return LoginType.NAVER;
+        Objects.requireNonNull(naverProfile).validate();
+        return PersonalData.fromNaver(naverProfile);
     }
 
     @Getter
     @AllArgsConstructor
-    public static class ResponseData {
+    public static class NaverProfile {
         private String resultcode;
         private Response response;
 

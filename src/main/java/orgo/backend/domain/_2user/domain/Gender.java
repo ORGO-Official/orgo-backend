@@ -10,11 +10,10 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 @Getter
 public enum Gender {
-    FEMALE(Map.of(LoginType.NAVER, "F")),
-    MALE(Map.of(LoginType.NAVER, "M")),
-    UNDEFINED(Map.of(LoginType.NAVER, "U"));
-    private final Map<LoginType, String> map;
+    FEMALE(Map.of(LoginType.NAVER, "F", LoginType.KAKAO, "female")),
+    MALE(Map.of(LoginType.NAVER, "M", LoginType.KAKAO, "male"));
 
+    private final Map<LoginType, String> map;
     public static Gender findBy(LoginType loginType, String name) {
         return Stream.of(values())
                 .filter(e -> e.getMap().get(loginType).equals(name))

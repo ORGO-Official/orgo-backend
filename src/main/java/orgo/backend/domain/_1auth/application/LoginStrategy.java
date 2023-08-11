@@ -11,7 +11,4 @@ public interface LoginStrategy {
      * @return 개인 정보 (이름, 이메일, 소셜 아이디, 프로필 이미지)
      */
     PersonalData getPersonalData(String socialToken);
-
-    LoginType getLoginType();
-
 }

@@ -2,6 +2,7 @@ package orgo.backend.domain._1auth.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import orgo.backend.domain._1auth.application.KakaoLoginStrategy;
 import orgo.backend.domain._1auth.application.NaverLoginStrategy;
 
 import java.util.stream.Stream;
@@ -9,7 +10,8 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 @Getter
 public enum LoginType {
-    NAVER("naver", NaverLoginStrategy.class);
+    NAVER("naver", NaverLoginStrategy.class),
+    KAKAO("kakao", KakaoLoginStrategy.class);
 
 
     private final String name;
