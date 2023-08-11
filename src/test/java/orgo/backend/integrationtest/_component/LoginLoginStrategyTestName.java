@@ -5,14 +5,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import orgo.backend.domain._1auth.application.NaverProfileExtractor;
+import orgo.backend.domain._1auth.application.NaverLoginStrategy;
 import orgo.backend.domain._1auth.domain.PersonalData;
 import orgo.backend.setting.IntegrationTest;
 
-public class ProfileExtractorTest extends IntegrationTest {
+public class LoginLoginStrategyTestName extends IntegrationTest {
 
     @Autowired
-    NaverProfileExtractor naverProfileExtractor;
+    NaverLoginStrategy naverProfileExtractor;
 
     @Test
     @Disabled

@@ -15,14 +15,14 @@ endif::[]
 
 
 //----------------------------------------------//
-== 🦒 TEST
+== 🦒 1-1. 인증/인가
 
-=== 🟢테스트
+=== 🟢로그인
 ----
-테스트 API입니다.
+카카오, 네이버, 애플 중 하나로 로그인합니다.
 ----
-==== HTTP request
-include::{snippets}/test/http-request.adoc[]
+operation::auth-login[]
 
-==== HTTP response
-include::{snippets}/test/http-response.adoc[]
+
+
+
