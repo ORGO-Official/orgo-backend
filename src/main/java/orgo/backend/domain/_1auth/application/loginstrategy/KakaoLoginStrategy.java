@@ -33,8 +33,6 @@ public class KakaoLoginStrategy implements LoginStrategy{
      */
     @Override
     public PersonalData getPersonalData(String socialToken) {
-        final String PROFILE_API = "https://kapi.kakao.com/v2/user/me";
-
         WebClient webClient = WebClient.create();
         KakaoProfile kakaoProfile = webClient.method(HttpMethod.POST)
                 .uri(PROFILE_API)
@@ -68,7 +66,20 @@ public class KakaoLoginStrategy implements LoginStrategy{
 
     @Override
     public SocialToken reissueSocialToken(String refreshToken) {
-        return null;
+        WebClient webClient = WebClient.create();
+        KakaoLoginStrategy.ReissueResponse response = webClient.method(HttpMethod.POST)
+                .uri(uriBuilder -> uriBuilder
+                        .path(ISSUE_API)
+                        .queryParam("client_id", CLIENT_ID)
+                        .queryParam("client_secret", CLIENT_SECRET)
+                        .queryParam("grant_type", "authorization_code")
+                        .queryParam("refresh_token", refreshToken)
+                        .build())
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .retrieve()
+                .bodyToMono(KakaoLoginStrategy.ReissueResponse.class)
+                .block();
+        return Objects.requireNonNull(response).toData();
     }
 
     @Override
@@ -119,8 +130,9 @@ public class KakaoLoginStrategy implements LoginStrategy{
     @Getter
     private static class ReissueResponse {
         String access_token;
+        String refresh_token;
 
-        private SocialToken toData(String refresh_token) {
+        private SocialToken toData() {
             return new SocialToken(null, access_token, refresh_token);
         }
     }
