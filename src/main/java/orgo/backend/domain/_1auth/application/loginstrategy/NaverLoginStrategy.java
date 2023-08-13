@@ -6,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
+import orgo.backend.domain._1auth.domain.NaverTokenRequirement;
 import orgo.backend.domain._1auth.domain.PersonalData;
+import orgo.backend.domain._1auth.domain.SocialTokenRequirement;
 import orgo.backend.domain._1auth.domain.SocialToken;
 
 import java.util.Objects;
@@ -45,21 +47,20 @@ public class NaverLoginStrategy implements LoginStrategy {
     /**
      * 네이버 접근 토큰 발급 요청 API를 호출하여 접근 토큰을 발급합니다.
      *
-     * @param code  FE로부터 전달받은 인증코드
-     * @param state FE로부터 전달받은 상태 토큰값
      * @return 소셜 토큰
      */
     @Override
-    public SocialToken createSocialToken(String code, String state) {
+    public SocialToken createSocialToken(SocialTokenRequirement socialTokenRequirement) {
         WebClient webClient = WebClient.create();
+        NaverTokenRequirement naverTokenRequirement = (NaverTokenRequirement) Objects.requireNonNull(socialTokenRequirement);
         return webClient.method(HttpMethod.POST)
                 .uri(uriBuilder -> uriBuilder
                         .path(TOKEN_API)
                         .queryParam("client_id", CLIENT_ID)
                         .queryParam("client_secret", CLIENT_SECRET)
                         .queryParam("grant_type", "authorization_code")
-                        .queryParam("code", code)
-                        .queryParam("state", state)
+                        .queryParam("code", naverTokenRequirement.getCode())
+                        .queryParam("state", naverTokenRequirement.getState())
                         .build())
                 .retrieve()
                 .bodyToMono(SocialToken.class)

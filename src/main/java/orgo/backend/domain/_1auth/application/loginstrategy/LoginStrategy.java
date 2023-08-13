@@ -1,7 +1,7 @@
 package orgo.backend.domain._1auth.application.loginstrategy;
 
-import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._1auth.domain.PersonalData;
+import orgo.backend.domain._1auth.domain.SocialTokenRequirement;
 import orgo.backend.domain._1auth.domain.SocialToken;
 
 public interface LoginStrategy {
@@ -18,7 +18,7 @@ public interface LoginStrategy {
      *
      * @return 서드파티 액세스 토큰
      */
-    SocialToken createSocialToken(String code, String state);
+    SocialToken createSocialToken(SocialTokenRequirement socialTokenRequirement);
 
     /**
      * 소셜 로그인의 연동을 해제합니다.
