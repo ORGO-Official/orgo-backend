@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import orgo.backend.global.constant.Header;
 
 @Slf4j
 @RestController
@@ -25,8 +26,8 @@ public class TestController {
 
     @PostMapping("/test/jwt")
     @PermitAll()
-    public ResponseEntity<TestResponse> testJwt(@RequestHeader String access, @AuthenticationPrincipal Long userId) {
-        log.info(access);
+    public ResponseEntity<TestResponse> testJwt(@RequestHeader(name = Header.AUTH) String accessToken, @AuthenticationPrincipal Long userId) {
+        log.info(accessToken);
         log.info("my userId = {}", userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

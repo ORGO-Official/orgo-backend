@@ -9,13 +9,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import orgo.backend.global.constant.Header;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -26,7 +25,8 @@ import java.security.Key;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final static String SECRET_KEY = "TemporarySecretKeyForTestAreYouUnderstandBro";
+    @Value("${spring.jwt.secret}")
+    private String SECRET_KEY;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
     private Key getSigningKey(String secretKey) {
@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String jwt = request.getHeader("access");
+        String jwt = request.getHeader(Header.AUTH);
         if (StringUtils.isNotEmpty(jwt)) {
             Claims claims = JwtValidator.validateJwt(jwt, getSigningKey(SECRET_KEY));
             Long userId = Long.parseLong(claims.getSubject());
