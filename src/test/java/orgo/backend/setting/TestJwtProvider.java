@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import orgo.backend.domain._1auth.domain.ServiceToken;
 import orgo.backend.domain._2user.domain.User;
+import orgo.backend.global.config.security.JwtProvider;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -21,20 +22,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Component
 public class TestJwtProvider {
-    private final static String SECRET_KEY = "HelloMyNickNameIsBeHangAndNiceToMeetYouHowAreYouImFineThankYouAndYou2";
+    private final JwtProvider jwtProvider;
 
-    public static String generateToken(User user) {
-        Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
-        String authorities = user.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-        Claims claims = Jwts.claims();
-        claims.setSubject(String.valueOf(user.getId()));
-        claims.put("authorities", authorities);
-        return Jwts.builder()
-                .setHeaderParam("type", "jwt")
-                .setClaims(claims)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+    /**
+     * 테스트용 JWT(액세스 토큰)을 리턴합니다.
+     *
+     * @param user 사용자
+     * @return 테스트용 JWT
+     */
+    public String generate(User user) {
+        return jwtProvider.createServiceToken(user).getAccessToken();
     }
 }
