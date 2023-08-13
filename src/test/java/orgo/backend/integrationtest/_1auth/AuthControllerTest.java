@@ -134,4 +134,28 @@ public class AuthControllerTest extends IntegrationTest {
 
         assertThat(userRepository.findById(saved.getId())).isEmpty();
     }
+
+    @Test
+    @DisplayName("[회원 탈퇴(카카오)] - 성공")
+    void test3() throws Exception {
+        // given
+        User user = User.builder()
+                .loginType(LoginType.KAKAO)
+                .roles(Collections.singletonList("ROLE_USER"))
+                .socialToken(new SocialToken(null, "old-access", "old-refresh"))
+                .build();
+        User saved = userRepository.save(user);
+
+        SocialToken newSocialToken = new SocialToken(null, "new-access", "new-refresh");
+        given(kakaoLoginStrategy.reissueSocialToken("old-refresh")).willReturn(newSocialToken);
+
+        // when
+        ResultActions actions = mvc.perform(post(WITHDRAW_API)
+                .header(Header.AUTH, testJwtProvider.generate(user))
+        );
+
+        // then
+        actions.andExpect(status().isOk());
+        assertThat(userRepository.findById(saved.getId())).isEmpty();
+    }
 }

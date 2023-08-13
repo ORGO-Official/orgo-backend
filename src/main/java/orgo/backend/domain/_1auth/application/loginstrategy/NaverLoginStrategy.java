@@ -15,9 +15,9 @@ import java.util.Objects;
 
 @Slf4j
 public class NaverLoginStrategy implements LoginStrategy {
-    @Value("${auth.naver.client_id}")
+    @Value("${auth.naver.client-id}")
     private String CLIENT_ID;
-    @Value("${auth.naver.client_secret}")
+    @Value("${auth.naver.client-secret}")
     private String CLIENT_SECRET;
     private final static String PROFILE_API = "https://openapi.naver.com/v1/nid/me";
     private final static String ISSUE_API = "https://nid.naver.com/oauth2.0/token";

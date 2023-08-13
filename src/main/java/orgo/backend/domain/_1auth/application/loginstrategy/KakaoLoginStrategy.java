@@ -17,9 +17,9 @@ import java.util.Objects;
 @Slf4j
 @Transactional
 public class KakaoLoginStrategy implements LoginStrategy{
-    @Value("${auth.kakao.client_id}")
+    @Value("${auth.kakao.client-id}")
     private String CLIENT_ID;
-    @Value("${auth.kakao.client_secret}")
+    @Value("${auth.kakao.client-secret}")
     private String CLIENT_SECRET;
     private final static String PROFILE_API = "https://kapi.kakao.com/v2/user/me";
     private final static String ISSUE_API = "https://kauth.kakao.com/oauth/token";

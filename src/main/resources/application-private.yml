@@ -1,3 +1,12 @@
 spring:
   jwt:
     secret: HelloMyNickNameIsBeHangAndNiceToMeetYouHowAreYouImFineThankYouAndYou
+
+
+auth:
+  naver:
+    client-id: ooo
+    client-secret: ooo
+  kakao:
+    client-id: ooo
+    client-secret: ooo

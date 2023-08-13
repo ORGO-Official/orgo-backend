@@ -74,7 +74,7 @@ public class AuthService {
         userRepository.delete(user);
     }
 
-    private void reissueSocialToken(User user, LoginStrategy strategy){
+    private void reissueSocialToken(User user, LoginStrategy strategy) {
         socialTokenRepository.delete(user.getSocialToken());
         SocialToken socialToken = strategy.reissueSocialToken(user.getSocialToken().getRefreshToken());
         user.setSocialToken(socialToken);
