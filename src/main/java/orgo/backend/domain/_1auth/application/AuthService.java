@@ -49,11 +49,21 @@ public class AuthService {
                 .orElse(userRepository.save(User.signup(personalData)));
     }
 
-    public void logout(ServiceToken token, Long userId) {
+    public void logout(Long userId) {
 
     }
 
-    public void withdraw(ServiceToken token, Long userId) {
-
+    /**
+     * 회원을 탈퇴시킵니다.
+     *
+     * @param userId      회원 아이디넘버
+     * @param socialToken 로그인에 사용된 서드파티 토큰
+     */
+    public void withdraw(Long userId, String socialToken) {
+        User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
+        LoginType loginType = user.getLoginType();
+        LoginStrategy strategy = loginStrategyFactory.findStrategy(loginType);
+        strategy.unlink(socialToken);
+        userRepository.delete(user);
     }
 }

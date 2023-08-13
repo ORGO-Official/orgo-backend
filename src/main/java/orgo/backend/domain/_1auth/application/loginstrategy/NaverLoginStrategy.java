@@ -41,7 +41,7 @@ public class NaverLoginStrategy implements LoginStrategy {
     }
 
     /**
-     * 네이버 로그인 연동 해제 API를 호출하여, 연결을 끊습니다.
+     * 네이버 로그인 연동 해제 API를 호출며하여, 연결을 끊습니다.
      *
      * @param socialToken 서드파티 액세스 토큰
      */

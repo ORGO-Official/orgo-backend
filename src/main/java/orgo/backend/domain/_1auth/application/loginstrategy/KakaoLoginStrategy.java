@@ -38,6 +38,11 @@ public class KakaoLoginStrategy implements LoginStrategy{
         return PersonalData.fromKakao(kakaoProfile);
     }
 
+    @Override
+    public void unlink(String socialToken) {
+
+    }
+
     @Getter
     @NoArgsConstructor
     public static class KakaoProfile {

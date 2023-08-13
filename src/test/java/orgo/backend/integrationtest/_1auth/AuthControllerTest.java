@@ -11,6 +11,7 @@ import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._1auth.domain.PersonalData;
 import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.Gender;
+import orgo.backend.domain._2user.domain.User;
 import orgo.backend.setting.IntegrationTest;
 
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthControllerTest extends IntegrationTest {
 
     private final static String LOGIN_API = "/api/auth/login/{loginType}";
+    private final static String WITHDRAW_API = "/api/auth/withdraw";
     @MockBean
     NaverLoginStrategy naverLoginStrategy;
 
@@ -79,5 +81,29 @@ public class AuthControllerTest extends IntegrationTest {
         // then
         actions.andExpect(status().isOk());
         assertThat(userRepository.findBySocialIdAndLoginType("11111", LoginType.KAKAO)).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("[회원탈퇴(네이버 기반 유저) - 성공]")
+    void test2() throws Exception {
+        // given
+        User user = User.builder()
+                .loginType(LoginType.NAVER)
+                .build();
+        User saved = userRepository.save(user);
+
+        String socialToken = "test_social_token";
+
+        // when
+        ResultActions actions = mvc.perform(post(WITHDRAW_API)
+                .header("socialToken", socialToken));
+
+        // then
+        actions.andExpect(status().isOk())
+                .andDo(docs("auth-logout",
+                        requestHeaders(header("socialToken").description("소셜 로그인 토큰"))));
+
+
+        assertThat(userRepository.findById(saved.getId())).isEmpty();
     }
 }
