@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._1auth.domain.PersonalData;
+import orgo.backend.domain._1auth.domain.SocialToken;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,10 +33,13 @@ public class User implements UserDetails {
     LocalDate birthdate;
     String socialId;
     LoginType loginType;
-
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn
+    SocialToken socialToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -44,7 +48,7 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public static User signup(PersonalData personalData){
+    public static User signup(PersonalData personalData) {
         return User.builder()
                 .name(personalData.getName())
                 .email(personalData.getEmail())
@@ -54,6 +58,10 @@ public class User implements UserDetails {
                 .loginType(personalData.getLoginType())
                 .roles(Collections.singletonList(DEFAULT_ROLE))
                 .build();
+    }
+
+    public void setSocialToken(SocialToken socialToken){
+        this.socialToken = socialToken;
     }
 
     @Override

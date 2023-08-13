@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import orgo.backend.domain._1auth.application.AuthService;
 import orgo.backend.domain._1auth.domain.ServiceToken;
+import orgo.backend.domain._1auth.domain.SocialTokenRequirement;
 import orgo.backend.global.constant.Header;
 
 @RestController
@@ -19,15 +20,15 @@ public class AuthController {
 
     @PermitAll
     @PostMapping("/auth/login/{loginType}")
-    public ResponseEntity<ServiceToken> login(@RequestHeader(name = Header.SOCIAL) String socialToken, @PathVariable String loginType) {
-        ServiceToken token = authService.login(socialToken, loginType);
+    public ResponseEntity<ServiceToken> login(@RequestBody SocialTokenRequirement socialTokenRequirement, @PathVariable String loginType) {
+        ServiceToken token = authService.login(socialTokenRequirement, loginType);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/auth/withdraw")
-    public ResponseEntity<Void> withdraw(@RequestHeader(name = Header.SOCIAL) String socialToken, @RequestHeader(name = Header.AUTH) String accessToken, @AuthenticationPrincipal Long userId) {
-        authService.withdraw(userId, socialToken);
+    public ResponseEntity<Void> withdraw(@RequestHeader(name = Header.AUTH) String accessToken, @AuthenticationPrincipal Long userId) {
+        authService.withdraw(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
