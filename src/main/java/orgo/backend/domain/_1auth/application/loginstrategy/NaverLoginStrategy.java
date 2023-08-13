@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import orgo.backend.domain._1auth.domain.PersonalData;
+import orgo.backend.domain._1auth.domain.SocialToken;
 
 import java.util.Objects;
 
@@ -17,6 +18,7 @@ public class NaverLoginStrategy implements LoginStrategy {
     @Value("${auth.naver.client_secret}")
     private String CLIENT_SECRET;
     private final static String PROFILE_API = "https://openapi.naver.com/v1/nid/me";
+    private final static String TOKEN_API = "https://nid.naver.com/oauth2.0/token";
     private final static String UNLINK_API = "https://nid.naver.com/oauth2.0/token";
 
 
@@ -41,7 +43,31 @@ public class NaverLoginStrategy implements LoginStrategy {
     }
 
     /**
-     * 네이버 로그인 연동 해제 API를 호출며하여, 연결을 끊습니다.
+     * 네이버 접근 토큰 발급 요청 API를 호출하여 접근 토큰을 발급합니다.
+     *
+     * @param code  FE로부터 전달받은 인증코드
+     * @param state FE로부터 전달받은 상태 토큰값
+     * @return 소셜 토큰
+     */
+    @Override
+    public SocialToken createSocialToken(String code, String state) {
+        WebClient webClient = WebClient.create();
+        return webClient.method(HttpMethod.POST)
+                .uri(uriBuilder -> uriBuilder
+                        .path(TOKEN_API)
+                        .queryParam("client_id", CLIENT_ID)
+                        .queryParam("client_secret", CLIENT_SECRET)
+                        .queryParam("grant_type", "authorization_code")
+                        .queryParam("code", code)
+                        .queryParam("state", state)
+                        .build())
+                .retrieve()
+                .bodyToMono(SocialToken.class)
+                .block();
+    }
+
+    /**
+     * 네이버 로그인 연동 해제 API를 호출하여, 연결을 끊습니다.
      *
      * @param socialToken 서드파티 액세스 토큰
      */

@@ -60,7 +60,6 @@ public class AuthService {
      * @param socialToken 로그인에 사용된 서드파티 토큰
      */
     public void withdraw(Long userId, String socialToken) {
-        log.info("{}", userId);
         User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
         LoginType loginType = user.getLoginType();
         LoginStrategy strategy = loginStrategyFactory.findStrategy(loginType);

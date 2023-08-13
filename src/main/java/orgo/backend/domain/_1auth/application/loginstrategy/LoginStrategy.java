@@ -2,6 +2,7 @@ package orgo.backend.domain._1auth.application.loginstrategy;
 
 import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._1auth.domain.PersonalData;
+import orgo.backend.domain._1auth.domain.SocialToken;
 
 public interface LoginStrategy {
     /**
@@ -11,6 +12,13 @@ public interface LoginStrategy {
      * @return 개인 정보 (이름, 이메일, 소셜 아이디, 프로필 이미지)
      */
     PersonalData getPersonalData(String socialToken);
+
+    /**
+     * Callback으로 전달받은 정보를 이용하여 서드파티 앱의 접근 토큰을 발급받습니다.
+     *
+     * @return 서드파티 액세스 토큰
+     */
+    SocialToken createSocialToken(String code, String state);
 
     /**
      * 소셜 로그인의 연동을 해제합니다.
