@@ -8,6 +8,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import orgo.backend.domain._1auth.domain.PersonalData;
+import orgo.backend.domain._1auth.domain.SocialToken;
+import orgo.backend.domain._1auth.domain.SocialTokenRequirement;
 
 import java.util.Objects;
 
@@ -36,6 +38,16 @@ public class KakaoLoginStrategy implements LoginStrategy{
                 .block();
         Objects.requireNonNull(kakaoProfile).validate();
         return PersonalData.fromKakao(kakaoProfile);
+    }
+
+    @Override
+    public SocialToken createSocialToken(SocialTokenRequirement socialTokenRequirement) {
+        return null;
+    }
+
+    @Override
+    public SocialToken reissueSocialToken(String refreshToken) {
+        return null;
     }
 
     @Override

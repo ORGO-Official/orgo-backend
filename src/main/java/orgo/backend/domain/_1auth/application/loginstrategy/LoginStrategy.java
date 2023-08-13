@@ -14,11 +14,19 @@ public interface LoginStrategy {
     PersonalData getPersonalData(String socialToken);
 
     /**
-     * Callback으로 전달받은 정보를 이용하여 서드파티 앱의 접근 토큰을 발급받습니다.
+     * Callback으로 전달받은 정보를 이용하여 서드파티 앱의 소셜 토큰을 발급받습니다.
      *
      * @return 서드파티 액세스 토큰
      */
     SocialToken createSocialToken(SocialTokenRequirement socialTokenRequirement);
+
+    /**
+     * 소셜 리프레시 토큰을 사용해 소셜 토큰을 재발급합니다.
+     *
+     * @param refreshToken 소셜 리프레시 토큰
+     * @return 재발급한 소셜 토큰
+     */
+    SocialToken reissueSocialToken(String refreshToken);
 
     /**
      * 소셜 로그인의 연동을 해제합니다.

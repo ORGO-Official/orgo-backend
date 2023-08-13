@@ -20,7 +20,7 @@ public class NaverLoginStrategy implements LoginStrategy {
     @Value("${auth.naver.client_secret}")
     private String CLIENT_SECRET;
     private final static String PROFILE_API = "https://openapi.naver.com/v1/nid/me";
-    private final static String TOKEN_API = "https://nid.naver.com/oauth2.0/token";
+    private final static String ISSUE_API = "https://nid.naver.com/oauth2.0/token";
     private final static String UNLINK_API = "https://nid.naver.com/oauth2.0/token";
 
 
@@ -53,9 +53,9 @@ public class NaverLoginStrategy implements LoginStrategy {
     public SocialToken createSocialToken(SocialTokenRequirement socialTokenRequirement) {
         WebClient webClient = WebClient.create();
         NaverTokenRequirement naverTokenRequirement = (NaverTokenRequirement) Objects.requireNonNull(socialTokenRequirement);
-        return webClient.method(HttpMethod.POST)
+        IssueResponse response = webClient.method(HttpMethod.POST)
                 .uri(uriBuilder -> uriBuilder
-                        .path(TOKEN_API)
+                        .path(ISSUE_API)
                         .queryParam("client_id", CLIENT_ID)
                         .queryParam("client_secret", CLIENT_SECRET)
                         .queryParam("grant_type", "authorization_code")
@@ -63,8 +63,32 @@ public class NaverLoginStrategy implements LoginStrategy {
                         .queryParam("state", naverTokenRequirement.getState())
                         .build())
                 .retrieve()
-                .bodyToMono(SocialToken.class)
+                .bodyToMono(IssueResponse.class)
                 .block();
+        return Objects.requireNonNull(response).toData();
+    }
+
+    /**
+     * 네이버 접근 토큰 재발급 API를 호출하여 유효한 소셜 토큰을 재발급합니다.
+     *
+     * @param refreshToken 소셜 리프레시 토큰
+     * @return 재발급한 소셜 토큰
+     */
+    @Override
+    public SocialToken reissueSocialToken(String refreshToken) {
+        WebClient webClient = WebClient.create();
+        ReissueResponse response = webClient.method(HttpMethod.POST)
+                .uri(uriBuilder -> uriBuilder
+                        .path(ISSUE_API)
+                        .queryParam("client_id", CLIENT_ID)
+                        .queryParam("client_secret", CLIENT_SECRET)
+                        .queryParam("grant_type", "refresh_token ")
+                        .queryParam("refresh_token", refreshToken)
+                        .build())
+                .retrieve()
+                .bodyToMono(ReissueResponse.class)
+                .block();
+        return Objects.requireNonNull(response).toData(refreshToken);
     }
 
     /**
@@ -113,6 +137,25 @@ public class NaverLoginStrategy implements LoginStrategy {
                 throw new RuntimeException("소셜 토큰이 만료되었습니다. 다시 로그인해주세요.");
             }
             throw new RuntimeException("클라이언트 오류입니다. 다시 시도해주세요.");
+        }
+    }
+
+    @Getter
+    private static class IssueResponse {
+        String access_token;
+        String refresh_token;
+
+        private SocialToken toData() {
+            return new SocialToken(null, access_token, refresh_token);
+        }
+    }
+
+    @Getter
+    private static class ReissueResponse {
+        String access_token;
+
+        private SocialToken toData(String refresh_token) {
+            return new SocialToken(null, access_token, refresh_token);
         }
     }
 }
