@@ -30,6 +30,7 @@ public class AuthService {
     public ServiceToken login(SocialTokenRequirement socialTokenRequirement, String method) {
         LoginType loginType = LoginType.findBy(method);
         LoginStrategy strategy = loginStrategyFactory.findStrategy(loginType);
+
         SocialToken socialToken = strategy.createSocialToken(socialTokenRequirement);
         PersonalData personalData = strategy.getPersonalData(socialToken.getAccessToken());
         User user = createOrGetUser(personalData, socialToken);
@@ -65,8 +66,14 @@ public class AuthService {
         User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
         LoginType loginType = user.getLoginType();
         LoginStrategy strategy = loginStrategyFactory.findStrategy(loginType);
-        String socialAccessToken = user.getSocialToken().getAccessToken();
-        strategy.unlink(socialAccessToken);
+
+        reissueSocialToken(user, strategy);
+        strategy.unlink(user.getSocialToken().getAccessToken());
         userRepository.delete(user);
+    }
+
+    private void reissueSocialToken(User user, LoginStrategy strategy){
+        SocialToken socialToken = strategy.reissueSocialToken(user.getSocialToken().getRefreshToken());
+        user.setSocialToken(socialToken);
     }
 }
