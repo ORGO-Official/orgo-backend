@@ -23,7 +23,7 @@ public class KakaoLoginStrategy implements LoginStrategy{
     private String CLIENT_SECRET;
     private final static String PROFILE_API = "https://kapi.kakao.com/v2/user/me";
     private final static String ISSUE_API = "https://kauth.kakao.com/oauth/token";
-    private final static String UNLINK_API = "https://nid.naver.com/oauth2.0/token";
+    private final static String UNLINK_API = "https://kapi.kakao.com/v1/user/unlink";
 
     /**
      * 카카오 프로필 조회 API를 호출하여, 사용자의 개인 정보를 추출합니다.
@@ -73,7 +73,13 @@ public class KakaoLoginStrategy implements LoginStrategy{
 
     @Override
     public void unlink(String socialToken) {
-
+        WebClient webClient = WebClient.create();
+        webClient.method(HttpMethod.POST)
+                .uri(UNLINK_API)
+                .header("Authorization", "Bearer " + socialToken)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
     }
 
     @Getter
