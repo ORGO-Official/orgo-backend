@@ -10,6 +10,8 @@ endif::[]
 :doctype: book
 :icons: font
 :source-highlighter: highlight.js
+:operation-curl-request-title: - - - - -
+:operation-httpie-request-title: - - - - -
 
 [.gray]#{last-update-label} in {docdatetime}#
 
