@@ -13,7 +13,6 @@ import orgo.backend.setting.RepositoryTest;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 class SocialTokenRepositoryTest extends RepositoryTest {
@@ -40,5 +39,23 @@ class SocialTokenRepositoryTest extends RepositoryTest {
         Optional<User> found = userRepository.findById(saved.getId());
         assertThat(found).isNotEmpty();
         assertThat(found.get().getSocialToken()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("User가 제거될 때, SocialToken도 함께 제거된다. ")
+    void test1() {
+        // given
+        SocialToken socialToken = new SocialToken(null, "access", "refresh");
+        User user = User.builder()
+                .socialToken(socialToken)
+                .build();
+        User saved = userRepository.save(user);
+        Long oldTokenId = saved.getSocialToken().getId();
+
+        // when
+        userRepository.delete(saved);
+
+        // then
+        assertThat(socialTokenRepository.findById(oldTokenId)).isEmpty();
     }
 }

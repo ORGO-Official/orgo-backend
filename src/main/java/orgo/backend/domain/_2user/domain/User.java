@@ -37,7 +37,7 @@ public class User implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     SocialToken socialToken;
 
@@ -61,6 +61,7 @@ public class User implements UserDetails {
     }
 
     public void setSocialToken(SocialToken socialToken){
+
         this.socialToken = socialToken;
     }
 

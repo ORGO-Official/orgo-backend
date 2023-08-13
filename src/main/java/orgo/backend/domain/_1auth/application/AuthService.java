@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import orgo.backend.domain._1auth.application.loginstrategy.LoginStrategy;
 import orgo.backend.domain._1auth.application.loginstrategy.LoginStrategyFactory;
+import orgo.backend.domain._1auth.dao.SocialTokenRepository;
 import orgo.backend.domain._1auth.domain.*;
 import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.User;
@@ -18,6 +19,7 @@ public class AuthService {
     @Autowired
     LoginStrategyFactory loginStrategyFactory;
     private final UserRepository userRepository;
+    private final SocialTokenRepository socialTokenRepository;
     private final JwtProvider jwtProvider;
 
     /**
@@ -73,6 +75,7 @@ public class AuthService {
     }
 
     private void reissueSocialToken(User user, LoginStrategy strategy){
+        socialTokenRepository.delete(user.getSocialToken());
         SocialToken socialToken = strategy.reissueSocialToken(user.getSocialToken().getRefreshToken());
         user.setSocialToken(socialToken);
     }
