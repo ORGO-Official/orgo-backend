@@ -6,9 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
-import orgo.backend.domain._1auth.domain.NaverTokenRequirement;
+import orgo.backend.domain._1auth.dto.NaverTokenRequirement;
 import orgo.backend.domain._1auth.domain.PersonalData;
-import orgo.backend.domain._1auth.domain.SocialTokenRequirement;
+import orgo.backend.domain._1auth.dto.SocialTokenRequirement;
 import orgo.backend.domain._1auth.domain.SocialToken;
 
 import java.util.Objects;

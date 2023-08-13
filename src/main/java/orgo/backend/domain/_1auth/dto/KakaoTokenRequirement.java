@@ -1,4 +1,4 @@
-package orgo.backend.domain._1auth.domain;
+package orgo.backend.domain._1auth.dto;
 
 public class KakaoTokenRequirement extends SocialTokenRequirement {
     public String getCode(){

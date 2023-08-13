@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import orgo.backend.domain._1auth.domain.*;
+import orgo.backend.domain._1auth.dto.KakaoTokenRequirement;
+import orgo.backend.domain._1auth.dto.SocialTokenRequirement;
 
 import java.util.Objects;
 

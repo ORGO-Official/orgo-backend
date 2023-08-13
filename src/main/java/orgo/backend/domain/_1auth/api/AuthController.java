@@ -9,7 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import orgo.backend.domain._1auth.application.AuthService;
 import orgo.backend.domain._1auth.domain.ServiceToken;
-import orgo.backend.domain._1auth.domain.SocialTokenRequirement;
+import orgo.backend.domain._1auth.dto.SocialTokenRequirement;
 import orgo.backend.global.constant.Header;
 
 @RestController

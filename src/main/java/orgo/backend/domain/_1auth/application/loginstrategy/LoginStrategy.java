@@ -1,7 +1,7 @@
 package orgo.backend.domain._1auth.application.loginstrategy;
 
 import orgo.backend.domain._1auth.domain.PersonalData;
-import orgo.backend.domain._1auth.domain.SocialTokenRequirement;
+import orgo.backend.domain._1auth.dto.SocialTokenRequirement;
 import orgo.backend.domain._1auth.domain.SocialToken;
 
 public interface LoginStrategy {

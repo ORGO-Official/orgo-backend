@@ -1,4 +1,4 @@
-package orgo.backend.domain._1auth.domain;
+package orgo.backend.domain._1auth.dto;
 
 public class NaverTokenRequirement extends SocialTokenRequirement {
     public String getCode(){

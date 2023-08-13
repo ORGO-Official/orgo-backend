@@ -8,6 +8,7 @@ import orgo.backend.domain._1auth.application.loginstrategy.LoginStrategy;
 import orgo.backend.domain._1auth.application.loginstrategy.LoginStrategyFactory;
 import orgo.backend.domain._1auth.dao.SocialTokenRepository;
 import orgo.backend.domain._1auth.domain.*;
+import orgo.backend.domain._1auth.dto.SocialTokenRequirement;
 import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.User;
 import orgo.backend.global.config.security.JwtProvider;

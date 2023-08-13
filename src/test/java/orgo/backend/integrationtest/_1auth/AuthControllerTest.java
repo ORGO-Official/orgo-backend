@@ -12,7 +12,7 @@ import orgo.backend.domain._1auth.application.loginstrategy.NaverLoginStrategy;
 import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._1auth.domain.PersonalData;
 import orgo.backend.domain._1auth.domain.SocialToken;
-import orgo.backend.domain._1auth.domain.SocialTokenRequirement;
+import orgo.backend.domain._1auth.dto.SocialTokenRequirement;
 import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.Gender;
 import orgo.backend.domain._2user.domain.User;
