@@ -54,7 +54,7 @@ public class AuthControllerTest extends IntegrationTest {
     TestJwtProvider testJwtProvider;
 
     @Test
-    @DisplayName("[소셜 로그인(네이버) - 성공]")
+    @DisplayName("[소셜 로그인(네이버)] - 성공")
     void test() throws Exception {
         // given
         PersonalData personalData = new PersonalData("김민수", "test@naver.com", Gender.MALE, LocalDate.of(1999, 3, 11), "11111", LoginType.NAVER);
@@ -74,7 +74,7 @@ public class AuthControllerTest extends IntegrationTest {
                         pathParams(param("loginType").description("로그인 타입 (네이버: \"naver\" | 카카오: \"kakao\")")),
                         requestFields(
                                 field("code").description("인증 코드"),
-                                field("state").description("상태 토큰값"),
+                                field("state").description("상태 토큰값 [네이버]").optional(),
                                 field("redirectUri").description("리다이렉트 URI [카카오]").optional()
                         ),
                         responseFields(
@@ -86,7 +86,7 @@ public class AuthControllerTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("[소셜 로그인(카카오) - 성공]")
+    @DisplayName("[소셜 로그인(카카오)] - 성공")
     void test1() throws Exception {
         // given
         PersonalData personalData = new PersonalData("김민수", "test@kakao.com", Gender.MALE, LocalDate.of(1999, 3, 11), "11111", LoginType.KAKAO);
@@ -107,7 +107,7 @@ public class AuthControllerTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("[회원탈퇴(네이버 기반 유저) - 성공]")
+    @DisplayName("[회원 탈퇴(네이버)] - 성공")
     void test2() throws Exception {
         // given
         User user = User.builder()
