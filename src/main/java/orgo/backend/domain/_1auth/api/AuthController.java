@@ -26,6 +26,13 @@ public class AuthController {
     }
 
     @PreAuthorize("hasRole('USER')")
+    @PostMapping("/auth/logout")
+    public ResponseEntity<Void> logout(@RequestHeader(name = Header.AUTH) String accessToken, @AuthenticationPrincipal Long userId) {
+        authService.logout(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/auth/withdraw")
     public ResponseEntity<Void> withdraw(@RequestHeader(name = Header.AUTH) String accessToken, @AuthenticationPrincipal Long userId) {
         authService.withdraw(userId);

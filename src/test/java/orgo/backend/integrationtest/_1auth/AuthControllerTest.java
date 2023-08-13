@@ -40,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthControllerTest extends IntegrationTest {
 
     private final static String LOGIN_API = "/api/auth/login/{loginType}";
+    private final static String LOGOUT_API = "/api/auth/logout";
     private final static String WITHDRAW_API = "/api/auth/withdraw";
     @MockBean
     NaverLoginStrategy naverLoginStrategy;
@@ -157,5 +158,28 @@ public class AuthControllerTest extends IntegrationTest {
         // then
         actions.andExpect(status().isOk());
         assertThat(userRepository.findById(saved.getId())).isEmpty();
+    }
+
+    @Test
+    @DisplayName("[로그아웃] - 성공")
+    void test4() throws Exception {
+        // given
+        User user = User.builder()
+                .loginType(LoginType.NAVER)
+                .roles(Collections.singletonList("ROLE_USER"))
+                .build();
+        User saved = userRepository.save(user);
+
+        // when
+        ResultActions actions = mvc.perform(post(LOGOUT_API)
+                .header(Header.AUTH, testJwtProvider.generate(user))
+        );
+
+        // then
+        actions.andExpect(status().isOk())
+                .andDo(docs("auth-logout",
+                        requestHeaders(
+                                header(Header.AUTH).description("액세스 토큰")
+                        )));
     }
 }
