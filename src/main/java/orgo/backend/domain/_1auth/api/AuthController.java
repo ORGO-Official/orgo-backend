@@ -24,7 +24,7 @@ public class AuthController {
 
     @PermitAll
     @PostMapping("/auth/withdraw")
-    public ResponseEntity<Void> withdraw(@RequestHeader String socialToken, @AuthenticationPrincipal Long userId) {
+    public ResponseEntity<Void> withdraw(@RequestHeader String socialToken, @RequestHeader String accessToken, @AuthenticationPrincipal Long userId) {
         authService.withdraw(userId, socialToken);
         return new ResponseEntity<>(HttpStatus.OK);
     }

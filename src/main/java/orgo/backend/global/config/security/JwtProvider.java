@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class JwtProvider {
 
     @Value("${spring.jwt.secret}")
-    private String secretKey;
+    private String SECRET_KEY;
     public static final String AUTHORITIES = "authorities";
 
     private Key getSigningKey(String secretKey) {
@@ -41,7 +41,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .setHeaderParam("type", "jwt")
                 .setClaims(claims)
-                .signWith(getSigningKey(secretKey), SignatureAlgorithm.HS256)
+                .signWith(getSigningKey(SECRET_KEY), SignatureAlgorithm.HS256)
                 .compact();
     }
 
