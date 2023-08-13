@@ -24,5 +24,10 @@ endif::[]
 operation::auth-login[]
 
 
+=== 🟢회원탈퇴
+----
+계정을 회원탈퇴합니다.
+----
+operation::auth-withdraw[]
 
 
