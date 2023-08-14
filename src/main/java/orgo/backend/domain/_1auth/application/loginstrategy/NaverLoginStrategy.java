@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import orgo.backend.domain._1auth.dto.NaverTokenRequirement;
 import orgo.backend.domain._1auth.domain.PersonalData;
-import orgo.backend.domain._1auth.dto.SocialTokenRequirement;
-import orgo.backend.domain._1auth.domain.SocialToken;
 
 import java.util.Objects;
 
@@ -46,52 +43,6 @@ public class NaverLoginStrategy implements LoginStrategy {
         return PersonalData.fromNaver(naverProfile);
     }
 
-    /**
-     * 네이버 접근 토큰 발급 요청 API를 호출하여 접근 토큰을 발급합니다.
-     *
-     * @return 소셜 토큰
-     */
-    @Override
-    public SocialToken createSocialToken(SocialTokenRequirement socialTokenRequirement) {
-        WebClient webClient = WebClient.create();
-        NaverTokenRequirement naverTokenRequirement = (NaverTokenRequirement) Objects.requireNonNull(socialTokenRequirement);
-        IssueResponse response = webClient.method(HttpMethod.POST)
-                .uri(uriBuilder -> uriBuilder
-                        .path(ISSUE_API)
-                        .queryParam("client_id", CLIENT_ID)
-                        .queryParam("client_secret", CLIENT_SECRET)
-                        .queryParam("grant_type", "authorization_code")
-                        .queryParam("code", naverTokenRequirement.getCode())
-                        .queryParam("state", naverTokenRequirement.getState())
-                        .build())
-                .retrieve()
-                .bodyToMono(IssueResponse.class)
-                .block();
-        return Objects.requireNonNull(response).toData();
-    }
-
-    /**
-     * 네이버 접근 토큰 재발급 API를 호출하여 유효한 소셜 토큰을 재발급합니다.
-     *
-     * @param refreshToken 소셜 리프레시 토큰
-     * @return 재발급한 소셜 토큰
-     */
-    @Override
-    public SocialToken reissueSocialToken(String refreshToken) {
-        WebClient webClient = WebClient.create();
-        ReissueResponse response = webClient.method(HttpMethod.POST)
-                .uri(uriBuilder -> uriBuilder
-                        .path(ISSUE_API)
-                        .queryParam("client_id", CLIENT_ID)
-                        .queryParam("client_secret", CLIENT_SECRET)
-                        .queryParam("grant_type", "refresh_token ")
-                        .queryParam("refresh_token", refreshToken)
-                        .build())
-                .retrieve()
-                .bodyToMono(ReissueResponse.class)
-                .block();
-        return Objects.requireNonNull(response).toData(refreshToken);
-    }
 
     /**
      * 네이버 로그인 연동 해제 API를 호출하여, 연결을 끊습니다.
@@ -139,25 +90,6 @@ public class NaverLoginStrategy implements LoginStrategy {
                 throw new RuntimeException("소셜 토큰이 만료되었습니다. 다시 로그인해주세요.");
             }
             throw new RuntimeException("클라이언트 오류입니다. 다시 시도해주세요.");
-        }
-    }
-
-    @Getter
-    private static class IssueResponse {
-        String access_token;
-        String refresh_token;
-
-        private SocialToken toData() {
-            return new SocialToken(null, access_token, refresh_token);
-        }
-    }
-
-    @Getter
-    private static class ReissueResponse {
-        String access_token;
-
-        private SocialToken toData(String refresh_token) {
-            return new SocialToken(null, access_token, refresh_token);
         }
     }
 }

@@ -1,18 +1,13 @@
 package orgo.backend.domain._1auth.application.loginstrategy;
 
-import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import orgo.backend.domain._1auth.domain.*;
-import orgo.backend.domain._1auth.dto.KakaoTokenRequirement;
-import orgo.backend.domain._1auth.dto.SocialTokenRequirement;
 
 import java.util.Objects;
 
@@ -47,44 +42,6 @@ public class KakaoLoginStrategy implements LoginStrategy{
     }
 
     @Override
-    public SocialToken createSocialToken(SocialTokenRequirement socialTokenRequirement) {
-        WebClient webClient = WebClient.create();
-        KakaoTokenRequirement kakaoTokenRequirement = (KakaoTokenRequirement) Objects.requireNonNull(socialTokenRequirement);
-        KakaoLoginStrategy.IssueResponse response = webClient.method(HttpMethod.POST)
-                .uri(uriBuilder -> uriBuilder
-                        .path(ISSUE_API)
-                        .queryParam("client_id", CLIENT_ID)
-                        .queryParam("client_secret", CLIENT_SECRET)
-                        .queryParam("grant_type", "authorization_code")
-                        .queryParam("code", kakaoTokenRequirement.getCode())
-                        .queryParam("redirect_uri", kakaoTokenRequirement.getRedirectUri())
-                        .build())
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .retrieve()
-                .bodyToMono(KakaoLoginStrategy.IssueResponse.class)
-                .block();
-        return Objects.requireNonNull(response).toData();
-    }
-
-    @Override
-    public SocialToken reissueSocialToken(String refreshToken) {
-        WebClient webClient = WebClient.create();
-        KakaoLoginStrategy.ReissueResponse response = webClient.method(HttpMethod.POST)
-                .uri(uriBuilder -> uriBuilder
-                        .path(ISSUE_API)
-                        .queryParam("client_id", CLIENT_ID)
-                        .queryParam("client_secret", CLIENT_SECRET)
-                        .queryParam("grant_type", "authorization_code")
-                        .queryParam("refresh_token", refreshToken)
-                        .build())
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .retrieve()
-                .bodyToMono(KakaoLoginStrategy.ReissueResponse.class)
-                .block();
-        return Objects.requireNonNull(response).toData();
-    }
-
-    @Override
     public void unlink(String socialToken) {
         WebClient webClient = WebClient.create();
         webClient.method(HttpMethod.POST)
@@ -116,26 +73,6 @@ public class KakaoLoginStrategy implements LoginStrategy{
         }
         public void validate(){
 
-        }
-    }
-
-    @Getter
-    private static class IssueResponse {
-        String access_token;
-        String refresh_token;
-
-        private SocialToken toData() {
-            return new SocialToken(null, access_token, refresh_token);
-        }
-    }
-
-    @Getter
-    private static class ReissueResponse {
-        String access_token;
-        String refresh_token;
-
-        private SocialToken toData() {
-            return new SocialToken(null, access_token, refresh_token);
         }
     }
 }

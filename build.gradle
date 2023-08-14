@@ -98,3 +98,8 @@ bootJar {
 		into 'src/main/resources/static/docs'    // /static/docs로 복사!
 	}
 }
+
+build {
+    dependsOn copyDocument
+}
+

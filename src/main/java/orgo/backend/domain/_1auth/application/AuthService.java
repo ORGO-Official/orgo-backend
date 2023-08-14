@@ -3,13 +3,10 @@ package orgo.backend.domain._1auth.application;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import orgo.backend.domain._1auth.application.loginstrategy.LoginStrategy;
 import orgo.backend.domain._1auth.application.loginstrategy.LoginStrategyFactory;
-import orgo.backend.domain._1auth.dao.SocialTokenRepository;
 import orgo.backend.domain._1auth.domain.*;
-import orgo.backend.domain._1auth.dto.SocialTokenRequirement;
 import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.User;
 import orgo.backend.global.config.security.JwtProvider;
@@ -20,23 +17,20 @@ import orgo.backend.global.config.security.JwtProvider;
 public class AuthService {
     private final LoginStrategyFactory loginStrategyFactory;
     private final UserRepository userRepository;
-    private final SocialTokenRepository socialTokenRepository;
     private final JwtProvider jwtProvider;
 
     /**
      * 소셜 로그인합니다.
      *
-     * @param socialTokenRequirement 소셜 토큰 발급을 위한 필드
-     * @param method                 로그인 방식
+     * @param socialToken 소셜 토큰
+     * @param method      로그인 방식
      * @return 액세스 토큰, 리프레시 토큰
      */
     @Transactional
-    public ServiceToken login(SocialTokenRequirement socialTokenRequirement, String method) {
+    public ServiceToken login(String socialToken, String method) {
         LoginStrategy strategy = loginStrategyFactory.findStrategy(LoginType.findBy(method));
-
-        SocialToken socialToken = strategy.createSocialToken(socialTokenRequirement);
-        PersonalData personalData = strategy.getPersonalData(socialToken.getAccessToken());
-        User user = createOrGetUser(personalData, socialToken);
+        PersonalData personalData = strategy.getPersonalData(socialToken);
+        User user = createOrGetUser(personalData);
         return jwtProvider.createServiceToken(user);
     }
 
@@ -46,14 +40,11 @@ public class AuthService {
      * 새로 발급한 소셜 토큰을 저장합니다.
      *
      * @param personalData 개인 정보 (소셜 프로필)
-     * @param socialToken  소셜 토큰
      * @return 회원
      */
-    private User createOrGetUser(PersonalData personalData, SocialToken socialToken) {
-        User user = userRepository.findBySocialIdAndLoginType(personalData.getSocialId(), personalData.getLoginType())
-                .orElse(User.signup(personalData));
-        user.setSocialToken(socialToken);
-        return userRepository.save(user);
+    private User createOrGetUser(PersonalData personalData) {
+        return userRepository.findBySocialIdAndLoginType(personalData.getSocialId(), personalData.getLoginType())
+                .orElse(userRepository.save(User.signup(personalData)));
     }
 
     public void logout(Long userId) {
@@ -63,21 +54,14 @@ public class AuthService {
     /**
      * 회원을 탈퇴시킵니다.
      *
+     * @param socialToken 소셜 토큰
      * @param userId 회원 아이디넘버
      */
     @Transactional
-    public void withdraw(Long userId) {
+    public void withdraw(String socialToken, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
         LoginStrategy strategy = loginStrategyFactory.findStrategy(user.getLoginType());
-
-        reissueSocialToken(user, strategy);
-        strategy.unlink(user.getSocialToken().getAccessToken());
+        strategy.unlink(socialToken);
         userRepository.delete(user);
-    }
-
-    private void reissueSocialToken(User user, LoginStrategy strategy) {
-        socialTokenRepository.delete(user.getSocialToken());
-        SocialToken socialToken = strategy.reissueSocialToken(user.getSocialToken().getRefreshToken());
-        user.setSocialToken(socialToken);
     }
 }
