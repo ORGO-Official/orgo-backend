@@ -31,8 +31,8 @@ public class AuthService {
      */
     public ServiceToken login(String socialToken, String method) {
         LoginType loginType = LoginType.findBy(method);
-        LoginStrategy strategy = loginStrategyFactory.findStrategy(loginType);
-        PersonalData personalData = strategy.getPersonalData(socialToken);
+        LoginStrategy loginStrategy = loginStrategyFactory.findStrategy(loginType);
+        PersonalData personalData = loginStrategy.getPersonalData(socialToken);
         User user = createOrGetUser(personalData);
         return jwtProvider.createServiceToken(user);
     }
