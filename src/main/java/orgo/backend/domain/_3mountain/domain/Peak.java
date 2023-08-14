@@ -6,27 +6,20 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-public class Mountain {
+public class Peak {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
-    String description;
-    String address;
-    String contact;
-    @Enumerated(value = EnumType.STRING)
-    Difficulty difficulty;
     @Embedded
     Location location;
-    @Embedded
-    FeatureTag featureTag;
-    @OneToMany(mappedBy = "mountain", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Peak> peaks;
+    boolean isTop;
+    @JoinColumn
+    @ManyToOne
+    Mountain mountain;
 }
