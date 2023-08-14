@@ -1,5 +1,6 @@
 package orgo.backend.domain._1auth.application;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,7 @@ import orgo.backend.global.config.security.JwtProvider;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthService {
-    @Autowired
-    LoginStrategyFactory loginStrategyFactory;
+    private final LoginStrategyFactory loginStrategyFactory;
     private final UserRepository userRepository;
     private final SocialTokenRepository socialTokenRepository;
     private final JwtProvider jwtProvider;
@@ -30,9 +30,9 @@ public class AuthService {
      * @param method                 로그인 방식
      * @return 액세스 토큰, 리프레시 토큰
      */
+    @Transactional
     public ServiceToken login(SocialTokenRequirement socialTokenRequirement, String method) {
-        LoginType loginType = LoginType.findBy(method);
-        LoginStrategy strategy = loginStrategyFactory.findStrategy(loginType);
+        LoginStrategy strategy = loginStrategyFactory.findStrategy(LoginType.findBy(method));
 
         SocialToken socialToken = strategy.createSocialToken(socialTokenRequirement);
         PersonalData personalData = strategy.getPersonalData(socialToken.getAccessToken());
@@ -65,10 +65,10 @@ public class AuthService {
      *
      * @param userId 회원 아이디넘버
      */
+    @Transactional
     public void withdraw(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
-        LoginType loginType = user.getLoginType();
-        LoginStrategy strategy = loginStrategyFactory.findStrategy(loginType);
+        LoginStrategy strategy = loginStrategyFactory.findStrategy(user.getLoginType());
 
         reissueSocialToken(user, strategy);
         strategy.unlink(user.getSocialToken().getAccessToken());

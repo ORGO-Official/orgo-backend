@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import orgo.backend.domain._1auth.dto.NaverTokenRequirement;
 import orgo.backend.domain._1auth.domain.PersonalData;
@@ -13,6 +14,7 @@ import orgo.backend.domain._1auth.domain.SocialToken;
 
 import java.util.Objects;
 
+@Component
 @Slf4j
 public class NaverLoginStrategy implements LoginStrategy {
     @Value("${auth.naver.client-id}")
