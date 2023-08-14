@@ -27,6 +27,6 @@ public class Mountain {
     Location location;
     @Embedded
     FeatureTag featureTag;
-    @OneToMany(mappedBy = "mountain", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mountain", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     List<Peak> peaks;
 }
