@@ -38,3 +38,12 @@ operation::auth-logout[]
 operation::auth-withdraw[]
 
 
+
+
+== 🦛 3-1. 등산
+
+=== 🟢 산 목록 조회
+----
+산 목록을 조회합니다.
+----
+operation::mountain-get-all[]
