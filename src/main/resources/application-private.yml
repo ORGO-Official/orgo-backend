@@ -10,3 +10,5 @@ auth:
   kakao:
     client-id: ooo
     client-secret: ooo
+  openapi:
+    serviceKey: 6VuSWL7hrdd5tfkipCx%2Btcr7kPla0Vk%2BZCx3li0tAyftAak75s1%2Bova46Svl3BwONWv1wbFLZ0Xkm8g1KljxmA%3D%3D
