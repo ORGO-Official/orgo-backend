@@ -26,10 +26,8 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String name;
+    String nickname;
     String email;
-    Gender gender;
-    LocalDate birthdate;
     String socialId;
     LoginType loginType;
     @ElementCollection(fetch = FetchType.LAZY)
@@ -44,10 +42,8 @@ public class User implements UserDetails {
 
     public static User signup(PersonalData personalData) {
         return User.builder()
-                .name(personalData.getName())
+                .nickname(personalData.getNickname())
                 .email(personalData.getEmail())
-                .gender(personalData.getGender())
-                .birthdate(personalData.getBirthdate())
                 .socialId(personalData.getSocialId())
                 .loginType(personalData.getLoginType())
                 .roles(Collections.singletonList(DEFAULT_ROLE))

@@ -3,21 +3,17 @@ package orgo.backend.domain._1auth.domain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import orgo.backend.domain._1auth.application.loginstrategy.KakaoLoginStrategy;
 import orgo.backend.domain._1auth.application.loginstrategy.NaverLoginStrategy;
-import orgo.backend.domain._2user.domain.Gender;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Builder
 @AllArgsConstructor
 @Getter
+@ToString
 public class PersonalData {
-    String name;
+    String nickname;
     String email;
-    Gender gender;
-    LocalDate birthdate;
     String socialId;
     LoginType loginType;
 
@@ -29,13 +25,9 @@ public class PersonalData {
      */
     public static PersonalData fromNaver(NaverLoginStrategy.NaverProfile naverProfile) {
         NaverLoginStrategy.NaverProfile.Response response = naverProfile.getResponse();
-        String birthMonthDay = response.getBirthday().replace("-", "");
-        LocalDate birthDate = LocalDate.parse(response.getBirthyear() + birthMonthDay, DateTimeFormatter.ofPattern("yyyyMMdd"));
         return PersonalData.builder()
-                .name(response.getName())
-                .gender(Gender.findBy(LoginType.NAVER, response.getGender()))
+                .nickname(response.getNickname())
                 .email(response.getEmail())
-                .birthdate(birthDate)
                 .socialId(response.getId())
                 .loginType(LoginType.NAVER)
                 .build();
@@ -43,12 +35,9 @@ public class PersonalData {
 
     public static PersonalData fromKakao(KakaoLoginStrategy.KakaoProfile kakaoProfile) {
         KakaoLoginStrategy.KakaoProfile.KakaoAccount kakaoAccount = kakaoProfile.getKakao_account();
-        LocalDate birthDate = LocalDate.parse(kakaoAccount.getBirthyear() + kakaoAccount.getBirthday(), DateTimeFormatter.ofPattern("yyyyMMdd"));
         return PersonalData.builder()
-                .name(kakaoAccount.getName())
-                .gender(Gender.findBy(LoginType.KAKAO, kakaoAccount.getGender()))
+                .nickname(kakaoAccount.getProfile().getNickname())
                 .email(kakaoAccount.getEmail())
-                .birthdate(birthDate)
                 .socialId(String.valueOf(kakaoProfile.getId()))
                 .loginType(LoginType.KAKAO)
                 .build();

@@ -2,6 +2,7 @@ package orgo.backend.domain._1auth.application.loginstrategy;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -15,7 +16,6 @@ import java.util.Objects;
 @Slf4j
 public class KakaoLoginStrategy implements LoginStrategy{
     private final static String PROFILE_API = "https://kapi.kakao.com/v2/user/me";
-    private final static String ISSUE_API = "https://kauth.kakao.com/oauth/token";
     private final static String UNLINK_API = "https://kapi.kakao.com/v1/user/unlink";
 
     /**
@@ -50,19 +50,18 @@ public class KakaoLoginStrategy implements LoginStrategy{
 
     @Getter
     @NoArgsConstructor
+    @ToString
     public static class KakaoProfile {
         private long id;
         private KakaoAccount kakao_account;
 
         @Getter
+        @ToString
         public static class KakaoAccount {
-            private String name;
             private String email;
-            private String birthyear;
-            private String birthday;
-            private String gender;
             private Profile profile;
             @Getter
+            @ToString
             public static class Profile {
                 private String nickname;
             }

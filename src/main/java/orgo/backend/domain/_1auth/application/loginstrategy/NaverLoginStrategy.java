@@ -2,6 +2,7 @@ package orgo.backend.domain._1auth.application.loginstrategy;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -19,7 +20,6 @@ public class NaverLoginStrategy implements LoginStrategy {
     @Value("${auth.naver.client-secret}")
     private String CLIENT_SECRET;
     private final static String PROFILE_API = "https://openapi.naver.com/v1/nid/me";
-    private final static String ISSUE_API = "https://nid.naver.com/oauth2.0/token";
     private final static String UNLINK_API = "https://nid.naver.com/oauth2.0/token";
 
 
@@ -61,29 +61,28 @@ public class NaverLoginStrategy implements LoginStrategy {
                         .queryParam("grant_type", "delete")
                         .build())
                 .retrieve()
-                .bodyToMono(NaverProfile.class)
+                .bodyToMono(Void.class)
                 .block();
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class NaverProfile {
         private String resultcode;
         private Response response;
 
         @Getter
+        @NoArgsConstructor
         @AllArgsConstructor
         public static class Response {
-            private String name;
-            private String gender;
+            private String nickname;
             private String email;
-            private String birthyear;
-            private String birthday;
             private String id;
         }
 
         public void validate() {
-            if (this.resultcode.equals("200")) {
+            if (this.resultcode.equals("00")) {
                 return;
             }
             if (this.resultcode.equals("401")) {
