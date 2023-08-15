@@ -24,6 +24,8 @@ public class JwtProvider {
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
     public static final String AUTHORITIES = "authorities";
+    public static final Long ACCESS_SEC = 31536000L; // 60 * 60 * 24 * 365 (1년)
+    public static final Long REFRESH_SEC = 31536000L; // 60 * 60 * 24 * 365 (1년)
 
     private Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
@@ -31,8 +33,8 @@ public class JwtProvider {
     }
 
     public ServiceToken createServiceToken(User user) {
-        String accessToken = generateJwt(user, 10000000L);
-        String refreshToken = generateJwt(user, 10000000L);
+        String accessToken = generateJwt(user, ACCESS_SEC);
+        String refreshToken = generateJwt(user, REFRESH_SEC);
         return new ServiceToken(accessToken, refreshToken);
     }
 
