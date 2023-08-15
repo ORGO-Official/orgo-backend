@@ -5,10 +5,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import orgo.backend.domain._2user.domain.User;
+import orgo.backend.domain._3mountain.domain.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class MockEntityFactory {
 
@@ -16,6 +19,28 @@ public class MockEntityFactory {
         return User.builder()
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
+    }
+
+    public static Peak mockPeak() {
+        return Peak.builder()
+                .name("에베레스트산 정상")
+                .location(new Location(36.103958, 128.423648, 352.168))
+                .isTop(true)
+                .build();
+    }
+
+    public static Mountain mockMountain(Peak... peaks) {
+        return Mountain.builder()
+                .name("에베레스트산")
+                .description("세계에서 가장 높은 산")
+                .address("경상북도 구미시 여헌로 15-11")
+                .contact("010-1234-5678")
+                .difficulty(Difficulty.HARD)
+                .location(new Location(36.103958, 128.423648, 352.168))
+                .featureTag(new FeatureTag(true, 1, true, true, true))
+                .peaks(Arrays.asList(peaks))
+                .build();
+
     }
 
 

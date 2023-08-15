@@ -17,5 +17,10 @@ spring:
         format_sql: true
         hbm2ddl:
           auto: create
-    defer-datasource-initialization: true #더미데이터 용
+    defer-datasource-initialization: true #더미데이터
     show-sql: false
+  sql: #더미데이터
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+      encoding: UTF-8
