@@ -5,9 +5,13 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import orgo.backend.domain._1auth.domain.LoginType;
+import orgo.backend.domain._1auth.domain.PersonalData;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +26,12 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    String name;
+    String email;
+    Gender gender;
+    LocalDate birthdate;
+    String socialId;
+    LoginType loginType;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
@@ -32,6 +42,18 @@ public class User implements UserDetails {
         return this.roles
                 .stream().map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+    }
+
+    public static User signup(PersonalData personalData){
+        return User.builder()
+                .name(personalData.getName())
+                .email(personalData.getEmail())
+                .gender(personalData.getGender())
+                .birthdate(personalData.getBirthdate())
+                .socialId(personalData.getSocialId())
+                .loginType(personalData.getLoginType())
+                .roles(Collections.singletonList(DEFAULT_ROLE))
+                .build();
     }
 
     @Override

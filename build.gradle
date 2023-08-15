@@ -29,6 +29,13 @@ ext {
 }
 
 dependencies {
+	//mockserver
+	implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+	testImplementation 'com.squareup.okhttp3:mockwebserver:4.10.0'
+
+	//web client
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 	//restdocs-dsl
 	implementation 'io.github.lhs8701:restdocs-dslized-library:1.2.1'
 
