@@ -5,8 +5,8 @@ spring:
 
 auth:
   naver:
-    client-id: ooo
-    client-secret: ooo
+    client-id: CmSvvZFnw1WCzjqSq5dQ
+    client-secret: zXn_Mxth_5
   kakao:
     client-id: ooo
     client-secret: ooo
