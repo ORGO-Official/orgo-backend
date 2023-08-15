@@ -1,5 +1,6 @@
 package orgo.backend.integrationtest._3mountain;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,18 @@ import orgo.backend.domain._3mountain.domain.Peak;
 import orgo.backend.setting.IntegrationTest;
 import orgo.backend.setting.MockEntityFactory;
 
+import java.nio.charset.StandardCharsets;
+
 import static hansol.restdocsdsl.docs.RestDocsAdapter.docs;
 import static hansol.restdocsdsl.docs.RestDocsResponse.responseFields;
 import static hansol.restdocsdsl.element.FieldElement.field;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Slf4j
 public class MountainControllerTest extends IntegrationTest {
 
     private final static String GET_ALL_API = "/api/mountains";
@@ -26,18 +33,26 @@ public class MountainControllerTest extends IntegrationTest {
 
 
     @Test
-    @DisplayName("[산 목록 조회] - 성공")
+    @DisplayName("[산 목록 조회] - 성공 (더미데이터 기반 테스트)")
     void test() throws Exception {
         // given
-        Peak peak = MockEntityFactory.mockPeak();
-        Mountain mountain = MockEntityFactory.mockMountain(peak);
-        mountainRepository.save(mountain);
 
         // when
         ResultActions actions = mvc.perform(get(GET_ALL_API));
 
         // then
-        actions.andExpect(status().isOk())
+        String responseBody = actions.andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(10)))
+                .andExpect(jsonPath("$[0].name", equalTo("아차산")))
+                .andExpect(jsonPath("$[1].name", equalTo("인왕산")))
+                .andExpect(jsonPath("$[2].name", equalTo("청계산")))
+                .andExpect(jsonPath("$[3].name", equalTo("북한산")))
+                .andExpect(jsonPath("$[4].name", equalTo("관악산")))
+                .andExpect(jsonPath("$[5].name", equalTo("용마산")))
+                .andExpect(jsonPath("$[6].name", equalTo("수락산")))
+                .andExpect(jsonPath("$[7].name", equalTo("안산")))
+                .andExpect(jsonPath("$[8].name", equalTo("도봉산")))
+                .andExpect(jsonPath("$[9].name", equalTo("불암산")))
                 .andDo(docs("mountain-get-all",
                         responseFields(
                                 field("[].id").type(JsonFieldType.NUMBER).description("아이디넘버"),
@@ -57,6 +72,8 @@ public class MountainControllerTest extends IntegrationTest {
                                 field("[].featureTag.restRoom").type(JsonFieldType.BOOLEAN).description("화장실"),
                                 field("[].featureTag.cableCar").type(JsonFieldType.BOOLEAN).description("케이블카")
                         )
-                ));
+                ))
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        log.info(responseBody);
     }
 }
