@@ -10,6 +10,8 @@ endif::[]
 :doctype: book
 :icons: font
 :source-highlighter: highlight.js
+:operation-curl-request-title: - - - - -
+:operation-httpie-request-title: - - - - -
 
 [.gray]#{last-update-label} in {docdatetime}#
 
@@ -23,6 +25,16 @@ endif::[]
 ----
 operation::auth-login[]
 
+=== 🟢로그아웃
+----
+로그아웃합니다.
+----
+operation::auth-logout[]
 
+=== 🟢회원탈퇴
+----
+계정을 회원탈퇴합니다.
+----
+operation::auth-withdraw[]
 
 

@@ -32,11 +32,9 @@ public class User implements UserDetails {
     LocalDate birthdate;
     String socialId;
     LoginType loginType;
-
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles
@@ -44,7 +42,7 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public static User signup(PersonalData personalData){
+    public static User signup(PersonalData personalData) {
         return User.builder()
                 .name(personalData.getName())
                 .email(personalData.getEmail())

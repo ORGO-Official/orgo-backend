@@ -1,21 +1,26 @@
 package orgo.backend.domain._1auth.application.loginstrategy;
 
-import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import orgo.backend.domain._1auth.domain.PersonalData;
+import orgo.backend.domain._1auth.domain.*;
 
 import java.util.Objects;
 
-@Service
+@Component
 @Slf4j
-@Transactional
 public class KakaoLoginStrategy implements LoginStrategy{
-
+    @Value("${auth.kakao.client-id}")
+    private String CLIENT_ID;
+    @Value("${auth.kakao.client-secret}")
+    private String CLIENT_SECRET;
+    private final static String PROFILE_API = "https://kapi.kakao.com/v2/user/me";
+    private final static String ISSUE_API = "https://kauth.kakao.com/oauth/token";
+    private final static String UNLINK_API = "https://kapi.kakao.com/v1/user/unlink";
 
     /**
      * 카카오 프로필 조회 API를 호출하여, 사용자의 개인 정보를 추출합니다.
@@ -25,8 +30,6 @@ public class KakaoLoginStrategy implements LoginStrategy{
      */
     @Override
     public PersonalData getPersonalData(String socialToken) {
-        final String PROFILE_API = "https://kapi.kakao.com/v2/user/me";
-
         WebClient webClient = WebClient.create();
         KakaoProfile kakaoProfile = webClient.method(HttpMethod.POST)
                 .uri(PROFILE_API)
@@ -36,6 +39,17 @@ public class KakaoLoginStrategy implements LoginStrategy{
                 .block();
         Objects.requireNonNull(kakaoProfile).validate();
         return PersonalData.fromKakao(kakaoProfile);
+    }
+
+    @Override
+    public void unlink(String socialToken) {
+        WebClient webClient = WebClient.create();
+        webClient.method(HttpMethod.POST)
+                .uri(UNLINK_API)
+                .header("Authorization", "Bearer " + socialToken)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
     }
 
     @Getter
