@@ -33,7 +33,9 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
     @Autowired
     PlaceLinkFinder placeLinkFinder;
 
-    private final static String LOCATION_SEARCH_API = "https://apis.data.go.kr/B551011/KorService1/locationBasedList1";
+    private final static String HTTPS = "https";
+    private final static String HOST = "apis.data.go.kr";
+    private final static String LOCATION_SEARCH_API = "/B551011/KorService1/locationBasedList1";
     private final static String RESTAURANT_CONTENT_TYPE = "39";
 
     /**
@@ -49,9 +51,9 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
         WebClient webClient = WebClient.create();
         ResponseData[] responseData = webClient.method(HttpMethod.GET)
                 .uri(uriBuilder -> uriBuilder
-                        .scheme("https")
-                        .host("apis.data.go.kr")
-                        .path("/B551011/KorService1/locationBasedList1")
+                        .scheme(HTTPS)
+                        .host(HOST)
+                        .path(LOCATION_SEARCH_API)
                         .queryParam("numOfRows", 50)
                         .queryParam("pageNo", 1)
                         .queryParam("MobileOS", "IOS")
