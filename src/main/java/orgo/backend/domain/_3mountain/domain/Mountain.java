@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import orgo.backend.global.config.jpa.BaseTimeEntity;
 
 import java.util.List;
 
@@ -13,11 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Mountain {
+public class Mountain extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
+    @Column(length = 1000)
     String description;
     String address;
     String contact;

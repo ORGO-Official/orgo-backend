@@ -13,7 +13,7 @@ public class MountainService {
     private final MountainRepository mountainRepository;
 
     /**
-     * 모든 산을 정보를 반환합니다.
+     * 모든 산 목록을 반환합니다.
      *
      * @return 산 목록
      */

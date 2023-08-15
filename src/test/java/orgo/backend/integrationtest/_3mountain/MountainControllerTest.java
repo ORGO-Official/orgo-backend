@@ -45,7 +45,7 @@ public class MountainControllerTest extends IntegrationTest {
                                 field("[].description").description("소개"),
                                 field("[].address").description("주소"),
                                 field("[].contact").description("연락처"),
-                                field("[].difficulty").description("난이도"),
+                                field("[].difficulty").description("난이도(EASY | NORMAL | HARD)"),
                                 field("[].location").type(JsonFieldType.OBJECT).description("위치 정보"),
                                 field("[].location.latitude").type(JsonFieldType.NUMBER).description("위도"),
                                 field("[].location.longitude").type(JsonFieldType.NUMBER).description("경도"),
