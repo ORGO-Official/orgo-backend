@@ -15,8 +15,10 @@ import orgo.backend.setting.MockEntityFactory;
 import java.nio.charset.StandardCharsets;
 
 import static hansol.restdocsdsl.docs.RestDocsAdapter.docs;
+import static hansol.restdocsdsl.docs.RestDocsPathParam.pathParams;
 import static hansol.restdocsdsl.docs.RestDocsResponse.responseFields;
 import static hansol.restdocsdsl.element.FieldElement.field;
+import static hansol.restdocsdsl.element.ParamElement.param;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -27,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class MountainControllerTest extends IntegrationTest {
 
     private final static String GET_ALL_API = "/api/mountains";
+    private final static String GET_RESTAURANT_API = "/mountains/{mountainId}/restaurant";
 
     @Autowired
     MountainRepository mountainRepository;
@@ -75,5 +78,33 @@ public class MountainControllerTest extends IntegrationTest {
                 ))
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         log.info(responseBody);
+    }
+
+    @Test
+    @DisplayName("[근처 식당 조회(아차산)] - 성공")
+    void test1() throws Exception {
+        //given
+        Long mountainId = 1L;
+
+        //when
+        ResultActions actions = mvc.perform(get(GET_RESTAURANT_API, mountainId));
+
+        //then
+        String response = actions.andExpect(status().isOk())
+                .andDo(docs("restaurant-get",
+                        pathParams(
+                                param("mountainId").description("산 아이디넘버")
+                        ),
+                        responseFields(
+                                field("[].name").description("이름"),
+                                field("[].address").description("주소"),
+                                field("[].mapX").description("X좌표(경도)"),
+                                field("[].mapY").description("Y좌표(위도)"),
+                                field("[].contact").description("연락처"),
+                                field("[].externalLink").description("외부 링크")
+                        )
+                ))
+                .andReturn().getResponse().getContentAsString();
+        log.info(response);
     }
 }
