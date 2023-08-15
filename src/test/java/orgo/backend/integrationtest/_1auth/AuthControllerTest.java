@@ -56,7 +56,7 @@ public class AuthControllerTest extends IntegrationTest {
     void test() throws Exception {
         // given
         String socialToken = "social-access";
-        PersonalData personalData = new PersonalData("김민수", "test@naver.com", Gender.MALE, LocalDate.of(1999, 3, 11), "11111", LoginType.NAVER);
+        PersonalData personalData = new PersonalData("김민수", "test@naver.com", "11111", LoginType.NAVER);
         given(naverLoginStrategy.getPersonalData(socialToken)).willReturn(personalData);
 
         // when
@@ -83,7 +83,7 @@ public class AuthControllerTest extends IntegrationTest {
     void test1() throws Exception {
         // given
         String socialToken = "social-access";
-        PersonalData personalData = new PersonalData("김민수", "test@kakao.com", Gender.MALE, LocalDate.of(1999, 3, 11), "11111", LoginType.KAKAO);
+        PersonalData personalData = new PersonalData("김민수", "test@kakao.com", "11111", LoginType.KAKAO);
         given(kakaoLoginStrategy.getPersonalData(socialToken)).willReturn(personalData);
 
         // when
