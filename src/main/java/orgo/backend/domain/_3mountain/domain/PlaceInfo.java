@@ -17,9 +17,8 @@ public class PlaceInfo {
     private final String mapY;
     private final String contact;
     private final String imageUrl;
-    private final String externalLink;
 
-    public static PlaceInfo fromOpenPortalPlaceSearcher(OpenPortalPlaceSearcher.ResponseData responseData, String placeLink) {
+    public static PlaceInfo fromOpenPortalPlaceSearcher(OpenPortalPlaceSearcher.ResponseData responseData) {
         return PlaceInfo.builder()
                 .name(responseData.getTitle())
                 .address(responseData.getAddr1())
@@ -27,7 +26,6 @@ public class PlaceInfo {
                 .mapY(responseData.getMapy())
                 .contact(responseData.getTel())
                 .imageUrl(responseData.getFirstimage())
-                .externalLink(placeLink)
                 .build();
     }
 

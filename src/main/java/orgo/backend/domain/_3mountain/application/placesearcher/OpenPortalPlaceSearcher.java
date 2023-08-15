@@ -1,21 +1,15 @@
 package orgo.backend.domain._3mountain.application.placesearcher;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriUtils;
 import orgo.backend.domain._3mountain.application.placelinkfinder.PlaceLinkFinder;
 import orgo.backend.domain._3mountain.domain.PlaceInfo;
-
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -30,8 +24,6 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
 
     @Value("${auth.openapi.serviceKey}")
     String SERVICE_KEY;
-    @Autowired
-    PlaceLinkFinder placeLinkFinder;
 
     private final static String HTTPS = "https";
     private final static String HOST = "apis.data.go.kr";
@@ -70,7 +62,7 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
                 .block();
 
         return Arrays.stream(Objects.requireNonNull(responseData))
-                .map(place -> PlaceInfo.fromOpenPortalPlaceSearcher(place, placeLinkFinder.find(place.getAddr1())))
+                .map(PlaceInfo::fromOpenPortalPlaceSearcher)
                 .toList();
     }
 

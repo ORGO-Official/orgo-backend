@@ -12,6 +12,7 @@ import orgo.backend.domain._3mountain.application.MountainService;
 import orgo.backend.domain._3mountain.application.RestaurantService;
 import orgo.backend.domain._3mountain.domain.PlaceInfo;
 import orgo.backend.domain._3mountain.dto.MountainDto;
+import orgo.backend.domain._3mountain.dto.RestaurantDto;
 
 import java.util.List;
 
@@ -42,8 +43,8 @@ public class MountainController {
      */
     @PermitAll
     @GetMapping("/mountains/{mountainId}/restaurant")
-    public ResponseEntity<List<PlaceInfo>> getNearbyRestaurant(@PathVariable Long mountainId) {
-        List<PlaceInfo> responseDto = restaurantService.findNearbyRestaurant(mountainId);
+    public ResponseEntity<List<RestaurantDto.Response>> getNearbyRestaurant(@PathVariable Long mountainId) {
+        List<RestaurantDto.Response> responseDto = restaurantService.findNearbyRestaurant(mountainId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

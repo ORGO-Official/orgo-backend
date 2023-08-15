@@ -1,12 +1,15 @@
 package orgo.backend.domain._3mountain.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import orgo.backend.domain._3mountain.application.placelinkfinder.PlaceLinkFinder;
 import orgo.backend.domain._3mountain.application.placesearcher.PlaceSearcher;
 import orgo.backend.domain._3mountain.dao.MountainRepository;
 import orgo.backend.domain._3mountain.domain.Location;
 import orgo.backend.domain._3mountain.domain.Mountain;
 import orgo.backend.domain._3mountain.domain.PlaceInfo;
+import orgo.backend.domain._3mountain.dto.RestaurantDto;
 
 import java.util.List;
 
@@ -15,6 +18,8 @@ import java.util.List;
 public class RestaurantService {
     private final MountainRepository mountainRepository;
     private final PlaceSearcher placeSearcher;
+    private final PlaceLinkFinder placeLinkFinder;
+
     private final static int RADIUS_M = 10000;
 
     /**
@@ -24,9 +29,11 @@ public class RestaurantService {
      * @param mountainId 산 아이디넘버
      * @return 근처 식당 목록
      */
-    public List<PlaceInfo> findNearbyRestaurant(Long mountainId) {
+    public List<RestaurantDto.Response> findNearbyRestaurant(Long mountainId) {
         Mountain mountain = mountainRepository.findById(mountainId).orElseThrow(RuntimeException::new);
         Location location = mountain.getLocation();
-        return placeSearcher.searchByLocation(location.getLatitude(), location.getLongitude(), RADIUS_M);
+        return placeSearcher.searchByLocation(location.getLatitude(), location.getLongitude(), RADIUS_M).stream()
+                .map(info -> new RestaurantDto.Response(info, placeLinkFinder.find(info.getAddress())))
+                .toList();
     }
 }
