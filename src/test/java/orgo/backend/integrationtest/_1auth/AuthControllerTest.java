@@ -114,9 +114,10 @@ public class AuthControllerTest extends IntegrationTest {
         );
 
         // then
-        actions.andExpect(status().isOk())
+        actions.andExpect(status().isNoContent())
                 .andDo(docs("auth-withdraw",
                         requestHeaders(
+                                header(Header.SOCIAL).description("소셜 토큰(카카오/네이버/애플)"),
                                 header(Header.AUTH).description("액세스 토큰")
                         )));
 
@@ -141,30 +142,54 @@ public class AuthControllerTest extends IntegrationTest {
         );
 
         // then
-        actions.andExpect(status().isOk());
+        actions.andExpect(status().isNoContent());
         assertThat(userRepository.findById(saved.getId())).isEmpty();
     }
 
     @Test
-    @DisplayName("[로그아웃] - 성공")
+    @DisplayName("[로그아웃(네이버)] - 성공")
     void test4() throws Exception {
         // given
+        String socialToken = "social-access";
         User user = User.builder()
                 .loginType(LoginType.NAVER)
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
-        User saved = userRepository.save(user);
+        userRepository.save(user);
 
         // when
         ResultActions actions = mvc.perform(post(LOGOUT_API)
+                .header(Header.SOCIAL, socialToken)
                 .header(Header.AUTH, testJwtProvider.generate(user))
         );
 
         // then
-        actions.andExpect(status().isOk())
+        actions.andExpect(status().isNoContent())
                 .andDo(docs("auth-logout",
                         requestHeaders(
+                                header(Header.SOCIAL).description("소셜 토큰(카카오/네이버/애플)"),
                                 header(Header.AUTH).description("액세스 토큰")
                         )));
+    }
+
+    @Test
+    @DisplayName("[로그아웃(카카오)] - 성공")
+    void test5() throws Exception {
+        // given
+        String socialToken = "social-access";
+        User user = User.builder()
+                .loginType(LoginType.KAKAO)
+                .roles(Collections.singletonList("ROLE_USER"))
+                .build();
+        userRepository.save(user);
+
+        // when
+        ResultActions actions = mvc.perform(post(LOGOUT_API)
+                .header(Header.SOCIAL, socialToken)
+                .header(Header.AUTH, testJwtProvider.generate(user))
+        );
+
+        // then
+        actions.andExpect(status().isNoContent());
     }
 }

@@ -26,15 +26,15 @@ public class AuthController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/auth/logout")
-    public ResponseEntity<Void> logout(@RequestHeader(name = Header.AUTH) String accessToken, @AuthenticationPrincipal Long userId) {
-        authService.logout(userId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Void> logout(@RequestHeader(name = Header.SOCIAL) String socialToken, @RequestHeader(name = Header.AUTH) String accessToken, @AuthenticationPrincipal Long userId) {
+        authService.logout(socialToken, userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/auth/withdraw")
     public ResponseEntity<Void> withdraw(@RequestHeader(name = Header.SOCIAL) String socialToken, @RequestHeader(name = Header.AUTH) String accessToken, @AuthenticationPrincipal Long userId) {
         authService.withdraw(socialToken, userId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
