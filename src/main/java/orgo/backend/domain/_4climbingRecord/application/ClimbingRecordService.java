@@ -4,12 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import orgo.backend.domain._2user.dao.UserRepository;
+import orgo.backend.domain._2user.domain.User;
 import orgo.backend.domain._3mountain.application.MountainService;
 import orgo.backend.domain._3mountain.dao.MountainRepository;
 import orgo.backend.domain._3mountain.domain.Mountain;
 import orgo.backend.domain._4climbingRecord.dao.ClimbingRecordRepository;
 import orgo.backend.domain._4climbingRecord.domain.ClimbingRecord;
+import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +38,26 @@ public class ClimbingRecordService {
         }else {
             throw new RuntimeException();
         }
+    }
+
+    public List<ClimbingRecordDto> viewMyClimbingRecords(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        List<ClimbingRecord> climbingRecords = user.getClimbingRecords();
+
+        List<ClimbingRecordDto> climbingRecordDtos = new ArrayList<>();
+
+        for(ClimbingRecord climbingRecord : climbingRecords) {
+            ClimbingRecordDto climbingRecordDto = ClimbingRecordDto.builder()
+                    .id(climbingRecord.getId())
+                    .mountainId(climbingRecord.getMountain().getId())
+                    .mountainName(climbingRecord.getMountain().getName())
+                    .date(climbingRecord.getDate())
+                    .build();
+
+            climbingRecordDtos.add(climbingRecordDto);
+        }
+
+        return climbingRecordDtos;
     }
 
     public boolean isTop(UserPosDto userPosDto) {
