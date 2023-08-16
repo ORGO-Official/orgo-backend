@@ -20,7 +20,7 @@ public class RestaurantService {
     private final PlaceSearcher placeSearcher;
     private final PlaceLinkFinder placeLinkFinder;
 
-    private final static int RADIUS_M = 10000;
+    private final static int RADIUS_M = 2000;
 
     /**
      * 해당 산 근처의 식당 목록을 조회합니다.

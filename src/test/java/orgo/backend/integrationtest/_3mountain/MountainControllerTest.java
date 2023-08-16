@@ -100,12 +100,13 @@ public class MountainControllerTest extends IntegrationTest {
                                 field("[].address").description("주소"),
                                 field("[].mapX").description("X좌표(longitude(경도))"),
                                 field("[].mapY").description("Y좌표(latitude(위도))"),
-                                field("[].contact").description("연락처"),
-                                field("[].imageUrl").description("사진 URL"),
-                                field("[].externalLink").description("외부 링크")
+                                field("[].contact").description("연락처").optional(),
+                                field("[].imageUrl").description("사진 URL").optional(),
+                                field("[].externalLink").description("외부 링크").optional()
                         )
                 ))
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
         log.info(response);
     }
 }

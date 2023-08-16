@@ -1,18 +1,23 @@
 package orgo.backend.domain._3mountain.application.placesearcher;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.codec.json.Jackson2CodecSupport;
+import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import orgo.backend.domain._3mountain.domain.PlaceInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -44,11 +49,17 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
      */
     @Override
     public List<PlaceInfo> searchByLocation(double latitude, double longitude, double radius) {
+        ObjectMapper objectMapper = new ObjectMapper()
+                .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+
         DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory("localhost:8080");
         factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
         WebClient wc = WebClient.builder().
                 uriBuilderFactory(factory)
                 .baseUrl("localhost:8080")
+                .exchangeStrategies(ExchangeStrategies.builder().codecs(configurer -> {
+                    configurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper, MediaType.APPLICATION_JSON));
+                }).build())
                 .build();
 
         ResponseFormat responseFormat = wc.method(HttpMethod.GET)
@@ -71,34 +82,43 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
                 .retrieve()
                 .bodyToMono(ResponseFormat.class)
                 .block();
-
-        return Objects.requireNonNull(responseFormat).getResponse().getBody().getItems().getItem().stream()
+        log.info("{}", responseFormat);
+        ResponseFormat.Response.Body.Items items = Objects.requireNonNull(responseFormat).getResponse().getBody().getItems();
+        if (items == null) {
+            return List.of();
+        }
+        return items.getItem().stream()
                 .map(PlaceInfo::fromOpenPortalPlaceSearcher)
                 .toList();
     }
 
     @ToString
     @Getter
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ResponseFormat {
         private Response response;
 
         @ToString
         @Getter
+        @JsonIgnoreProperties(ignoreUnknown = true)
         public static class Response {
             private Body body;
 
             @ToString
             @Getter
+            @JsonIgnoreProperties(ignoreUnknown = true)
             public static class Body {
                 private Items items;
 
                 @ToString
                 @Getter
+                @JsonIgnoreProperties(ignoreUnknown = true)
                 public static class Items {
                     private List<Item> item;
 
                     @ToString
                     @Getter
+                    @JsonIgnoreProperties(ignoreUnknown = true)
                     public static class Item {
                         private String title;
                         private String firstimage;
