@@ -98,8 +98,9 @@ public class MountainControllerTest extends IntegrationTest {
                         responseFields(
                                 field("[].name").description("이름"),
                                 field("[].address").description("주소"),
-                                field("[].mapX").description("X좌표(longitude(경도))"),
-                                field("[].mapY").description("Y좌표(latitude(위도))"),
+                                field("[].distance").type(JsonFieldType.NUMBER).description("산으로부터 떨어진 거리(미터)"),
+                                field("[].mapX").type(JsonFieldType.NUMBER).description("X좌표(longitude(경도))"),
+                                field("[].mapY").type(JsonFieldType.NUMBER).description("Y좌표(latitude(위도))"),
                                 field("[].contact").description("연락처").optional(),
                                 field("[].imageUrl").description("사진 URL").optional(),
                                 field("[].externalLink").description("외부 링크").optional()
@@ -127,8 +128,9 @@ public class MountainControllerTest extends IntegrationTest {
                         responseFields(
                                 field("[].name").description("이름"),
                                 field("[].address").description("주소"),
-                                field("[].mapX").description("X좌표(longitude(경도))"),
-                                field("[].mapY").description("Y좌표(latitude(위도))"),
+                                field("[].distance").type(JsonFieldType.NUMBER).description("산으로부터 떨어진 거리(미터)"),
+                                field("[].mapX").type(JsonFieldType.NUMBER).description("X좌표(longitude(경도))"),
+                                field("[].mapY").type(JsonFieldType.NUMBER).description("Y좌표(latitude(위도))"),
                                 field("[].contact").description("연락처").optional(),
                                 field("[].imageUrl").description("사진 URL").optional(),
                                 field("[].externalLink").description("외부 링크").optional()
@@ -156,8 +158,9 @@ public class MountainControllerTest extends IntegrationTest {
                         responseFields(
                                 field("[].name").description("이름"),
                                 field("[].address").description("주소"),
-                                field("[].mapX").description("X좌표(longitude(경도))"),
-                                field("[].mapY").description("Y좌표(latitude(위도))"),
+                                field("[].distance").type(JsonFieldType.NUMBER).description("산으로부터 떨어진 거리(미터)"),
+                                field("[].mapX").type(JsonFieldType.NUMBER).description("X좌표(longitude(경도))"),
+                                field("[].mapY").type(JsonFieldType.NUMBER).description("Y좌표(latitude(위도))"),
                                 field("[].contact").description("연락처").optional(),
                                 field("[].imageUrl").description("사진 URL").optional(),
                                 field("[].externalLink").description("외부 링크").optional()
@@ -185,8 +188,9 @@ public class MountainControllerTest extends IntegrationTest {
                         responseFields(
                                 field("[].name").description("이름"),
                                 field("[].address").description("주소"),
-                                field("[].mapX").description("X좌표(longitude(경도))"),
-                                field("[].mapY").description("Y좌표(latitude(위도))"),
+                                field("[].distance").type(JsonFieldType.NUMBER).description("산으로부터 떨어진 거리(미터)"),
+                                field("[].mapX").type(JsonFieldType.NUMBER).description("X좌표(longitude(경도))"),
+                                field("[].mapY").type(JsonFieldType.NUMBER).description("Y좌표(latitude(위도))"),
                                 field("[].contact").description("연락처").optional(),
                                 field("[].imageUrl").description("사진 URL").optional(),
                                 field("[].externalLink").description("외부 링크").optional()
@@ -214,8 +218,9 @@ public class MountainControllerTest extends IntegrationTest {
                         responseFields(
                                 field("[].name").description("이름"),
                                 field("[].address").description("주소"),
-                                field("[].mapX").description("X좌표(longitude(경도))"),
-                                field("[].mapY").description("Y좌표(latitude(위도))"),
+                                field("[].distance").type(JsonFieldType.NUMBER).description("산으로부터 떨어진 거리(미터)"),
+                                field("[].mapX").type(JsonFieldType.NUMBER).description("X좌표(longitude(경도))"),
+                                field("[].mapY").type(JsonFieldType.NUMBER).description("Y좌표(latitude(위도))"),
                                 field("[].contact").description("연락처").optional(),
                                 field("[].imageUrl").description("사진 URL").optional(),
                                 field("[].externalLink").description("외부 링크").optional()
@@ -243,8 +248,9 @@ public class MountainControllerTest extends IntegrationTest {
                         responseFields(
                                 field("[].name").description("이름"),
                                 field("[].address").description("주소"),
-                                field("[].mapX").description("X좌표(longitude(경도))"),
-                                field("[].mapY").description("Y좌표(latitude(위도))"),
+                                field("[].distance").type(JsonFieldType.NUMBER).description("산으로부터 떨어진 거리(미터)"),
+                                field("[].mapX").type(JsonFieldType.NUMBER).description("X좌표(longitude(경도))"),
+                                field("[].mapY").type(JsonFieldType.NUMBER).description("Y좌표(latitude(위도))"),
                                 field("[].contact").description("연락처").optional(),
                                 field("[].imageUrl").description("사진 URL").optional(),
                                 field("[].externalLink").description("외부 링크").optional()
@@ -272,8 +278,9 @@ public class MountainControllerTest extends IntegrationTest {
                         responseFields(
                                 field("[].name").description("이름"),
                                 field("[].address").description("주소"),
-                                field("[].mapX").description("X좌표(longitude(경도))"),
-                                field("[].mapY").description("Y좌표(latitude(위도))"),
+                                field("[].distance").type(JsonFieldType.NUMBER).description("산으로부터 떨어진 거리(미터)"),
+                                field("[].mapX").type(JsonFieldType.NUMBER).description("X좌표(longitude(경도))"),
+                                field("[].mapY").type(JsonFieldType.NUMBER).description("Y좌표(latitude(위도))"),
                                 field("[].contact").description("연락처").optional(),
                                 field("[].imageUrl").description("사진 URL").optional(),
                                 field("[].externalLink").description("외부 링크").optional()
@@ -301,8 +308,9 @@ public class MountainControllerTest extends IntegrationTest {
                         responseFields(
                                 field("[].name").description("이름"),
                                 field("[].address").description("주소"),
-                                field("[].mapX").description("X좌표(longitude(경도))"),
-                                field("[].mapY").description("Y좌표(latitude(위도))"),
+                                field("[].distance").type(JsonFieldType.NUMBER).description("산으로부터 떨어진 거리(미터)"),
+                                field("[].mapX").type(JsonFieldType.NUMBER).description("X좌표(longitude(경도))"),
+                                field("[].mapY").type(JsonFieldType.NUMBER).description("Y좌표(latitude(위도))"),
                                 field("[].contact").description("연락처").optional(),
                                 field("[].imageUrl").description("사진 URL").optional(),
                                 field("[].externalLink").description("외부 링크").optional()
@@ -330,8 +338,9 @@ public class MountainControllerTest extends IntegrationTest {
                         responseFields(
                                 field("[].name").description("이름"),
                                 field("[].address").description("주소"),
-                                field("[].mapX").description("X좌표(longitude(경도))"),
-                                field("[].mapY").description("Y좌표(latitude(위도))"),
+                                field("[].distance").type(JsonFieldType.NUMBER).description("산으로부터 떨어진 거리(미터)"),
+                                field("[].mapX").type(JsonFieldType.NUMBER).description("X좌표(longitude(경도))"),
+                                field("[].mapY").type(JsonFieldType.NUMBER).description("Y좌표(latitude(위도))"),
                                 field("[].contact").description("연락처").optional(),
                                 field("[].imageUrl").description("사진 URL").optional(),
                                 field("[].externalLink").description("외부 링크").optional()
@@ -359,8 +368,9 @@ public class MountainControllerTest extends IntegrationTest {
                         responseFields(
                                 field("[].name").description("이름"),
                                 field("[].address").description("주소"),
-                                field("[].mapX").description("X좌표(longitude(경도))"),
-                                field("[].mapY").description("Y좌표(latitude(위도))"),
+                                field("[].distance").type(JsonFieldType.NUMBER).description("산으로부터 떨어진 거리(미터)"),
+                                field("[].mapX").type(JsonFieldType.NUMBER).description("X좌표(longitude(경도))"),
+                                field("[].mapY").type(JsonFieldType.NUMBER).description("Y좌표(latitude(위도))"),
                                 field("[].contact").description("연락처").optional(),
                                 field("[].imageUrl").description("사진 URL").optional(),
                                 field("[].externalLink").description("외부 링크").optional()

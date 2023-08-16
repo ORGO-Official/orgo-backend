@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 공공데이터포털에서 제공하는 API를 사용하는 장소 검색기입니다.
@@ -57,9 +58,7 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
         WebClient wc = WebClient.builder().
                 uriBuilderFactory(factory)
                 .baseUrl("localhost:8080")
-                .exchangeStrategies(ExchangeStrategies.builder().codecs(configurer -> {
-                    configurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper, MediaType.APPLICATION_JSON));
-                }).build())
+                .exchangeStrategies(ExchangeStrategies.builder().codecs(configurer -> configurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper, MediaType.APPLICATION_JSON))).build())
                 .build();
 
         ResponseFormat responseFormat = wc.method(HttpMethod.GET)
@@ -67,7 +66,7 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
                         .scheme(HTTPS)
                         .host(HOST)
                         .path(LOCATION_SEARCH_API)
-                        .queryParam("numOfRows", 10)
+                        .queryParam("numOfRows", 50)
                         .queryParam("pageNo", 1)
                         .queryParam("MobileOS", "IOS")
                         .queryParam("MobileApp", "orgo")
@@ -85,11 +84,11 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
                 .block();
         ResponseFormat.Response.Body.Items items = Objects.requireNonNull(responseFormat).getResponse().getBody().getItems();
         if (items == null) {
-            return List.of();
+            return new ArrayList<>();
         }
         return items.getItem().stream()
                 .map(PlaceInfo::fromOpenPortalPlaceSearcher)
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @ToString

@@ -8,8 +8,9 @@ public class RestaurantDto {
     public static class Response{
         private final String name;
         private final String address;
-        private final String mapX;
-        private final String mapY;
+        private final double distance;
+        private final double mapX;
+        private final double mapY;
         private final String contact;
         private final String imageUrl;
         private final String externalLink;
@@ -17,6 +18,7 @@ public class RestaurantDto {
         public Response(PlaceInfo placeInfo, String externalLink){
             this.name = placeInfo.getName();
             this.address = placeInfo.getAddress();
+            this.distance = placeInfo.getDistance();
             this.mapX = placeInfo.getMapX();
             this.mapY = placeInfo.getMapY();
             this.contact = placeInfo.getContact();

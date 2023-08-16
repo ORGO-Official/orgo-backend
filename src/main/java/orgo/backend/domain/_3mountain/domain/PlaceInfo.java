@@ -13,8 +13,9 @@ import orgo.backend.domain._3mountain.application.placesearcher.OpenPortalPlaceS
 public class PlaceInfo {
     private final String name;
     private final String address;
-    private final String mapX;
-    private final String mapY;
+    private final double distance;
+    private final double mapX;
+    private final double mapY;
     private final String contact;
     private final String imageUrl;
 
@@ -22,11 +23,11 @@ public class PlaceInfo {
         return PlaceInfo.builder()
                 .name(responseData.getTitle())
                 .address(responseData.getAddr1())
-                .mapX(responseData.getMapx())
-                .mapY(responseData.getMapy())
+                .distance(Double.parseDouble(responseData.getDist()))
+                .mapX(Double.parseDouble(responseData.getMapx()))
+                .mapY(Double.parseDouble(responseData.getMapy()))
                 .contact(responseData.getTel())
                 .imageUrl(responseData.getFirstimage())
                 .build();
     }
-
 }
