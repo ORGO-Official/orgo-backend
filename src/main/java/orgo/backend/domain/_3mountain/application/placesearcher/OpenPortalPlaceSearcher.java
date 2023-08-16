@@ -82,7 +82,6 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
                 .retrieve()
                 .bodyToMono(ResponseFormat.class)
                 .block();
-        log.info("{}", responseFormat);
         ResponseFormat.Response.Body.Items items = Objects.requireNonNull(responseFormat).getResponse().getBody().getItems();
         if (items == null) {
             return List.of();
