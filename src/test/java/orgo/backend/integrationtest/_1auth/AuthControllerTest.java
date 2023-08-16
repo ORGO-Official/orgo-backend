@@ -16,6 +16,7 @@ import orgo.backend.domain._2user.domain.Gender;
 import orgo.backend.domain._2user.domain.User;
 import orgo.backend.global.constant.Header;
 import orgo.backend.setting.IntegrationTest;
+import orgo.backend.setting.MockEntityFactory;
 import orgo.backend.setting.TestJwtProvider;
 
 import java.time.LocalDate;
@@ -191,5 +192,23 @@ public class AuthControllerTest extends IntegrationTest {
 
         // then
         actions.andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("기존 회원 데이터가 존재하는 경우, 회원가입을 하지 않는다.")
+    void test6() throws Exception {
+        String socialToken = "social-access";
+        User user = MockEntityFactory.mockUser();
+        PersonalData personalData = new PersonalData(user.getNickname(), user.getEmail(), user.getSocialId(), user.getLoginType());
+        given(naverLoginStrategy.getPersonalData(socialToken)).willReturn(personalData);
+        userRepository.save(user);
+
+        // when
+        ResultActions actions = mvc.perform(post(LOGIN_API, "naver")
+                .header(Header.SOCIAL, socialToken));
+
+        // then
+        actions.andExpect(status().isOk());
+        assertThat(userRepository.findBySocialIdAndLoginType(user.getSocialId(), user.getLoginType())).isNotEmpty();
     }
 }
