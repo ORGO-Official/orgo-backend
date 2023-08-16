@@ -47,15 +47,24 @@ public class AuthService {
                 .orElse(userRepository.save(User.signup(personalData)));
     }
 
-    public void logout(Long userId) {
-
+    /**
+     * 회원을 로그아웃시킵니다.
+     * 연결된 소셜 계정의 토큰이 만료됩니다.
+     *
+     * @param socialToken 소셜 토큰
+     * @param userId      회원 아이디넘버
+     */
+    public void logout(String socialToken, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
+        LoginStrategy strategy = loginStrategyFactory.findStrategy(user.getLoginType());
+        strategy.logout(socialToken);
     }
 
     /**
      * 회원을 탈퇴시킵니다.
      *
      * @param socialToken 소셜 토큰
-     * @param userId 회원 아이디넘버
+     * @param userId      회원 아이디넘버
      */
     @Transactional
     public void withdraw(String socialToken, Long userId) {

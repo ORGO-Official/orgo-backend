@@ -43,6 +43,9 @@ public class NaverLoginStrategy implements LoginStrategy {
         return PersonalData.fromNaver(naverProfile);
     }
 
+    @Override
+    public void logout(String socialToken) {
+    }
 
     /**
      * 네이버 로그인 연동 해제 API를 호출하여, 연결을 끊습니다.

@@ -26,8 +26,8 @@ public class AuthController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/auth/logout")
-    public ResponseEntity<Void> logout(@RequestHeader(name = Header.AUTH) String accessToken, @AuthenticationPrincipal Long userId) {
-        authService.logout(userId);
+    public ResponseEntity<Void> logout(@RequestHeader(name = Header.SOCIAL) String socialToken, @RequestHeader(name = Header.AUTH) String accessToken, @AuthenticationPrincipal Long userId) {
+        authService.logout(socialToken, userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

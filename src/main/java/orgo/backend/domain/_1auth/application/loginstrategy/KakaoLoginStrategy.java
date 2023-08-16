@@ -16,6 +16,7 @@ import java.util.Objects;
 @Slf4j
 public class KakaoLoginStrategy implements LoginStrategy{
     private final static String PROFILE_API = "https://kapi.kakao.com/v2/user/me";
+    private final static String LOGOUT_API = "https://kapi.kakao.com/v1/user/logout";
     private final static String UNLINK_API = "https://kapi.kakao.com/v1/user/unlink";
 
     /**
@@ -38,6 +39,17 @@ public class KakaoLoginStrategy implements LoginStrategy{
     }
 
     @Override
+    public void logout(String socialToken) {
+        WebClient webClient = WebClient.create();
+        webClient.method(HttpMethod.POST)
+                .uri(LOGOUT_API)
+                .header("Authorization", "Bearer " + socialToken)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
+    }
+
+    @Override
     public void unlink(String socialToken) {
         WebClient webClient = WebClient.create();
         webClient.method(HttpMethod.POST)
@@ -47,6 +59,8 @@ public class KakaoLoginStrategy implements LoginStrategy{
                 .bodyToMono(Void.class)
                 .block();
     }
+
+
 
     @Getter
     @NoArgsConstructor
