@@ -2,22 +2,26 @@ package orgo.backend.domain._3mountain.application.placesearcher;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import orgo.backend.domain._3mountain.application.placelinkfinder.PlaceLinkFinder;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 import orgo.backend.domain._3mountain.domain.PlaceInfo;
-import java.util.Arrays;
+
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * 공공데이터포털에서 제공하는 API를 사용하는 장소 검색기입니다.
  */
 @Primary
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class OpenPortalPlaceSearcher implements PlaceSearcher {
@@ -40,8 +44,14 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
      */
     @Override
     public List<PlaceInfo> searchByLocation(double latitude, double longitude, double radius) {
-        WebClient webClient = WebClient.create();
-        ResponseData[] responseData = webClient.method(HttpMethod.GET)
+        DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory("localhost:8080");
+        factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
+        WebClient wc = WebClient.builder().
+                uriBuilderFactory(factory)
+                .baseUrl("localhost:8080")
+                .build();
+
+        ResponseFormat responseFormat = wc.method(HttpMethod.GET)
                 .uri(uriBuilder -> uriBuilder
                         .scheme(HTTPS)
                         .host(HOST)
@@ -57,23 +67,51 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
                         .queryParam("contentTypeId", RESTAURANT_CONTENT_TYPE)
                         .queryParam("serviceKey", SERVICE_KEY)
                         .build())
+                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(ResponseData[].class)
+                .bodyToMono(ResponseFormat.class)
                 .block();
 
-        return Arrays.stream(Objects.requireNonNull(responseData))
+        return Objects.requireNonNull(responseFormat).getResponse().getBody().getItems().getItem().stream()
                 .map(PlaceInfo::fromOpenPortalPlaceSearcher)
                 .toList();
     }
 
+    @ToString
     @Getter
-    public static class ResponseData {
-        String title;
-        String firstimage;
-        String dist;
-        String mapx;
-        String mapy;
-        String tel;
-        String addr1;
+    public static class ResponseFormat {
+        private Response response;
+
+        @ToString
+        @Getter
+        public static class Response {
+            private Body body;
+
+            @ToString
+            @Getter
+            public static class Body {
+                private Items items;
+
+                @ToString
+                @Getter
+                public static class Items {
+                    private List<Item> item;
+
+                    @ToString
+                    @Getter
+                    public static class Item {
+                        private String title;
+                        private String firstimage;
+                        private String dist;
+                        private String mapx;
+                        private String mapy;
+                        private String tel;
+                        private String addr1;
+                    }
+                }
+            }
+        }
     }
+
+
 }

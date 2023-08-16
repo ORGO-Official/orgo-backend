@@ -18,7 +18,7 @@ public class PlaceInfo {
     private final String contact;
     private final String imageUrl;
 
-    public static PlaceInfo fromOpenPortalPlaceSearcher(OpenPortalPlaceSearcher.ResponseData responseData) {
+    public static PlaceInfo fromOpenPortalPlaceSearcher(OpenPortalPlaceSearcher.ResponseFormat.Response.Body.Items.Item responseData) {
         return PlaceInfo.builder()
                 .name(responseData.getTitle())
                 .address(responseData.getAddr1())
