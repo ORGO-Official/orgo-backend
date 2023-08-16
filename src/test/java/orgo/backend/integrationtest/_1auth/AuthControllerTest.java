@@ -114,7 +114,7 @@ public class AuthControllerTest extends IntegrationTest {
         );
 
         // then
-        actions.andExpect(status().isOk())
+        actions.andExpect(status().isNoContent())
                 .andDo(docs("auth-withdraw",
                         requestHeaders(
                                 header(Header.AUTH).description("액세스 토큰")
@@ -141,7 +141,7 @@ public class AuthControllerTest extends IntegrationTest {
         );
 
         // then
-        actions.andExpect(status().isOk());
+        actions.andExpect(status().isNoContent());
         assertThat(userRepository.findById(saved.getId())).isEmpty();
     }
 
@@ -161,7 +161,7 @@ public class AuthControllerTest extends IntegrationTest {
         );
 
         // then
-        actions.andExpect(status().isOk())
+        actions.andExpect(status().isNoContent())
                 .andDo(docs("auth-logout",
                         requestHeaders(
                                 header(Header.AUTH).description("액세스 토큰")
