@@ -117,6 +117,7 @@ public class AuthControllerTest extends IntegrationTest {
         actions.andExpect(status().isNoContent())
                 .andDo(docs("auth-withdraw",
                         requestHeaders(
+                                header(Header.SOCIAL).description("소셜 토큰(카카오/네이버/애플)"),
                                 header(Header.AUTH).description("액세스 토큰")
                         )));
 
