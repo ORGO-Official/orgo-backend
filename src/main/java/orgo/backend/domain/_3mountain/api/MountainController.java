@@ -42,7 +42,7 @@ public class MountainController {
      * @return 근처 식당 목록
      */
     @PermitAll
-    @GetMapping("/mountains/{mountainId}/restaurant")
+    @GetMapping("/mountains/{mountainId}/restaurants")
     public ResponseEntity<List<RestaurantDto.Response>> getNearbyRestaurant(@PathVariable Long mountainId) {
         List<RestaurantDto.Response> responseDto = restaurantService.findNearbyRestaurant(mountainId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);

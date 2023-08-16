@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class MountainControllerTest extends IntegrationTest {
 
     private final static String GET_ALL_API = "/api/mountains";
-    private final static String GET_RESTAURANT_API = "/api/mountains/{mountainId}/restaurant";
+    private final static String GET_RESTAURANT_API = "/api/mountains/{mountainId}/restaurants";
 
     @Autowired
     MountainRepository mountainRepository;
