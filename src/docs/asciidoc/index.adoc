@@ -47,3 +47,9 @@ operation::auth-withdraw[]
 산 목록을 조회합니다.
 ----
 operation::mountain-get-all[]
+
+=== 🟢 근처 식당 조회
+----
+산 근처의 식당을 조회합니다.
+----
+operation::mountain-achasan-restaurant[]

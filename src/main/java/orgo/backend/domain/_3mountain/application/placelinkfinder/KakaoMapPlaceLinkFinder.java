@@ -35,10 +35,10 @@ public class KakaoMapPlaceLinkFinder implements PlaceLinkFinder {
                 .bodyToMono(KakaoMapPlaceLinkFinder.ResponseData.class)
                 .block();
         List<ResponseData.Document> documents = Objects.requireNonNull(responseData).getDocuments();
-        if (documents != null){
-            return documents.get(0).getPlace_url();
+        if (documents.isEmpty()) {
+            return "";
         }
-        return "";
+        return documents.get(0).getPlace_url();
     }
 
     @Getter

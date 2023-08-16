@@ -21,7 +21,7 @@ public class OpenPortalPlaceSearcherTest extends IntegrationTest {
         // given
 
         // when
-        List<PlaceInfo> placeInfoList = openPortalPlaceSearcher.searchByLocation(127.103764, 37.57149, 10000);
+        List<PlaceInfo> placeInfoList = openPortalPlaceSearcher.searchByLocation(37.57149, 127.103764, 10000);
         log.info("{}", placeInfoList);
 
         // then

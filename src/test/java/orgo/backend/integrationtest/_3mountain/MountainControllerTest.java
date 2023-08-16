@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class MountainControllerTest extends IntegrationTest {
 
     private final static String GET_ALL_API = "/api/mountains";
-    private final static String GET_RESTAURANT_API = "/mountains/{mountainId}/restaurant";
+    private final static String GET_RESTAURANT_API = "/api/mountains/{mountainId}/restaurant";
 
     @Autowired
     MountainRepository mountainRepository;
@@ -91,20 +91,21 @@ public class MountainControllerTest extends IntegrationTest {
 
         //then
         String response = actions.andExpect(status().isOk())
-                .andDo(docs("restaurant-get",
+                .andDo(docs("mountain-achasan-restaurant",
                         pathParams(
                                 param("mountainId").description("산 아이디넘버")
                         ),
                         responseFields(
                                 field("[].name").description("이름"),
                                 field("[].address").description("주소"),
-                                field("[].mapX").description("X좌표(경도)"),
-                                field("[].mapY").description("Y좌표(위도)"),
+                                field("[].mapX").description("X좌표(longitude(경도))"),
+                                field("[].mapY").description("Y좌표(latitude(위도))"),
                                 field("[].contact").description("연락처"),
+                                field("[].imageUrl").description("사진 URL"),
                                 field("[].externalLink").description("외부 링크")
                         )
                 ))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         log.info(response);
     }
 }
