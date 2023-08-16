@@ -11,6 +11,8 @@ import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.User;
 import orgo.backend.global.config.security.JwtProvider;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -43,8 +45,11 @@ public class AuthService {
      * @return 회원
      */
     private User createOrGetUser(PersonalData personalData) {
-        return userRepository.findBySocialIdAndLoginType(personalData.getSocialId(), personalData.getLoginType())
-                .orElse(userRepository.save(User.signup(personalData)));
+        Optional<User> user = userRepository.findBySocialIdAndLoginType(personalData.getSocialId(), personalData.getLoginType());
+        if (user.isEmpty()){
+            return userRepository.save(User.signup(personalData));
+        }
+        return user.get();
     }
 
     /**
