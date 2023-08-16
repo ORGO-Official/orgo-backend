@@ -29,6 +29,7 @@ public class User implements UserDetails {
     String nickname;
     String email;
     String socialId;
+    @Enumerated(value = EnumType.STRING)
     LoginType loginType;
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
