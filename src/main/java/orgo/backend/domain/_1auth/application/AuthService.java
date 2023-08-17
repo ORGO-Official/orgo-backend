@@ -46,7 +46,7 @@ public class AuthService {
      */
     private User createOrGetUser(PersonalData personalData) {
         Optional<User> user = userRepository.findBySocialIdAndLoginType(personalData.getSocialId(), personalData.getLoginType());
-        if (user.isEmpty()){
+        if (user.isEmpty()) {
             return userRepository.save(User.signup(personalData));
         }
         return user.get();
