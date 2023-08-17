@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import orgo.backend.global.constant.Header;
+import orgo.backend.global.error.exception.UserNotFoundException;
 
 @Slf4j
 @RestController

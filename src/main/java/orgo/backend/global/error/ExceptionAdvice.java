@@ -1,6 +1,5 @@
 package orgo.backend.global.error;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -8,12 +7,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import orgo.backend.global.error.exception.OrgoException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
 @RestControllerAdvice
 public class ExceptionAdvice {
 
@@ -50,6 +49,13 @@ public class ExceptionAdvice {
     @ExceptionHandler(InterruptedException.class)
     protected ResponseEntity<ErrorResponseDto> handle(InterruptedException e) {
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getHttpStatus());
+    }
+
+    @ExceptionHandler(OrgoException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(OrgoException e) {
+        ErrorCode errorCode = e.getErrorCode();
         e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getHttpStatus());
     }

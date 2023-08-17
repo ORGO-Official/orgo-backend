@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import orgo.backend.domain._2user.dao.UserRepository;
+import orgo.backend.global.error.exception.UserNotFoundException;
 
 @Service
 @Transactional
@@ -16,6 +17,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) {
-        return userRepository.findById(Long.parseLong(userId)).orElseThrow(RuntimeException::new);
+        return userRepository.findById(Long.parseLong(userId)).orElseThrow(UserNotFoundException::new);
     }
 }

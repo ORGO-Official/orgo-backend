@@ -15,10 +15,12 @@ import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.Gender;
 import orgo.backend.domain._2user.domain.User;
 import orgo.backend.global.constant.Header;
+import orgo.backend.global.error.exception.UserNotFoundException;
 import orgo.backend.setting.IntegrationTest;
 import orgo.backend.setting.MockEntityFactory;
 import orgo.backend.setting.TestJwtProvider;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Collections;
 
@@ -31,6 +33,7 @@ import static hansol.restdocsdsl.element.FieldElement.field;
 import static hansol.restdocsdsl.element.HeaderElement.header;
 import static hansol.restdocsdsl.element.ParamElement.param;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

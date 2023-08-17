@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class ValidationErrorResponseDto {
-    int code;
+    String code;
     String message;
     List<FieldErrorDto> errorList;
 
