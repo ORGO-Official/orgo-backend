@@ -28,6 +28,7 @@ public class User implements UserDetails {
     Long id;
     String nickname;
     String email;
+    @Enumerated(value = EnumType.STRING)
     String socialId;
     @Enumerated(value = EnumType.STRING)
     LoginType loginType;
