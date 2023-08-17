@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import orgo.backend.global.error.ErrorCode;
 import orgo.backend.global.error.exception.UserNotFoundException;
-import orgo.backend.global.error.exception.jwtexception.CustomJwtException;
+import orgo.backend.global.error.exception.OrgoJwtException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (CustomJwtException | UserNotFoundException e) {
+        } catch (OrgoJwtException | UserNotFoundException e) {
             setErrorResponse(response, e);
         }
     }
@@ -49,6 +49,6 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         if (e instanceof UserNotFoundException) {
             return ((UserNotFoundException) e).getErrorCode();
         }
-        return ((CustomJwtException) e).getErrorCode();
+        return ((OrgoJwtException) e).getErrorCode();
     }
 }
