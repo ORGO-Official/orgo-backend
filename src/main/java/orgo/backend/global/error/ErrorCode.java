@@ -23,11 +23,4 @@ public enum ErrorCode {
     private final String code;
     private final String message;
     private final HttpStatus httpStatus;
-
-    public static ErrorCode findByName(String name) {
-        return Arrays.stream(values())
-                .filter(type -> type.name().equals(name))
-                .findAny()
-                .orElse(INTERNAL_SERVER_ERROR);
-    }
 }
