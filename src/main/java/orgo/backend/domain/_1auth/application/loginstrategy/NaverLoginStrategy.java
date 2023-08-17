@@ -19,8 +19,10 @@ public class NaverLoginStrategy implements LoginStrategy {
     private String CLIENT_ID;
     @Value("${auth.naver.client-secret}")
     private String CLIENT_SECRET;
+    private final static String HTTPS = "https";
+    private final static String UNLINK_HOST = "nid.naver.com";
     private final static String PROFILE_API = "https://openapi.naver.com/v1/nid/me";
-    private final static String UNLINK_API = "https://nid.naver.com/oauth2.0/token";
+    private final static String UNLINK_API = "/oauth2.0/token";
 
 
     /**
@@ -57,6 +59,8 @@ public class NaverLoginStrategy implements LoginStrategy {
         WebClient webClient = WebClient.create();
         webClient.method(HttpMethod.POST)
                 .uri(uriBuilder -> uriBuilder
+                        .scheme(HTTPS)
+                        .host(UNLINK_HOST)
                         .path(UNLINK_API)
                         .queryParam("client_id", CLIENT_ID)
                         .queryParam("client_secret", CLIENT_SECRET)
@@ -67,6 +71,8 @@ public class NaverLoginStrategy implements LoginStrategy {
                 .bodyToMono(Void.class)
                 .block();
     }
+
+
 
     @Getter
     @NoArgsConstructor

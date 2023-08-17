@@ -46,4 +46,16 @@ public class LoginStrategyTest extends IntegrationTest {
 
         // then
     }
+
+    @Test
+    @DisplayName("네이버 토큰을 이용해 회원탈퇴한다.")
+    void test2() {
+        // given
+        String socialToken = "AAAAN4QvNrwEbjZ5USuBkgv0xDFWPRRuf-hjAPaWtt6tFtux5ktDDs9h7y9XR9ixbtJXes7Oc7Nk3t44KHEz0n2Bv6g";
+
+        // when
+        naverLoginStrategy.unlink(socialToken);
+
+        // then
+    }
 }
