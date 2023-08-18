@@ -5,12 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import orgo.backend.domain._2user.application.UserService;
-import orgo.backend.domain._2user.dto.UserProfile;
+import orgo.backend.domain._2user.dto.UserProfileDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +17,15 @@ public class UserController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/users/profile")
-    public ResponseEntity<UserProfile> getProfile(@AuthenticationPrincipal Long userId){
-        UserProfile profile = userService.getProfile(userId);
+    public ResponseEntity<UserProfileDto.Response> getProfile(@AuthenticationPrincipal Long userId) {
+        UserProfileDto.Response profile = userService.getProfile(userId);
         return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping("/users/profile")
+    public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal Long userId, @RequestBody UserProfileDto.Request requestDto) {
+        userService.updateProfile(userId, requestDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

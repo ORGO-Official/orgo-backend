@@ -47,6 +47,11 @@ operation::auth-withdraw[]
 ----
 operation::user-profile-get[]
 
+=== 🟢 프로필 수정
+----
+사용자의 프로필을 수정합니다.
+----
+operation::user-profile-update[]
 
 == 🦛 3-1. 등산
 
