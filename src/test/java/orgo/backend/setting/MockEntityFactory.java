@@ -52,7 +52,7 @@ public class MockEntityFactory {
     public static MockMultipartFile mockMultipartFileImage(String paramName) throws IOException {
         String ORIGINAL_FILE_NAME = "text-image.jpg";
         String CONTENT_TYPE = MediaType.IMAGE_JPEG_VALUE;
-        String PATH = "src/test/java/projectbuildup/mivv/integrationtest/setting/files/text-image.jpg";
+        String PATH = "src/test/java/orgo/backend/setting/files/text-image.jpg";
         FileInputStream fileInputStream = new FileInputStream(PATH);
         return new MockMultipartFile(paramName, ORIGINAL_FILE_NAME, CONTENT_TYPE, fileInputStream);
     }
