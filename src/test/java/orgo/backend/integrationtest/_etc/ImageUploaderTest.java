@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
-import orgo.backend.domain._etc.image.Image;
 import orgo.backend.domain._etc.image.ImageType;
 import orgo.backend.domain._etc.image.ImageUploader;
 import orgo.backend.setting.IntegrationTest;
@@ -26,10 +25,10 @@ public class ImageUploaderTest extends IntegrationTest {
         MockMultipartFile mockMultipartFile = MockEntityFactory.mockMultipartFileImage("file");
 
         // when
-        Image image = imageUploader.upload(mockMultipartFile, ImageType.PROFILE);
+        String imageUrl = imageUploader.upload(mockMultipartFile, ImageType.PROFILE);
 
         // then
-        assertThat(imageUploader.deleteIfExists(image)).isTrue();
+        assertThat(imageUploader.deleteIfExists(imageUrl)).isTrue();
     }
 
     @Test
@@ -47,10 +46,10 @@ public class ImageUploaderTest extends IntegrationTest {
     @DisplayName("삭제하려는 파일이 없는 경우 삭제하지 않는다.")
     void test3() throws IOException {
         // given
-        Image emptyImage = new Image("empty", "empty");
+        String imageUrl = "empty";
 
         // when
-        boolean result = imageUploader.deleteIfExists(emptyImage);
+        boolean result = imageUploader.deleteIfExists(imageUrl);
 
         // then
         assertThat(result).isFalse();

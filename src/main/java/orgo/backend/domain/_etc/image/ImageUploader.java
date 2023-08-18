@@ -21,22 +21,36 @@ public class ImageUploader {
     @Value("${orgo-server.address}")
     String SERVER_ADDRESS;
 
+    public final String DEFAULT_PROFILE_IMAGE = SERVER_ADDRESS + IMAGE_STORAGE_PATH + ImageType.PROFILE.getDirectory() + "default_profile_image.png";
+
     /**
      * 이미지 파일을 업로드합니다.
      * storedPath 위치에 업로드됩니다.
      * 저장되는 파일의 이름은 UUID 랜덤 문자열입니다.
      *
      * @param multipartFile 멀티파트 파일
-     * @param imageType     이미지가 저장될 하위 디렉토리 (이미지 종류에 따라 분류)
-     * @return 이미지 정보
+     * @param imageType     이미지 분류
+     * @return 이미지 URL
      */
-    public Image upload(MultipartFile multipartFile, ImageType imageType) {
+    public String upload(MultipartFile multipartFile, ImageType imageType) {
         requireNonNull(multipartFile);
         String originalName = multipartFile.getOriginalFilename();
-        String storedName = makeRandomNameWithExtension(originalName);
-        String storedPath = IMAGE_STORAGE_PATH + File.separator + imageType.getDirectoryName() + File.separator + storedName;
+        String storedPath = makeStoredPath(imageType, originalName);
         transferFile(multipartFile, storedPath);
-        return new Image(storedName, SERVER_ADDRESS + storedPath);
+        return SERVER_ADDRESS + storedPath;
+    }
+
+    /**
+     * 이미지가 저장될 Path를 생성합니다.
+     * 이미지 타입에 따라 상위 디렉토리가 결정됩니다.
+     *
+     * @param imageType    이미지 타입
+     * @param originalName 원본 이름
+     * @return Path
+     */
+    @NotNull
+    private String makeStoredPath(ImageType imageType, String originalName) {
+        return IMAGE_STORAGE_PATH + imageType.getDirectory() + makeRandomNameWithExtension(originalName);
     }
 
     private void transferFile(MultipartFile multipartFile, String storedPath) {
@@ -64,22 +78,21 @@ public class ImageUploader {
     /**
      * 저장된 이미지 파일을 삭제합니다.
      *
-     * @param image 삭제할 이미지 정보
+     * @param imageUrl 삭제할 이미지 URL
      * @throws IOException
      */
-    public boolean deleteIfExists(Image image) throws IOException {
-        File file = new File(getRelativePath(image));
+    public boolean deleteIfExists(String imageUrl) throws IOException {
+        File file = new File(getRelativePath(imageUrl));
         return Files.deleteIfExists(Path.of(file.getAbsolutePath()));
     }
 
     /**
      * 이미지 URL에서 서버 주소를 제외한 경로를 추출합니다.
      *
-     * @param image 이미지 정보
+     * @param imageUrl 이미지 URL
      * @return 이미지 URL 중 서버 주소를 제외한 부분
      */
-    private String getRelativePath(Image image) {
-        String fullPath = image.getImageUrl();
-        return fullPath.substring(SERVER_ADDRESS.length());
+    private String getRelativePath(String imageUrl) {
+        return imageUrl.substring(SERVER_ADDRESS.length());
     }
 }

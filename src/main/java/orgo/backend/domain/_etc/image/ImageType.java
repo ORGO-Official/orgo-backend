@@ -3,10 +3,12 @@ package orgo.backend.domain._etc.image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.io.File;
+
 @AllArgsConstructor
 @Getter
 public enum ImageType {
-    PROFILE("profiles");
+    PROFILE(File.separator + "profiles" + File.separator);
 
-    private final String directoryName;
+    private final String directory;
 }
