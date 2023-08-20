@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.User;
-import orgo.backend.domain._3mountain.application.MountainService;
 import orgo.backend.domain._3mountain.dao.MountainRepository;
 import orgo.backend.domain._3mountain.domain.Mountain;
 import orgo.backend.domain._4climbingRecord.dao.ClimbingRecordRepository;
@@ -68,7 +67,7 @@ public class ClimbingRecordService {
         double distanceDiff = calDistance(userPosDto.getLatitude(), userPosDto.getLongitude(),
                 mountain.getLocation().getLatitude(), mountain.getLocation().getLongitude());
 
-        if(distanceDiff > distanceDiffRange || altitudeDiffRange > Math.abs(userPosDto.getAltitude()-mountain.getLocation().getAltitude())) {
+        if(distanceDiff > distanceDiffRange || Math.abs(userPosDto.getAltitude()-mountain.getLocation().getAltitude()) > altitudeDiffRange) {
             return false;
         }
 
