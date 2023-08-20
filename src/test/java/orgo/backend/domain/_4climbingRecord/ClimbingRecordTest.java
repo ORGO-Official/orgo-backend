@@ -14,10 +14,12 @@ import orgo.backend.domain._3mountain.domain.Peak;
 import orgo.backend.domain._4climbingRecord.application.ClimbingRecordService;
 import orgo.backend.domain._4climbingRecord.dao.ClimbingRecordRepository;
 import orgo.backend.domain._4climbingRecord.domain.ClimbingRecord;
+import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
 import orgo.backend.setting.MockEntityFactory;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -103,5 +105,34 @@ public class ClimbingRecordTest {
 
         Assertions.assertEquals(expectedUserId, savedClimbingRecord.getUser().getId());
         Assertions.assertEquals(expectedMountainId, savedClimbingRecord.getMountain().getId());
+    }
+
+    @Test
+    @DisplayName("사용자의 모든 완등기록을 조회합니다")
+    void viewMyClimbingRecordsTest() {
+        //given
+        User savedUser = userRepository.save(user);
+
+        UserPosDto userPosDto = UserPosDto.builder()
+                .date(LocalDateTime.now())
+                .mountainId(savedMountain.getId())
+                .altitude(mountain.getLocation().getAltitude())
+                .latitude(mountain.getLocation().getLatitude())
+                .longitude(mountain.getLocation().getLongitude())
+                .build();
+
+        //when
+        Long userId=1L;
+
+        climbingRecordService.registerClimbingRecord(savedUser.getId(), userPosDto);
+        List<ClimbingRecordDto> climbingRecordDtos = climbingRecordService.viewMyClimbingRecords(userId);
+
+        //then
+        Long expectedClimbingRecordCnt = 1L;
+        Long expectedMountainId=1L;
+
+        Assertions.assertEquals(expectedClimbingRecordCnt, climbingRecordDtos.size());
+        Assertions.assertEquals(expectedMountainId, climbingRecordDtos.get(0).getMountainId());
+        Assertions.assertEquals(mountain.getName(), climbingRecordDtos.get(0).getMountainName());
     }
 }
