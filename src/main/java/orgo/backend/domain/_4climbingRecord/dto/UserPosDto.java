@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserPosDto {
     private Long mountainId;
-    private Long latitude;
-    private Long longitude;
-    private Long altitude;
+    private double latitude;
+    private double longitude;
+    private double altitude;
     private LocalDateTime date;
 }
