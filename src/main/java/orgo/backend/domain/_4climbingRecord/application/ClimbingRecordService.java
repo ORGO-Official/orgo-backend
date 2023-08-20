@@ -23,6 +23,12 @@ public class ClimbingRecordService {
     private final ClimbingRecordRepository climbingRecordRepository;
     private final UserRepository userRepository;
 
+    /**
+     * 등산 완등 인증 요청을 처리합니다.
+     *
+     * @param userId 사용자 Id
+     * @param userPosDto 사용자의 위치 정보
+     */
     @Transactional
     public void registerClimbingRecord(Long userId, UserPosDto userPosDto) {
         if(isTop(userPosDto)) {
@@ -39,6 +45,11 @@ public class ClimbingRecordService {
         }
     }
 
+    /**
+     *
+     * @param userId 사용자 Id
+     * @return 사용자의 완등 기록 리스트
+     */
     public List<ClimbingRecordDto> viewMyClimbingRecords(Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
         List<ClimbingRecord> climbingRecords = user.getClimbingRecords();
@@ -59,6 +70,12 @@ public class ClimbingRecordService {
         return climbingRecordDtos;
     }
 
+    /**
+     * 사용자가 완등 인증이 가능한 위치인지 판단합니다.
+     *
+     * @param userPosDto 사용자의 위치 정보
+     * @return 완등 가능 위치인지 여부
+     */
     public boolean isTop(UserPosDto userPosDto) {
         double distanceDiffRange = 500;
         double altitudeDiffRange = 50;
@@ -74,6 +91,15 @@ public class ClimbingRecordService {
         return true;
     }
 
+    /**
+     * Haversine공식을 기반으로 두 장소간의 거리를 계산합니다.
+     *
+     * @param latitude1 위도1
+     * @param longitude1 경도1
+     * @param latitude2 위도1
+     * @param longitude2 경도1
+     * @return 두 거리간의 거리
+     */
     public double calDistance(double latitude1, double longitude1, double latitude2, double longitude2) {
         double RADIUS_OF_EARTH_KM = 6371.0;
         double latitudeRad1 = Math.toRadians(latitude1);
