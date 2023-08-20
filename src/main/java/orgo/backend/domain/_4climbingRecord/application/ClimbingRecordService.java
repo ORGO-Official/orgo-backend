@@ -46,6 +46,7 @@ public class ClimbingRecordService {
     }
 
     /**
+     * 사용자의 모든 완등 기록을 조회합니다.
      *
      * @param userId 사용자 Id
      * @return 사용자의 완등 기록 리스트
