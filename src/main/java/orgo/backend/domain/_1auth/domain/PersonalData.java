@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import orgo.backend.domain._1auth.application.loginstrategy.AppleLoginStrategy;
 import orgo.backend.domain._1auth.application.loginstrategy.KakaoLoginStrategy;
 import orgo.backend.domain._1auth.application.loginstrategy.NaverLoginStrategy;
 
@@ -40,6 +41,15 @@ public class PersonalData {
                 .email(kakaoAccount.getEmail())
                 .socialId(String.valueOf(kakaoProfile.getId()))
                 .loginType(LoginType.KAKAO)
+                .build();
+    }
+
+    public static PersonalData fromApple(AppleLoginStrategy.AppleProfile appleProfile) {
+        return PersonalData.builder()
+                .nickname("팀쿡과김태현의기묘한모험")
+                .email(appleProfile.getEmail())
+                .socialId(String.valueOf(appleProfile.getId()))
+                .loginType(LoginType.APPLE)
                 .build();
     }
 }

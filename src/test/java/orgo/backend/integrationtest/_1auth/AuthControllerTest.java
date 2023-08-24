@@ -64,9 +64,9 @@ public class AuthControllerTest extends IntegrationTest {
         // then
         actions.andExpect(status().isOk())
                 .andDo(docs("auth-login",
-                        pathParams(param("loginType").description("로그인 타입 (네이버: \"naver\" | 카카오: \"kakao\")")),
+                        pathParams(param("loginType").description("로그인 타입 \n\n [네이버: \"naver\" | 카카오: \"kakao\" | 애플: \"apple\"]")),
                         requestHeaders(
-                                header(Header.SOCIAL).description("소셜 토큰(카카오/네이버/애플)")
+                                header(Header.SOCIAL).description("소셜 토큰(카카오/네이버/애플) \n\n 애플의 경우 \"{id}|{email}\"형식")
                         ),
                         responseFields(
                                 field("accessToken").description("액세스 토큰"),
@@ -115,7 +115,7 @@ public class AuthControllerTest extends IntegrationTest {
         actions.andExpect(status().isNoContent())
                 .andDo(docs("auth-withdraw",
                         requestHeaders(
-                                header(Header.SOCIAL).description("소셜 토큰(카카오/네이버/애플)"),
+                                header(Header.SOCIAL).description("소셜 토큰(카카오/네이버/애플) \n\n 애플의 경우 \"{id}|{email}\"형식"),
                                 header(Header.AUTH).description("액세스 토큰")
                         )));
 
@@ -165,7 +165,7 @@ public class AuthControllerTest extends IntegrationTest {
         actions.andExpect(status().isNoContent())
                 .andDo(docs("auth-logout",
                         requestHeaders(
-                                header(Header.SOCIAL).description("소셜 토큰(카카오/네이버/애플)"),
+                                header(Header.SOCIAL).description("소셜 토큰(카카오/네이버/애플) \n\n 애플의 경우 \"{id}|{email}\"형식"),
                                 header(Header.AUTH).description("액세스 토큰")
                         )));
     }
