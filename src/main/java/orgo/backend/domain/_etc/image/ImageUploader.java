@@ -22,7 +22,7 @@ public class ImageUploader {
     @Value("${orgo-server.address}")
     String SERVER_ADDRESS;
 
-    public final String DEFAULT_PROFILE_IMAGE = SERVER_ADDRESS + IMAGE_STORAGE_PATH + ImageType.PROFILE.getDirectory() + "default_profile_image.png";
+    public final static String DEFAULT_PROFILE_IMAGE_NAME = "default_profile_image.png";
 
     /**
      * 이미지 파일을 업로드합니다.
@@ -95,5 +95,9 @@ public class ImageUploader {
      */
     private String getRelativePath(String imageUrl) {
         return imageUrl.substring(SERVER_ADDRESS.length());
+    }
+
+    public String getDefaultProfileImage() {
+        return SERVER_ADDRESS + IMAGE_STORAGE_PATH + ImageType.PROFILE.getDirectory() + DEFAULT_PROFILE_IMAGE_NAME;
     }
 }

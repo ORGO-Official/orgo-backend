@@ -9,6 +9,7 @@ import orgo.backend.domain._1auth.application.loginstrategy.LoginStrategyFactory
 import orgo.backend.domain._1auth.domain.*;
 import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.User;
+import orgo.backend.domain._etc.image.ImageUploader;
 import orgo.backend.global.config.security.JwtProvider;
 
 import java.util.Optional;
@@ -20,6 +21,7 @@ public class AuthService {
     private final LoginStrategyFactory loginStrategyFactory;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
+    private final ImageUploader imageUploader;
 
     /**
      * 소셜 로그인합니다.
@@ -47,7 +49,7 @@ public class AuthService {
     private User createOrGetUser(PersonalData personalData) {
         Optional<User> user = userRepository.findBySocialIdAndLoginType(personalData.getSocialId(), personalData.getLoginType());
         if (user.isEmpty()) {
-            return userRepository.save(User.signup(personalData));
+            return userRepository.save(User.signup(personalData, imageUploader.getDefaultProfileImage()));
         }
         return user.get();
     }

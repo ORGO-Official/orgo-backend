@@ -21,6 +21,7 @@ public class MockEntityFactory {
                 .nickname("테스트유저")
                 .email("hansol8701@test.com")
                 .socialId("123456")
+                .profileImage("기본 프로필 이미지")
                 .loginType(LoginType.NAVER)
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
