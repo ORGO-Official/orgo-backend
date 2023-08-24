@@ -29,4 +29,4 @@ orgo-server:
   address: http://34.64.36.223
   path:
     storage:
-      images: /resources/images
+      images: /orgo/resources/images
