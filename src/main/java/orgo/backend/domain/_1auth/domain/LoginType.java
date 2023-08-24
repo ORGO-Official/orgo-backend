@@ -2,8 +2,10 @@ package orgo.backend.domain._1auth.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import orgo.backend.domain._1auth.application.loginstrategy.AppleLoginStrategy;
 import orgo.backend.domain._1auth.application.loginstrategy.KakaoLoginStrategy;
 import orgo.backend.domain._1auth.application.loginstrategy.NaverLoginStrategy;
+import orgo.backend.global.error.exception.ResourceNotFoundException;
 
 import java.util.stream.Stream;
 
@@ -11,7 +13,8 @@ import java.util.stream.Stream;
 @Getter
 public enum LoginType {
     NAVER("naver", NaverLoginStrategy.class),
-    KAKAO("kakao", KakaoLoginStrategy.class);
+    KAKAO("kakao", KakaoLoginStrategy.class),
+    APPLE("apple", AppleLoginStrategy.class);
 
 
     private final String name;
@@ -20,6 +23,6 @@ public enum LoginType {
     public static LoginType findBy(String name) {
         return Stream.of(values())
                 .filter(e -> e.getName().equals(name))
-                .findFirst().orElseThrow(RuntimeException::new);
+                .findFirst().orElseThrow(ResourceNotFoundException::new);
     }
 }

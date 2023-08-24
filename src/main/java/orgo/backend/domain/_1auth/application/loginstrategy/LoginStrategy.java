@@ -18,4 +18,6 @@ public interface LoginStrategy {
      * @param socialToken 서드파티 액세스 토큰
      */
     void unlink(String socialToken);
+
+    void logout(String socialToken);
 }

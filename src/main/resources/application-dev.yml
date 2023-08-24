@@ -24,3 +24,9 @@ spring:
       mode: always
       data-locations: classpath:data.sql
       encoding: UTF-8
+
+orgo-server:
+  address: http://34.64.36.223
+  path:
+    storage:
+      images: /orgo/resources/images

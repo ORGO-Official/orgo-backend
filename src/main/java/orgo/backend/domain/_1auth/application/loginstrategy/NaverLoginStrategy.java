@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import orgo.backend.domain._1auth.domain.PersonalData;
+import orgo.backend.global.error.exception.SocialTokenExpiredException;
 
 import java.util.Objects;
 
@@ -19,8 +20,10 @@ public class NaverLoginStrategy implements LoginStrategy {
     private String CLIENT_ID;
     @Value("${auth.naver.client-secret}")
     private String CLIENT_SECRET;
+    private final static String HTTPS = "https";
+    private final static String UNLINK_HOST = "nid.naver.com";
     private final static String PROFILE_API = "https://openapi.naver.com/v1/nid/me";
-    private final static String UNLINK_API = "https://nid.naver.com/oauth2.0/token";
+    private final static String UNLINK_API = "/oauth2.0/token";
 
 
     /**
@@ -43,6 +46,9 @@ public class NaverLoginStrategy implements LoginStrategy {
         return PersonalData.fromNaver(naverProfile);
     }
 
+    @Override
+    public void logout(String socialToken) {
+    }
 
     /**
      * 네이버 로그인 연동 해제 API를 호출하여, 연결을 끊습니다.
@@ -54,6 +60,8 @@ public class NaverLoginStrategy implements LoginStrategy {
         WebClient webClient = WebClient.create();
         webClient.method(HttpMethod.POST)
                 .uri(uriBuilder -> uriBuilder
+                        .scheme(HTTPS)
+                        .host(UNLINK_HOST)
                         .path(UNLINK_API)
                         .queryParam("client_id", CLIENT_ID)
                         .queryParam("client_secret", CLIENT_SECRET)
@@ -64,6 +72,8 @@ public class NaverLoginStrategy implements LoginStrategy {
                 .bodyToMono(Void.class)
                 .block();
     }
+
+
 
     @Getter
     @NoArgsConstructor
@@ -86,7 +96,7 @@ public class NaverLoginStrategy implements LoginStrategy {
                 return;
             }
             if (this.resultcode.equals("401")) {
-                throw new RuntimeException("소셜 토큰이 만료되었습니다. 다시 로그인해주세요.");
+                throw new SocialTokenExpiredException();
             }
             throw new RuntimeException("클라이언트 오류입니다. 다시 시도해주세요.");
         }

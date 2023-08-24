@@ -24,3 +24,8 @@ spring:
       mode: always
       data-locations: classpath:data.sql
       encoding: UTF-8
+orgo-server:
+  address:
+  path:
+    storage:
+      images: src/test/resources/store/images

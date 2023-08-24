@@ -9,7 +9,10 @@ import orgo.backend.domain._1auth.application.loginstrategy.LoginStrategyFactory
 import orgo.backend.domain._1auth.domain.*;
 import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.User;
+import orgo.backend.domain._etc.image.ImageUploader;
 import orgo.backend.global.config.security.JwtProvider;
+
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -18,6 +21,7 @@ public class AuthService {
     private final LoginStrategyFactory loginStrategyFactory;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
+    private final ImageUploader imageUploader;
 
     /**
      * 소셜 로그인합니다.
@@ -43,19 +47,31 @@ public class AuthService {
      * @return 회원
      */
     private User createOrGetUser(PersonalData personalData) {
-        return userRepository.findBySocialIdAndLoginType(personalData.getSocialId(), personalData.getLoginType())
-                .orElse(userRepository.save(User.signup(personalData)));
+        Optional<User> user = userRepository.findBySocialIdAndLoginType(personalData.getSocialId(), personalData.getLoginType());
+        if (user.isEmpty()) {
+            return userRepository.save(User.signup(personalData, imageUploader.getDefaultProfileImage()));
+        }
+        return user.get();
     }
 
-    public void logout(Long userId) {
-
+    /**
+     * 회원을 로그아웃시킵니다.
+     * 연결된 소셜 계정의 토큰이 만료됩니다.
+     *
+     * @param socialToken 소셜 토큰
+     * @param userId      회원 아이디넘버
+     */
+    public void logout(String socialToken, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
+        LoginStrategy strategy = loginStrategyFactory.findStrategy(user.getLoginType());
+        strategy.logout(socialToken);
     }
 
     /**
      * 회원을 탈퇴시킵니다.
      *
      * @param socialToken 소셜 토큰
-     * @param userId 회원 아이디넘버
+     * @param userId      회원 아이디넘버
      */
     @Transactional
     public void withdraw(String socialToken, Long userId) {

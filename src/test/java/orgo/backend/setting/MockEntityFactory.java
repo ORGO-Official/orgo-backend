@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._2user.domain.User;
 import orgo.backend.domain._3mountain.domain.*;
 
@@ -17,6 +18,11 @@ public class MockEntityFactory {
 
     public static User mockUser() {
         return User.builder()
+                .nickname("테스트유저")
+                .email("hansol8701@test.com")
+                .socialId("123456")
+                .profileImage("기본 프로필 이미지")
+                .loginType(LoginType.NAVER)
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
     }
@@ -47,7 +53,7 @@ public class MockEntityFactory {
     public static MockMultipartFile mockMultipartFileImage(String paramName) throws IOException {
         String ORIGINAL_FILE_NAME = "text-image.jpg";
         String CONTENT_TYPE = MediaType.IMAGE_JPEG_VALUE;
-        String PATH = "src/test/java/projectbuildup/mivv/integrationtest/setting/files/text-image.jpg";
+        String PATH = "src/test/java/orgo/backend/setting/files/text-image.jpg";
         FileInputStream fileInputStream = new FileInputStream(PATH);
         return new MockMultipartFile(paramName, ORIGINAL_FILE_NAME, CONTENT_TYPE, fileInputStream);
     }

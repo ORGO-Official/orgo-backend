@@ -18,3 +18,8 @@ spring:
         hbm2ddl:
           auto: create
     show-sql: true
+orgo-server:
+  address:
+  path:
+    storage:
+      images: src/test/resources/store/images

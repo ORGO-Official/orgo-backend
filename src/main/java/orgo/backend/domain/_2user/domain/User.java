@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._1auth.domain.PersonalData;
 import orgo.backend.domain._4climbingRecord.domain.ClimbingRecord;
+import orgo.backend.domain._etc.image.ImageUploader;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class User implements UserDetails {
     String nickname;
     String email;
     String socialId;
+    String profileImage;
+    @Enumerated(value = EnumType.STRING)
     LoginType loginType;
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
@@ -44,13 +47,14 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public static User signup(PersonalData personalData) {
+    public static User signup(PersonalData personalData, String profileImage) {
         return User.builder()
                 .nickname(personalData.getNickname())
                 .email(personalData.getEmail())
                 .socialId(personalData.getSocialId())
                 .loginType(personalData.getLoginType())
                 .roles(Collections.singletonList(DEFAULT_ROLE))
+                .profileImage(profileImage)
                 .build();
     }
 
@@ -84,4 +88,8 @@ public class User implements UserDetails {
         return true;
     }
 
+    public void updateProfile(String nickname, String profileImage) {
+        this.nickname = nickname;
+        // this.profileImage = profileImage;
+    }
 }

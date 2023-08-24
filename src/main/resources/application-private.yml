@@ -8,5 +8,7 @@ auth:
     client-id: CmSvvZFnw1WCzjqSq5dQ
     client-secret: zXn_Mxth_5
   kakao:
-    client-id: ooo
-    client-secret: ooo
+    rest_api_key: c60eda1ceb691b855e628903c94da968
+  openapi:
+    serviceKey: 6VuSWL7hrdd5tfkipCx%2Btcr7kPla0Vk%2BZCx3li0tAyftAak75s1%2Bova46Svl3BwONWv1wbFLZ0Xkm8g1KljxmA%3D%3D #encoding
+#    serviceKey: 6VuSWL7hrdd5tfkipCx+tcr7kPla0Vk+ZCx3li0tAyftAak75s1+ova46Svl3BwONWv1wbFLZ0Xkm8g1KljxmA==  # decoding
