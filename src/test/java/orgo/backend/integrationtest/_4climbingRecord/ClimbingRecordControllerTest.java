@@ -74,19 +74,16 @@ public class ClimbingRecordControllerTest extends IntegrationTest {
 
         climbingRecordService.registerClimbingRecord(savedUser.getId(), userPosDto);
 
-        //when
-        //List<ClimbingRecordDto> climbingRecordDtos = climbingRecordService.viewMyClimbingRecords(1L);
-
-        //여기서 길이가 0임
-        //log.info("ClimbingRecordDtos len : " + climbingRecordDtos.size());
-
         ResultActions actions = mvc.perform(get(VIEW_CLIMBINGRECORDS_API,1L));
 
         //then
         actions.andExpect(status().isOk())
                 .andDo(docs("climbingRecords-get-all",
                         responseFields(
-                                field("[].id").type(JsonFieldType.NUMBER).description("아이디넘버")
+                                field("[].id").type(JsonFieldType.NUMBER).description("아이디넘버"),
+                                field("[].mountainId").type(JsonFieldType.NUMBER).description("산 아이디넘버"),
+                                field("[].mountainName").description("산 이름"),
+                                field("[].date").description("완등 날짜")
                         )
                 ));
     }
