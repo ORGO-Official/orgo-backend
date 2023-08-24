@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import orgo.backend.domain._1auth.domain.PersonalData;
+import orgo.backend.global.error.exception.SocialTokenExpiredException;
 
 import java.util.Objects;
 
@@ -95,7 +96,7 @@ public class NaverLoginStrategy implements LoginStrategy {
                 return;
             }
             if (this.resultcode.equals("401")) {
-                throw new RuntimeException("소셜 토큰이 만료되었습니다. 다시 로그인해주세요.");
+                throw new SocialTokenExpiredException();
             }
             throw new RuntimeException("클라이언트 오류입니다. 다시 시도해주세요.");
         }
