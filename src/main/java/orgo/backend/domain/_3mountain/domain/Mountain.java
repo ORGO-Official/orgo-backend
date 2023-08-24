@@ -23,6 +23,9 @@ public class Mountain extends BaseTimeEntity {
     String description;
     String address;
     String contact;
+    String mainImage;
+    String backgroundImage;
+    String requiredTime;
     @Enumerated(value = EnumType.STRING)
     Difficulty difficulty;
     @Embedded

@@ -12,12 +12,14 @@ import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._1auth.domain.PersonalData;
 import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.User;
+import orgo.backend.domain._etc.image.ImageUploader;
 import orgo.backend.global.constant.Header;
 import orgo.backend.setting.IntegrationTest;
 import orgo.backend.setting.MockEntityFactory;
 import orgo.backend.setting.TestJwtProvider;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import static hansol.restdocsdsl.docs.RestDocsAdapter.docs;
 import static hansol.restdocsdsl.docs.RestDocsHeader.requestHeaders;
@@ -207,5 +209,24 @@ public class AuthControllerTest extends IntegrationTest {
         // then
         actions.andExpect(status().isOk());
         assertThat(userRepository.findBySocialIdAndLoginType(user.getSocialId(), user.getLoginType())).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("회원가입에 성공하면, 기본 프로필 이미지로 설정된다.")
+    void test7() throws Exception {
+        //given
+        String socialToken = "social-access";
+        PersonalData personalData = new PersonalData("김민수", "test@kakao.com", "11111", LoginType.KAKAO);
+        given(kakaoLoginStrategy.getPersonalData(socialToken)).willReturn(personalData);
+
+        // when
+        ResultActions actions = mvc.perform(post(LOGIN_API, "kakao")
+                .header(Header.SOCIAL, socialToken));
+
+        // then
+        actions.andExpect(status().isOk());
+        Optional<User> optionalUser = userRepository.findBySocialIdAndLoginType("11111", LoginType.KAKAO);
+        assertThat(optionalUser).isNotEmpty();
+        assertThat(optionalUser.get().getProfileImage()).contains(ImageUploader.DEFAULT_PROFILE_IMAGE_NAME);
     }
 }

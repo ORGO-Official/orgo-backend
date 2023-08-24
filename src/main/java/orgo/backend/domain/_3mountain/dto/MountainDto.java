@@ -14,6 +14,9 @@ public class MountainDto {
         private final String description;
         private final String address;
         private final String contact;
+        private final String mainImage;
+        private final String backgroundImage;
+        private final String requiredTime;
         private final Difficulty difficulty;
         private final Location location;
         private final FeatureTag featureTag;
@@ -24,6 +27,9 @@ public class MountainDto {
             this.description = mountain.getDescription();
             this.address = mountain.getAddress();
             this.contact = mountain.getContact();
+            this.mainImage = mountain.getMainImage();
+            this.backgroundImage = mountain.getBackgroundImage();
+            this.requiredTime = mountain.getRequiredTime();
             this.difficulty = mountain.getDifficulty();
             this.location = mountain.getLocation();
             this.featureTag = mountain.getFeatureTag();

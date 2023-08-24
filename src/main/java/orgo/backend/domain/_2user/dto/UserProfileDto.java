@@ -20,7 +20,7 @@ public class UserProfileDto {
             this.id = user.getId();
             this.nickname = user.getNickname();
             this.email = user.getEmail();
-            this.profileImage = "";
+            this.profileImage = user.getProfileImage();
             this.loginType = user.getLoginType();
         }
     }
@@ -31,10 +31,5 @@ public class UserProfileDto {
     public static class Request {
         private String nickname;
         private String profileImage;
-
-        public Request(User user) {
-            this.nickname = user.getNickname();
-            this.profileImage = "";
-        }
     }
 }
