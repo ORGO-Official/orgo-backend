@@ -1,13 +1,10 @@
 |===
-|Path|Type|Description|Constraints|Default|Required
+|Path|Type|Description|Required
 
 {{#fields}}
 |{{#tableCellContent}}`+{{path}}+`{{/tableCellContent}}
 |{{#tableCellContent}}`+{{type}}+`{{/tableCellContent}}
 |{{#tableCellContent}}{{description}}{{/tableCellContent}}
-|{{#constraints }}{{.}}{{/constraints}}
-|{{#defaultValue }}{{.}}{{/defaultValue}}
 |{{#tableCellContent}}{{^optional}}⭕{{/optional}}{{/tableCellContent}}
-
 {{/fields}}
 |===

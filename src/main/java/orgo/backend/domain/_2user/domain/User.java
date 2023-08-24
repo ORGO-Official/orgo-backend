@@ -81,4 +81,8 @@ public class User implements UserDetails {
         return true;
     }
 
+    public void updateProfile(String nickname, String profileImage) {
+        this.nickname = nickname;
+        // this.profileImage = profileImage;
+    }
 }
