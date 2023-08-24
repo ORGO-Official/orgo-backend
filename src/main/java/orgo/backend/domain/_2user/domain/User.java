@@ -29,6 +29,7 @@ public class User implements UserDetails {
     String nickname;
     String email;
     String socialId;
+    String profileImage;
     @Enumerated(value = EnumType.STRING)
     LoginType loginType;
     @ElementCollection(fetch = FetchType.LAZY)
@@ -48,6 +49,7 @@ public class User implements UserDetails {
                 .socialId(personalData.getSocialId())
                 .loginType(personalData.getLoginType())
                 .roles(Collections.singletonList(DEFAULT_ROLE))
+                .profileImage("")
                 .build();
     }
 
