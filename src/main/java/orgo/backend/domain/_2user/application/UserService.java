@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.User;
 import orgo.backend.domain._2user.dto.UserProfileDto;
+import orgo.backend.global.error.exception.UserNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public class UserService {
      * @return 프로필 정보
      */
     public UserProfileDto.Response getProfile(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         return new UserProfileDto.Response(user);
     }
 
@@ -31,7 +32,7 @@ public class UserService {
      * @param requestDto 수정할 항목
      */
     public void updateProfile(Long userId, UserProfileDto.Request requestDto) {
-        User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         user.updateProfile(requestDto.getNickname(), requestDto.getProfileImage());
     }
 }
