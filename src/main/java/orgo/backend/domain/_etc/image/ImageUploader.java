@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import orgo.backend.global.error.exception.InternalServerException;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,8 +59,8 @@ public class ImageUploader {
         try {
             multipartFile.transferTo(destination);
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("파일 업로드 중 오류가 발생했습니다. ");
+            log.error("파일 업로드에 실패했습니다.");
+            throw new InternalServerException();
         }
     }
 
