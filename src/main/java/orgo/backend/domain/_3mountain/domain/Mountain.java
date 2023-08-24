@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import orgo.backend.domain._4climbingRecord.domain.ClimbingRecord;
 import orgo.backend.global.config.jpa.BaseTimeEntity;
 
 import java.util.List;
@@ -34,4 +35,6 @@ public class Mountain extends BaseTimeEntity {
     FeatureTag featureTag;
     @OneToMany(mappedBy = "mountain", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     List<Peak> peaks;
+    @OneToMany(mappedBy = "mountain", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ClimbingRecord> climbingRecords;
 }
