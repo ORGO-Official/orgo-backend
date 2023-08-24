@@ -1,7 +1,10 @@
 package orgo.backend.domain._4climbingRecord.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import orgo.backend.domain._2user.domain.User;
 import orgo.backend.domain._3mountain.domain.Mountain;
 import orgo.backend.global.config.jpa.BaseTimeEntity;
