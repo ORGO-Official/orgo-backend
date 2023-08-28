@@ -33,4 +33,23 @@ class MountainRepositoryTest extends RepositoryTest {
         assertThat(found).isNotEmpty();
         assertThat(found.get().getPeaks()).isNotNull();
     }
+
+    @Test
+    @DisplayName("이름에 특정 문자열이 포함된 산을 조회한다.")
+    void test1() {
+        // given
+        Peak peak = MockEntityFactory.mockPeak();
+        Mountain mountain = MockEntityFactory.mockMountain(peak);
+        mountainRepository.save(mountain);
+
+        String keyword = mountain.getName().substring(1);
+
+        // when
+        List<String> mountainNames = mountainRepository.findByKeyword(keyword).stream()
+                .map(Mountain::getName)
+                .toList();
+
+        // then
+        assertThat(mountainNames).contains(mountain.getName());
+    }
 }

@@ -4,10 +4,7 @@ import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import orgo.backend.domain._3mountain.application.MountainService;
 import orgo.backend.domain._3mountain.application.RestaurantService;
 import orgo.backend.domain._3mountain.domain.PlaceInfo;
@@ -30,10 +27,11 @@ public class MountainController {
      */
     @PermitAll
     @GetMapping("/mountains")
-    public ResponseEntity<List<MountainDto.Response>> getMountains() {
-        List<MountainDto.Response> responseDto = mountainService.findAll();
+    public ResponseEntity<List<MountainDto.Response>> getMountains(@RequestParam(required = false) String keyword) {
+        List<MountainDto.Response> responseDto = mountainService.findAll(keyword);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
 
     /**
      * 근처 식당 목록 조회 API
