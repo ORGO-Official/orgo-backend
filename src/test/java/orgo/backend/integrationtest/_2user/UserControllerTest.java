@@ -6,9 +6,12 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import orgo.backend.domain._1auth.domain.LoginType;
 import orgo.backend.domain._2user.application.UserService;
 import orgo.backend.domain._2user.dao.UserRepository;
@@ -24,12 +27,13 @@ import java.util.Optional;
 import static hansol.restdocsdsl.docs.RestDocsAdapter.docs;
 import static hansol.restdocsdsl.docs.RestDocsHeader.requestHeaders;
 import static hansol.restdocsdsl.docs.RestDocsRequest.requestFields;
+import static hansol.restdocsdsl.docs.RestDocsRequestPart.requestParts;
 import static hansol.restdocsdsl.docs.RestDocsResponse.responseFields;
 import static hansol.restdocsdsl.element.FieldElement.field;
 import static hansol.restdocsdsl.element.HeaderElement.header;
+import static hansol.restdocsdsl.element.PartElement.part;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserControllerTest extends IntegrationTest {
@@ -73,13 +77,16 @@ public class UserControllerTest extends IntegrationTest {
         // given
         User user = MockEntityFactory.mockUser();
         User saved = userRepository.save(user);
-        UserProfileDto.Request requestDto = new UserProfileDto.Request("수정할 닉네임", "수정할 프로필 사진");
+        UserProfileDto.Request requestDto = new UserProfileDto.Request("수정할 닉네임");
+        MockMultipartFile requestPartImage = MockEntityFactory.mockMultipartFileImage("imageFile");
+        MockMultipartFile requestPartJson = MockEntityFactory.mockMultipartFileJson("requestDto", requestDto);
+        String originalImage = user.getProfileImage();
 
         // when
-        ResultActions actions = mvc.perform(put(UPDATE_PROFILE_API)
-                .header(Header.AUTH, testJwtProvider.generate(saved))
-                .content(objectMapper.writeValueAsString(requestDto))
-                .contentType(MediaType.APPLICATION_JSON));
+        ResultActions actions = mvc.perform(multipart(HttpMethod.PUT, UPDATE_PROFILE_API)
+                .file(requestPartImage)
+                .file(requestPartJson)
+                .header(Header.AUTH, testJwtProvider.generate(saved)));
 
         // then
         actions.andExpect(status().isNoContent())
@@ -87,12 +94,13 @@ public class UserControllerTest extends IntegrationTest {
                         requestHeaders(
                                 header(Header.AUTH).description("액세스 토큰")
                         ),
-                        requestFields(
-                                field("nickname").description("닉네임").optional(),
-                                field("profileImage").description("프로필 이미지").optional()
+                        requestParts(
+                                part("requestDto").description("수정할 닉네임").optional(),
+                                part("imageFile").description("수정할 프로필 이미지 파일").optional()
                         )));
         Optional<User> optionalUser = userRepository.findById(saved.getId());
         assertThat(optionalUser).isNotEmpty();
-        assertThat(optionalUser.get().getNickname()).isEqualTo("수정할 닉네임");
+        assertThat(optionalUser.get().getNickname()).isEqualTo(requestDto.getNickname());
+        assertThat(optionalUser.get().getProfileImage()).isNotEqualTo(originalImage);
     }
 }

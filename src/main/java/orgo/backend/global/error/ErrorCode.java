@@ -18,7 +18,8 @@ public enum ErrorCode {
     INVALID_JWT("0006", "유효하지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED),
     EXPIRED_JWT("0007", "만료된 토큰입니다.", HttpStatus.UNAUTHORIZED),
     UNSUPPORTED_JWT("0008", "지원하지 않는 토큰 형식입니다.", HttpStatus.UNAUTHORIZED),
-    WRONG_SIGNATURE_JWT("0009", "토큰의 시그니처가 잘못되었습니다.", HttpStatus.UNAUTHORIZED);
+    WRONG_SIGNATURE_JWT("0009", "토큰의 시그니처가 잘못되었습니다.", HttpStatus.UNAUTHORIZED),
+    MOUNTAIN_NOT_FOUND("0010", "해당 산을 조회할 수 없습니다.", HttpStatus.NOT_FOUND);
 
     private final String code;
     private final String message;

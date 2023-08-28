@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 
 import static hansol.restdocsdsl.docs.RestDocsAdapter.docs;
 import static hansol.restdocsdsl.docs.RestDocsPathParam.pathParams;
+import static hansol.restdocsdsl.docs.RestDocsQueryParam.queryParams;
 import static hansol.restdocsdsl.docs.RestDocsResponse.responseFields;
 import static hansol.restdocsdsl.element.FieldElement.field;
 import static hansol.restdocsdsl.element.ParamElement.param;
@@ -36,7 +37,7 @@ public class MountainControllerTest extends IntegrationTest {
 
 
     @Test
-    @DisplayName("[산 목록 조회] - 성공 (더미데이터 기반 테스트)")
+    @DisplayName("[산 목록 조회] - 성공")
     void test() throws Exception {
         // given
 
@@ -57,6 +58,9 @@ public class MountainControllerTest extends IntegrationTest {
                 .andExpect(jsonPath("$[8].name", equalTo("도봉산")))
                 .andExpect(jsonPath("$[9].name", equalTo("불암산")))
                 .andDo(docs("mountain-get-all",
+                        queryParams(
+                                param("keyword").description("검색어").optional()
+                        ),
                         responseFields(
                                 field("[].id").type(JsonFieldType.NUMBER).description("아이디넘버"),
                                 field("[].name").description("이름"),
@@ -82,6 +86,8 @@ public class MountainControllerTest extends IntegrationTest {
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         log.info(responseBody);
     }
+
+
 
     @Test
     @DisplayName("[근처 식당 조회(아차산)] - 성공")

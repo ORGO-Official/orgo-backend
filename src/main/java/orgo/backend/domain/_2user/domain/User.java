@@ -40,6 +40,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<ClimbingRecord> climbingRecords = new ArrayList<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles
@@ -90,6 +91,6 @@ public class User implements UserDetails {
 
     public void updateProfile(String nickname, String profileImage) {
         this.nickname = nickname;
-        // this.profileImage = profileImage;
+        this.profileImage = profileImage;
     }
 }

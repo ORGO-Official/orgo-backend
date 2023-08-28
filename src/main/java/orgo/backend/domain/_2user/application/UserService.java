@@ -1,16 +1,22 @@
 package orgo.backend.domain._2user.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import orgo.backend.domain._2user.dao.UserRepository;
 import orgo.backend.domain._2user.domain.User;
 import orgo.backend.domain._2user.dto.UserProfileDto;
+import orgo.backend.domain._etc.image.ImageType;
+import orgo.backend.domain._etc.image.ImageUploader;
 import orgo.backend.global.error.exception.UserNotFoundException;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final ImageUploader imageUploader;
 
     /**
      * 사용자 프로필을 조회합니다.
@@ -28,11 +34,19 @@ public class UserService {
      * 사용자 프로필을 수정합니다.
      * 닉네임과 이미지를 수정할 수 있습니다.
      *
-     * @param userId 사용자 아이디넘버
+     * @param userId     사용자 아이디넘버
      * @param requestDto 수정할 항목
      */
-    public void updateProfile(Long userId, UserProfileDto.Request requestDto) {
+    public void updateProfile(Long userId, UserProfileDto.Request requestDto, MultipartFile imageFile) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        user.updateProfile(requestDto.getNickname(), requestDto.getProfileImage());
+        String imageUrl = getImageUrl(imageFile);
+        user.updateProfile(requestDto.getNickname(), imageUrl);
+    }
+
+    private String getImageUrl(MultipartFile imageFile) {
+        if (imageFile == null) {
+            return imageUploader.getDefaultProfileImage();
+        }
+        return imageUploader.upload(imageFile, ImageType.PROFILE);
     }
 }

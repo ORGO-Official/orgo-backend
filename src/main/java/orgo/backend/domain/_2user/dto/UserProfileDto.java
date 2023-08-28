@@ -30,6 +30,5 @@ public class UserProfileDto {
     @AllArgsConstructor
     public static class Request {
         private String nickname;
-        private String profileImage;
     }
 }

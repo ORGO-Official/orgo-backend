@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import orgo.backend.domain._2user.application.UserService;
 import orgo.backend.domain._2user.dto.UserProfileDto;
 
@@ -24,8 +25,8 @@ public class UserController {
 
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/users/profile")
-    public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal Long userId, @RequestBody UserProfileDto.Request requestDto) {
-        userService.updateProfile(userId, requestDto);
+    public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal Long userId, @RequestPart MultipartFile imageFile, @RequestPart UserProfileDto.Request requestDto) {
+        userService.updateProfile(userId, requestDto, imageFile);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
