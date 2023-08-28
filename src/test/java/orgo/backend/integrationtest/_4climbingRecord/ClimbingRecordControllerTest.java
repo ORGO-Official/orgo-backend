@@ -110,7 +110,7 @@ public class ClimbingRecordControllerTest extends IntegrationTest {
 
         climbingRecordService.registerClimbingRecord(savedUser.getId(), userPosDto);
 
-        ResultActions actions = mvc.perform(get(VIEW_CLIMBINGRECORDS_API,1L));
+        ResultActions actions = mvc.perform(get(VIEW_CLIMBINGRECORDS_API,savedUser.getId()));
 
         //then
         actions.andExpect(status().isOk())
@@ -119,7 +119,7 @@ public class ClimbingRecordControllerTest extends IntegrationTest {
                                 field("[].id").type(JsonFieldType.NUMBER).description("아이디넘버"),
                                 field("[].mountainId").type(JsonFieldType.NUMBER).description("산 아이디넘버"),
                                 field("[].mountainName").description("산 이름"),
-                                field("[].date").type(JsonFieldType.ARRAY).description("완등 날짜")
+                                field("[].date").description("완등 날짜")
                         )
                 ));
     }
