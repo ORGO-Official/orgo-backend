@@ -4,15 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import orgo.backend.domain._1auth.domain.LoginType;
-import orgo.backend.domain._2user.domain.User;
-import orgo.backend.domain._3mountain.domain.*;
+import orgo.backend.domain._1auth.entity.LoginType;
+import orgo.backend.domain._2user.entity.User;
+import orgo.backend.domain._3mountain.entity.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class MockEntityFactory {
 

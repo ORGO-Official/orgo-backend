@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import orgo.backend.domain._3mountain.application.placesearcher.OpenPortalPlaceSearcher;
-import orgo.backend.domain._3mountain.domain.PlaceInfo;
+import orgo.backend.domain._3mountain.service.placesearcher.OpenPortalPlaceSearcher;
+import orgo.backend.domain._3mountain.entity.PlaceInfo;
 import orgo.backend.setting.IntegrationTest;
 
 import java.util.List;

@@ -1,22 +1,9 @@
 package orgo.backend.setting;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-import orgo.backend.domain._1auth.domain.ServiceToken;
-import orgo.backend.domain._2user.domain.User;
+import orgo.backend.domain._2user.entity.User;
 import orgo.backend.global.config.security.JwtProvider;
-
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.util.Date;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor

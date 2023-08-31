@@ -8,8 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-import orgo.backend.domain._1auth.domain.ServiceToken;
-import orgo.backend.domain._2user.domain.User;
+import orgo.backend.domain._1auth.vo.ServiceToken;
+import orgo.backend.domain._2user.entity.User;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;

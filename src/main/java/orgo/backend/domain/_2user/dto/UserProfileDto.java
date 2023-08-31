@@ -3,8 +3,8 @@ package orgo.backend.domain._2user.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import orgo.backend.domain._1auth.domain.LoginType;
-import orgo.backend.domain._2user.domain.User;
+import orgo.backend.domain._1auth.entity.LoginType;
+import orgo.backend.domain._2user.entity.User;
 
 public class UserProfileDto {
 

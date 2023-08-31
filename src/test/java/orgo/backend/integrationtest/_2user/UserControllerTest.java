@@ -1,21 +1,14 @@
 package orgo.backend.integrationtest._2user;
 
-import hansol.restdocsdsl.element.FieldElement;
-import hansol.restdocsdsl.element.HeaderElement;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import orgo.backend.domain._1auth.domain.LoginType;
-import orgo.backend.domain._2user.application.UserService;
-import orgo.backend.domain._2user.dao.UserRepository;
-import orgo.backend.domain._2user.domain.User;
+import orgo.backend.domain._2user.repository.UserRepository;
+import orgo.backend.domain._2user.entity.User;
 import orgo.backend.domain._2user.dto.UserProfileDto;
 import orgo.backend.global.constant.Header;
 import orgo.backend.setting.IntegrationTest;
@@ -26,7 +19,6 @@ import java.util.Optional;
 
 import static hansol.restdocsdsl.docs.RestDocsAdapter.docs;
 import static hansol.restdocsdsl.docs.RestDocsHeader.requestHeaders;
-import static hansol.restdocsdsl.docs.RestDocsRequest.requestFields;
 import static hansol.restdocsdsl.docs.RestDocsRequestPart.requestParts;
 import static hansol.restdocsdsl.docs.RestDocsResponse.responseFields;
 import static hansol.restdocsdsl.element.FieldElement.field;

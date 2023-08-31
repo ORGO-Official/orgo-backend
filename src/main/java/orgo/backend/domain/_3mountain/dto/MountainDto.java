@@ -1,10 +1,10 @@
 package orgo.backend.domain._3mountain.dto;
 
 import lombok.Getter;
-import orgo.backend.domain._3mountain.domain.Difficulty;
-import orgo.backend.domain._3mountain.domain.FeatureTag;
-import orgo.backend.domain._3mountain.domain.Location;
-import orgo.backend.domain._3mountain.domain.Mountain;
+import orgo.backend.domain._3mountain.entity.Difficulty;
+import orgo.backend.domain._3mountain.entity.FeatureTag;
+import orgo.backend.domain._3mountain.entity.Location;
+import orgo.backend.domain._3mountain.entity.Mountain;
 
 public class MountainDto {
     @Getter

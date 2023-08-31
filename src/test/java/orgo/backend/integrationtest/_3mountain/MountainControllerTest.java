@@ -6,11 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
-import orgo.backend.domain._3mountain.dao.MountainRepository;
-import orgo.backend.domain._3mountain.domain.Mountain;
-import orgo.backend.domain._3mountain.domain.Peak;
+import orgo.backend.domain._3mountain.repository.MountainRepository;
 import orgo.backend.setting.IntegrationTest;
-import orgo.backend.setting.MockEntityFactory;
 
 import java.nio.charset.StandardCharsets;
 

@@ -1,7 +1,7 @@
 package orgo.backend.domain._3mountain.dto;
 
 import lombok.Getter;
-import orgo.backend.domain._3mountain.domain.PlaceInfo;
+import orgo.backend.domain._3mountain.entity.PlaceInfo;
 
 public class RestaurantDto {
     @Getter
