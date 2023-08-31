@@ -1,4 +1,4 @@
-package orgo.backend.integrationtest._1auth;
+package orgo.backend.domain._1auth.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;

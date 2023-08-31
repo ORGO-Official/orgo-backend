@@ -37,9 +37,9 @@ public class ClimbingRecordTest {
     @Autowired
     ClimbingRecordService climbingRecordService;
 
-    Peak peak = MockEntityFactory.mockPeak();
-    Mountain mountain = MockEntityFactory.mockMountain(peak);
-    User user = MockEntityFactory.mockUser();
+    Peak peak = MockEntityFactory.mockPeak(null);
+    Mountain mountain = MockEntityFactory.mockMountain(null, peak);
+    User user = MockEntityFactory.mockUser(null);
     Mountain savedMountain;
 
     @BeforeAll

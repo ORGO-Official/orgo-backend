@@ -10,13 +10,15 @@ import orgo.backend.domain._3mountain.entity.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
 public class MockEntityFactory {
 
-    public static User mockUser() {
+    public static User mockUser(Long id) {
         return User.builder()
+                .id(id)
                 .nickname("테스트유저")
                 .email("hansol8701@test.com")
                 .socialId("123456")
@@ -26,24 +28,30 @@ public class MockEntityFactory {
                 .build();
     }
 
-    public static Peak mockPeak() {
+    public static Peak mockPeak(Long id) {
         return Peak.builder()
+                .id(id)
                 .name("에베레스트산 정상")
                 .location(new Location(36.103958, 128.423648, 352.168))
                 .isTop(true)
                 .build();
     }
 
-    public static Mountain mockMountain(Peak... peaks) {
+    public static Mountain mockMountain(Long id, Peak... peaks) {
         return Mountain.builder()
+                .id(id)
                 .name("에베레스트산")
                 .description("세계에서 가장 높은 산")
                 .address("경상북도 구미시 여헌로 15-11")
                 .contact("010-1234-5678")
+                .mainImage("image.jpg")
+                .backgroundImage("image.jpg")
+                .requiredTime("1시간 ~ 2시간")
                 .difficulty(Difficulty.HARD)
                 .location(new Location(36.103958, 128.423648, 352.168))
                 .featureTag(new FeatureTag(true, 1, true, true, true))
                 .peaks(Arrays.asList(peaks))
+                .climbingRecords(new ArrayList<>())
                 .build();
 
     }

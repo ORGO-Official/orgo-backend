@@ -1,4 +1,4 @@
-package orgo.backend.integrationtest._etc;
+package orgo.backend.domain._etc;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -20,8 +20,8 @@ class MountainRepositoryTest extends RepositoryTest {
     @DisplayName("Mountain 엔티티가 저장될 때, Peak 엔티티도 함께 저장된다. ")
     void test() {
         // given
-        Peak peak = MockEntityFactory.mockPeak();
-        Mountain mountain = MockEntityFactory.mockMountain(peak);
+        Peak peak = MockEntityFactory.mockPeak(null);
+        Mountain mountain = MockEntityFactory.mockMountain(null, peak);
 
         // when
         Mountain saved = mountainRepository.save(mountain);
@@ -36,8 +36,8 @@ class MountainRepositoryTest extends RepositoryTest {
     @DisplayName("이름에 특정 문자열이 포함된 산을 조회한다.")
     void test1() {
         // given
-        Peak peak = MockEntityFactory.mockPeak();
-        Mountain mountain = MockEntityFactory.mockMountain(peak);
+        Peak peak = MockEntityFactory.mockPeak(null);
+        Mountain mountain = MockEntityFactory.mockMountain(null, peak);
         mountainRepository.save(mountain);
 
         String keyword = mountain.getName().substring(1);

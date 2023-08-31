@@ -1,85 +1,95 @@
-package orgo.backend.integrationtest._4climbingRecord;
+package orgo.backend.domain._4climbingRecord.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import orgo.backend.domain._2user.repository.UserRepository;
 import orgo.backend.domain._2user.entity.User;
+import orgo.backend.domain._3mountain.controller.MountainController;
 import orgo.backend.domain._3mountain.repository.MountainRepository;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._3mountain.entity.Peak;
+import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
+import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.service.ClimbingRecordService;
 import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
+import orgo.backend.global.config.security.JwtAuthenticationFilter;
+import orgo.backend.global.config.security.SecurityConfig;
 import orgo.backend.global.constant.Header;
 import orgo.backend.setting.IntegrationTest;
 import orgo.backend.setting.MockEntityFactory;
 import orgo.backend.setting.TestJwtProvider;
+import orgo.backend.setting.WithCustomMockUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static hansol.restdocsdsl.docs.RestDocsAdapter.docs;
 import static hansol.restdocsdsl.docs.RestDocsRequest.requestFields;
 import static hansol.restdocsdsl.docs.RestDocsResponse.responseFields;
 import static hansol.restdocsdsl.element.FieldElement.field;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ClimbingRecordControllerTest extends IntegrationTest {
+@AutoConfigureRestDocs
+@WebMvcTest(value = ClimbingRecordController.class, excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class),
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class)
+})
+public class ClimbingRecordControllerTest {
 
     private final static String VIEW_CLIMBINGRECORDS_API = "/api/{userId}/climbingrecords";
     private final static String REGISTER_CLIMBINGRECORDS_API = "/api/climbingrecords";
 
-    @Autowired
-    MountainRepository mountainRepository;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    ClimbingRecordRepository climbingRecordRepository;
-    @Autowired
+    @MockBean
     ClimbingRecordService climbingRecordService;
     @Autowired
-    TestJwtProvider testJwtProvider;
+    MockMvc mvc;
+    @Autowired
+    ObjectMapper objectMapper;
 
-    Peak peak = MockEntityFactory.mockPeak();
-    Mountain mountain = MockEntityFactory.mockMountain(peak);
-    User user = MockEntityFactory.mockUser();
-    Mountain savedMountain;
-
-    @BeforeAll
-    void setSavedMountain() {
-        savedMountain = mountainRepository.save(mountain);
-    }
+    Peak peak = MockEntityFactory.mockPeak(1L);
+    Mountain mountain = MockEntityFactory.mockMountain(1L, peak);
+    User user = MockEntityFactory.mockUser(1L);
 
     @Test
+    @WithCustomMockUser
     @DisplayName("등산 완등 인증 요청을 처리합니다")
-    void registerClimbingRecordsTest() throws Exception{
+    void registerClimbingRecordsTest() throws Exception {
         //given
-        User savedUser = userRepository.save(user);
-
+        String accessToken = "access-token";
         UserPosDto userPosDto = UserPosDto.builder()
                 .date(LocalDateTime.now())
-                .mountainId(savedMountain.getId())
+                .mountainId(mountain.getId())
                 .altitude(mountain.getLocation().getAltitude())
                 .latitude(mountain.getLocation().getLatitude())
                 .longitude(mountain.getLocation().getLongitude())
                 .build();
 
-        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-
         //when
         ResultActions actions = mvc.perform(post(REGISTER_CLIMBINGRECORDS_API)
-                .header(Header.AUTH, testJwtProvider.generate(savedUser))
+                .header(Header.AUTH, accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userPosDto)));
+                .content(objectMapper.writeValueAsString(userPosDto))
+                .with(csrf()));
 
         //then
         actions.andExpect(status().isCreated())
@@ -89,28 +99,26 @@ public class ClimbingRecordControllerTest extends IntegrationTest {
                                 field("latitude").type(JsonFieldType.NUMBER).description("산 위도"),
                                 field("longitude").type(JsonFieldType.NUMBER).description("산 경도"),
                                 field("altitude").type(JsonFieldType.NUMBER).description("산 고도"),
-                                field("date").type(JsonFieldType.ARRAY).description("완등 날짜")
+                                field("date").description("완등 날짜")
                         )
                 ));
     }
 
     @Test
+    @WithCustomMockUser
     @DisplayName("사용자의 모든 완등기록을 조회합니다")
-    void viewMyClimbingRecordsTest() throws Exception{
+    void viewMyClimbingRecordsTest() throws Exception {
         //given
-        User savedUser = userRepository.save(user);
+        ClimbingRecord climbingRecord1 = new ClimbingRecord(1L, LocalDateTime.now(), user, mountain);
+        ClimbingRecord climbingRecord2 = new ClimbingRecord(2L, LocalDateTime.now(), user, mountain);
+        ClimbingRecord climbingRecord3 = new ClimbingRecord(3L, LocalDateTime.now(), user, mountain);
+        List<ClimbingRecordDto> response = Stream.of(climbingRecord1, climbingRecord2, climbingRecord3)
+                .map(ClimbingRecordDto::new)
+                .toList();
+        given(climbingRecordService.viewMyClimbingRecords(user.getId())).willReturn(response);
+        ResultActions actions = mvc.perform(get(VIEW_CLIMBINGRECORDS_API, user.getId())
+                .with(csrf()));
 
-        UserPosDto userPosDto = UserPosDto.builder()
-                .date(LocalDateTime.now())
-                .mountainId(savedMountain.getId())
-                .altitude(mountain.getLocation().getAltitude())
-                .latitude(mountain.getLocation().getLatitude())
-                .longitude(mountain.getLocation().getLongitude())
-                .build();
-
-        climbingRecordService.registerClimbingRecord(savedUser.getId(), userPosDto);
-
-        ResultActions actions = mvc.perform(get(VIEW_CLIMBINGRECORDS_API,savedUser.getId()));
 
         //then
         actions.andExpect(status().isOk())
