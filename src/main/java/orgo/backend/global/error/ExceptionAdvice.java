@@ -7,6 +7,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import orgo.backend.global.error.exception.InternalServerException;
 import orgo.backend.global.error.exception.OrgoException;
 
 import java.util.ArrayList;
@@ -50,6 +51,13 @@ public class ExceptionAdvice {
     protected ResponseEntity<ErrorResponseDto> handle(InterruptedException e) {
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
         e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getHttpStatus());
+    }
+
+    @ExceptionHandler(InternalServerException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(InternalServerException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.getOriginalException().printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getHttpStatus());
     }
 

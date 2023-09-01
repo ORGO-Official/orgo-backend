@@ -17,6 +17,7 @@ import java.util.UUID;
 @Slf4j
 @Component
 public class ImageUploader {
+
     @Value("${orgo-server.path.storage.images}")
     String IMAGE_STORAGE_PATH;
     @Value("${orgo-server.address}")
@@ -37,8 +38,20 @@ public class ImageUploader {
         requireNonNull(multipartFile);
         String originalName = multipartFile.getOriginalFilename();
         String storedPath = makeStoredPath(imageType, originalName);
-        transferFile(multipartFile, storedPath);
+        try {
+            makeDirectoriesIfNotExist(storedPath);
+            transferFile(multipartFile, storedPath);
+        } catch (IOException e) {
+            throw new InternalServerException(e);
+        }
         return SERVER_ADDRESS + storedPath;
+    }
+
+    private void makeDirectoriesIfNotExist(String storedPath) throws IOException {
+        File file = new File(storedPath);
+        if (!file.mkdirs()) {
+            throw new IOException();
+        }
     }
 
     /**
@@ -54,14 +67,9 @@ public class ImageUploader {
         return IMAGE_STORAGE_PATH + imageType.getDirectory() + makeRandomNameWithExtension(originalName);
     }
 
-    private void transferFile(MultipartFile multipartFile, String storedPath) {
+    private void transferFile(MultipartFile multipartFile, String storedPath) throws IOException {
         File destination = new File(storedPath);
-        try {
-            multipartFile.transferTo(destination);
-        } catch (IOException e) {
-            log.error("파일 업로드에 실패했습니다.");
-            throw new InternalServerException();
-        }
+        multipartFile.transferTo(destination);
     }
 
     private void requireNonNull(MultipartFile multipartFile) {

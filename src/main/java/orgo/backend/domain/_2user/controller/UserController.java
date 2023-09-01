@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import orgo.backend.domain._2user.service.UserService;
 import orgo.backend.domain._2user.dto.UserProfileDto;
 
+import java.io.IOException;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -21,15 +23,16 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/users/profile")
     public ResponseEntity<UserProfileDto.Response> getProfile(@AuthenticationPrincipal Long userId) {
-        log.info("{}", userId);
         UserProfileDto.Response profile = userService.getProfile(userId);
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/users/profile")
-    public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal Long userId, @RequestPart MultipartFile imageFile, @RequestPart UserProfileDto.Request requestDto) {
-        log.info("{}", userId);
+    public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal Long userId, @RequestPart MultipartFile imageFile, @RequestPart UserProfileDto.Request requestDto) throws IOException {
+        log.info(imageFile.getOriginalFilename());
+        log.info(imageFile.getContentType());
+        log.info(new String(imageFile.getBytes()));
         userService.updateProfile(userId, requestDto, imageFile);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

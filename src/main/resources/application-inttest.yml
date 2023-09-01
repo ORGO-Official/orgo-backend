@@ -28,4 +28,4 @@ orgo-server:
   address:
   path:
     storage:
-      images: src/test/resources/store/images
+      images: C:\orgo/resources/images
