@@ -5,13 +5,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import orgo.backend.domain._1auth.service.loginstrategy.KakaoLoginStrategy;
 import orgo.backend.domain._1auth.service.loginstrategy.NaverLoginStrategy;
 import orgo.backend.domain._1auth.vo.PersonalData;
-import orgo.backend.setting.IntegrationTest;
 
 @Slf4j
-public class LoginStrategyTest extends IntegrationTest {
+@SpringBootTest
+public class LoginStrategyTest {
 
     @Autowired
     KakaoLoginStrategy kakaoLoginStrategy;

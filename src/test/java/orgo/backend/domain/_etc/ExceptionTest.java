@@ -1,15 +1,17 @@
 package orgo.backend.domain._etc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import orgo.backend.domain._1auth.entity.LoginType;
 import orgo.backend.domain._2user.entity.User;
 import orgo.backend.global.config.security.CustomUserDetailsService;
 import orgo.backend.global.constant.Header;
 import orgo.backend.global.error.ErrorCode;
-import orgo.backend.setting.IntegrationTest;
 import orgo.backend.setting.TestJwtProvider;
 
 import java.util.Collections;
@@ -18,7 +20,8 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ExceptionTest extends IntegrationTest {
+@SpringBootTest
+public class ExceptionTest{
     private final static String WITHDRAW_API = "/api/auth/withdraw";
 
     @Autowired
@@ -26,6 +29,12 @@ public class ExceptionTest extends IntegrationTest {
 
     @Autowired
     TestJwtProvider testJwtProvider;
+
+    @Autowired
+    MockMvc mvc;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
 
     @Test

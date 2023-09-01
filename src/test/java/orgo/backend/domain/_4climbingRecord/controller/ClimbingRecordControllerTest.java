@@ -1,9 +1,10 @@
 package orgo.backend.domain._4climbingRecord.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -14,23 +15,17 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import orgo.backend.domain._2user.repository.UserRepository;
 import orgo.backend.domain._2user.entity.User;
-import orgo.backend.domain._3mountain.controller.MountainController;
-import orgo.backend.domain._3mountain.repository.MountainRepository;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._3mountain.entity.Peak;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
+import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.service.ClimbingRecordService;
-import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
-import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
 import orgo.backend.global.config.security.JwtAuthenticationFilter;
 import orgo.backend.global.config.security.SecurityConfig;
 import orgo.backend.global.constant.Header;
-import orgo.backend.setting.IntegrationTest;
 import orgo.backend.setting.MockEntityFactory;
-import orgo.backend.setting.TestJwtProvider;
 import orgo.backend.setting.WithCustomMockUser;
 
 import java.time.LocalDateTime;

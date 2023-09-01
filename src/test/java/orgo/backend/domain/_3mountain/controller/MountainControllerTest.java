@@ -11,24 +11,19 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.core.parameters.P;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import orgo.backend.domain._2user.controller.UserController;
 import orgo.backend.domain._3mountain.dto.MountainDto;
 import orgo.backend.domain._3mountain.dto.RestaurantDto;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._3mountain.entity.PlaceInfo;
-import orgo.backend.domain._3mountain.repository.MountainRepository;
 import orgo.backend.domain._3mountain.service.MountainService;
 import orgo.backend.domain._3mountain.service.RestaurantService;
 import orgo.backend.global.config.security.JwtAuthenticationFilter;
 import orgo.backend.global.config.security.SecurityConfig;
-import orgo.backend.setting.IntegrationTest;
 import orgo.backend.setting.MockEntityFactory;
 import orgo.backend.setting.WithCustomMockUser;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -38,12 +33,9 @@ import static hansol.restdocsdsl.docs.RestDocsQueryParam.queryParams;
 import static hansol.restdocsdsl.docs.RestDocsResponse.responseFields;
 import static hansol.restdocsdsl.element.FieldElement.field;
 import static hansol.restdocsdsl.element.ParamElement.param;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
