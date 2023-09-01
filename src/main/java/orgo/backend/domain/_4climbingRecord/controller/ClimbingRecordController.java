@@ -28,8 +28,8 @@ public class ClimbingRecordController {
         }
     }
 
-    @GetMapping("/{userId}/climbingrecords")
-    public ResponseEntity<List<ClimbingRecordDto>> viewClimbingRecords(@PathVariable Long userId) {
+    @GetMapping("climbingrecords")
+    public ResponseEntity<List<ClimbingRecordDto>> viewClimbingRecords(@AuthenticationPrincipal Long userId) {
         return new ResponseEntity<>(climbingRecordService.viewMyClimbingRecords(userId), HttpStatus.OK);
     }
 }

@@ -51,7 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 public class ClimbingRecordControllerTest {
 
-    private final static String VIEW_CLIMBINGRECORDS_API = "/api/{userId}/climbingrecords";
+    private final static String VIEW_CLIMBINGRECORDS_API = "/api/climbingrecords";
     private final static String REGISTER_CLIMBINGRECORDS_API = "/api/climbingrecords";
 
     @MockBean
@@ -111,7 +111,7 @@ public class ClimbingRecordControllerTest {
                 .map(ClimbingRecordDto::new)
                 .toList();
         given(climbingRecordService.viewMyClimbingRecords(user.getId())).willReturn(response);
-        ResultActions actions = mvc.perform(get(VIEW_CLIMBINGRECORDS_API, user.getId())
+        ResultActions actions = mvc.perform(get(VIEW_CLIMBINGRECORDS_API)
                 .with(csrf()));
 
 
