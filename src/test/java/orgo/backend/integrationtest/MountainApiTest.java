@@ -17,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @Slf4j
 public class MountainApiTest extends IntegrationTest {
 
-    private final static String GET_ALL_API = "/api/mountains";
+    private final static String GET_ALL_MOUNTAINS_API = "/api/mountains";
+    private final static String GET_MOUNTAIN_API = "/api/mountains/{mountainId}";
     private final static String GET_RESTAURANT_API = "/api/mountains/{mountainId}/restaurants";
 
     @Test
@@ -28,7 +29,7 @@ public class MountainApiTest extends IntegrationTest {
         // when
         ExtractableResponse<Response> response = RestAssured
                 .given().log().all()
-                .when().get(GET_ALL_API)
+                .when().get(GET_ALL_MOUNTAINS_API)
                 .then().log().all()
                 .extract();
 
@@ -42,6 +43,27 @@ public class MountainApiTest extends IntegrationTest {
     }
 
     @Test
+    @DisplayName("산 하나를 조회한다. ")
+    void getMountain() {
+        // given
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .when().get(GET_MOUNTAIN_API, 1L)
+                .then().log().all()
+                .extract();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(jsonPath.getObject("", MountainDto.Response.class).getId()).isEqualTo(1L)
+        );
+
+    }
+
+    @Test
     @DisplayName("특정 키워드로 검색한다. ")
     void searchMountain() {
         // given
@@ -50,7 +72,7 @@ public class MountainApiTest extends IntegrationTest {
         ExtractableResponse<Response> response = RestAssured
                 .given().log().all()
                 .queryParam("keyword", "아차산")
-                .when().get(GET_ALL_API)
+                .when().get(GET_ALL_MOUNTAINS_API)
                 .then().log().all()
                 .extract();
 

@@ -27,7 +27,19 @@ public class MountainController {
     @PermitAll
     @GetMapping("/mountains")
     public ResponseEntity<List<MountainDto.Response>> getMountains(@RequestParam(required = false) String keyword) {
-        List<MountainDto.Response> responseDto = mountainService.findAll(keyword);
+        List<MountainDto.Response> responseDto = mountainService.getAllMountains(keyword);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    /**
+     * 산 단건 조회 API
+     *
+     * @return 산 정보
+     */
+    @PermitAll
+    @GetMapping("/mountains/{mountainId}")
+    public ResponseEntity<MountainDto.Response> getMountain(@PathVariable long mountainId) {
+        MountainDto.Response responseDto = mountainService.getMountain(mountainId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 

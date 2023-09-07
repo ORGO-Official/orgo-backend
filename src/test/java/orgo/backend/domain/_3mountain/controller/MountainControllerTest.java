@@ -46,7 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 public class MountainControllerTest {
 
-    private final static String GET_ALL_API = "/api/mountains";
+    private final static String GET_ALL_MOUNTAINS_API = "/api/mountains";
+    private final static String GET_MOUNTAIN_API = "/api/mountains/{mountainId}";
     private final static String GET_RESTAURANT_API = "/api/mountains/{mountainId}/restaurants";
 
     @MockBean
@@ -73,10 +74,10 @@ public class MountainControllerTest {
         List<MountainDto.Response> responses = Stream.of(mountain1, mountain2, mountain3, mountain4)
                 .map(MountainDto.Response::new)
                 .toList();
-        given(mountainService.findAll(null)).willReturn(responses);
+        given(mountainService.getAllMountains(null)).willReturn(responses);
 
         // when
-        ResultActions actions = mvc.perform(get(GET_ALL_API)
+        ResultActions actions = mvc.perform(get(GET_ALL_MOUNTAINS_API)
                 .with(csrf()));
 
         // then
@@ -106,6 +107,48 @@ public class MountainControllerTest {
                                 field("[].featureTag.parkingLot").type(JsonFieldType.BOOLEAN).description("주차장"),
                                 field("[].featureTag.restRoom").type(JsonFieldType.BOOLEAN).description("화장실"),
                                 field("[].featureTag.cableCar").type(JsonFieldType.BOOLEAN).description("케이블카")
+                        )));
+    }
+
+
+    @Test
+    @WithCustomMockUser
+    @DisplayName("[산 단건 조회] - 성공")
+    void getMountain() throws Exception {
+        // given
+        Mountain mountain = MockEntityFactory.mockMountain(1L, MockEntityFactory.mockPeak(1L));
+        MountainDto.Response responseDto = new MountainDto.Response(mountain);
+        given(mountainService.getMountain(1L)).willReturn(responseDto);
+
+        // when
+        ResultActions actions = mvc.perform(get(GET_MOUNTAIN_API, 1L));
+
+        // then
+        actions.andExpect(status().isOk())
+                .andDo(docs("mountain-get",
+                        pathParams(
+                                param("mountainId").description("산 아이디넘버")
+                        ),
+                        responseFields(
+                                field("id").type(JsonFieldType.NUMBER).description("아이디넘버"),
+                                field("name").description("이름"),
+                                field("description").description("소개"),
+                                field("address").description("주소"),
+                                field("contact").description("연락처"),
+                                field("mainImage").description("메인 이미지"),
+                                field("backgroundImage").description("배경 이미지"),
+                                field("requiredTime").description("소요 시간"),
+                                field("difficulty").description("난이도(EASY | NORMAL | HARD)"),
+                                field("location").type(JsonFieldType.OBJECT).description("위치 정보"),
+                                field("location.latitude").type(JsonFieldType.NUMBER).description("위도"),
+                                field("location.longitude").type(JsonFieldType.NUMBER).description("경도"),
+                                field("location.altitude").type(JsonFieldType.NUMBER).description("고도"),
+                                field("featureTag").type(JsonFieldType.OBJECT).description("태그"),
+                                field("featureTag.goodNightView").type(JsonFieldType.BOOLEAN).description("야경 맛집"),
+                                field("featureTag.totalCourse").type(JsonFieldType.NUMBER).description("코스 수"),
+                                field("featureTag.parkingLot").type(JsonFieldType.BOOLEAN).description("주차장"),
+                                field("featureTag.restRoom").type(JsonFieldType.BOOLEAN).description("화장실"),
+                                field("featureTag.cableCar").type(JsonFieldType.BOOLEAN).description("케이블카")
                         )));
     }
 
