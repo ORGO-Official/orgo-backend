@@ -11,6 +11,8 @@ import orgo.backend.domain._etc.image.ImageType;
 import orgo.backend.domain._etc.image.ImageUploader;
 import orgo.backend.global.error.exception.UserNotFoundException;
 
+import java.io.IOException;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -37,13 +39,13 @@ public class UserService {
      * @param userId     사용자 아이디넘버
      * @param requestDto 수정할 항목
      */
-    public void updateProfile(Long userId, UserProfileDto.Request requestDto, MultipartFile imageFile) {
+    public void updateProfile(Long userId, UserProfileDto.Request requestDto, MultipartFile imageFile) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         String imageUrl = getImageUrl(imageFile);
         user.updateProfile(requestDto.getNickname(), imageUrl);
     }
 
-    private String getImageUrl(MultipartFile imageFile) {
+    private String getImageUrl(MultipartFile imageFile) throws IOException {
         if (imageFile == null) {
             return imageUploader.getDefaultProfileImage();
         }

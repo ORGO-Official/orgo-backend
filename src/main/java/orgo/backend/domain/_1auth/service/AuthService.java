@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import orgo.backend.domain._1auth.service.loginstrategy.LoginStrategy;
-import orgo.backend.domain._1auth.service.loginstrategy.LoginStrategyFactory;
+import orgo.backend.domain._1auth.service.loginstrategy.LoginManager;
 import orgo.backend.domain._1auth.entity.*;
 import orgo.backend.domain._1auth.vo.PersonalData;
 import orgo.backend.domain._1auth.vo.ServiceToken;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthService {
-    private final LoginStrategyFactory loginStrategyFactory;
+    private final LoginManager loginManager;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final ImageUploader imageUploader;
@@ -34,7 +34,7 @@ public class AuthService {
      */
     @Transactional
     public ServiceToken login(String socialToken, String method) {
-        LoginStrategy strategy = loginStrategyFactory.findStrategy(LoginType.findBy(method));
+        LoginStrategy strategy = loginManager.findStrategy(LoginType.findBy(method));
         PersonalData personalData = strategy.getPersonalData(socialToken);
         User user = createOrGetUser(personalData);
         return jwtProvider.createServiceToken(user);
@@ -65,7 +65,7 @@ public class AuthService {
      */
     public void logout(String socialToken, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
-        LoginStrategy strategy = loginStrategyFactory.findStrategy(user.getLoginType());
+        LoginStrategy strategy = loginManager.findStrategy(user.getLoginType());
         strategy.logout(socialToken);
     }
 
@@ -78,7 +78,7 @@ public class AuthService {
     @Transactional
     public void withdraw(String socialToken, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
-        LoginStrategy strategy = loginStrategyFactory.findStrategy(user.getLoginType());
+        LoginStrategy strategy = loginManager.findStrategy(user.getLoginType());
         strategy.unlink(socialToken);
         userRepository.delete(user);
     }

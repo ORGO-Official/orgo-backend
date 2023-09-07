@@ -11,11 +11,11 @@ import java.util.Set;
 
 @Component
 @Slf4j
-public class LoginStrategyFactory {
+public class LoginManager {
     private final Map<String, LoginStrategy> strategies;
 
     @Autowired
-    public LoginStrategyFactory(Set<LoginStrategy> strategySet) {
+    public LoginManager(Set<LoginStrategy> strategySet) {
         strategies = new HashMap<>();
         for (LoginStrategy strategy : strategySet) {
             strategies.put(strategy.getClass().getSimpleName(), strategy);

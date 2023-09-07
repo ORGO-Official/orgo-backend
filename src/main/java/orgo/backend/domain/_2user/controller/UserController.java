@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import orgo.backend.domain._2user.service.UserService;
 import orgo.backend.domain._2user.dto.UserProfileDto;
+import orgo.backend.global.error.exception.InternalServerException;
 
 import java.io.IOException;
 
@@ -29,11 +30,12 @@ public class UserController {
 
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/users/profile")
-    public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal Long userId, @RequestPart MultipartFile imageFile, @RequestPart UserProfileDto.Request requestDto) throws IOException {
-        log.info(imageFile.getOriginalFilename());
-        log.info(imageFile.getContentType());
-        log.info(new String(imageFile.getBytes()));
-        userService.updateProfile(userId, requestDto, imageFile);
+    public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal Long userId, @RequestPart MultipartFile imageFile, @RequestPart UserProfileDto.Request requestDto) {
+        try {
+            userService.updateProfile(userId, requestDto, imageFile);
+        } catch (IOException e) {
+            throw new InternalServerException(e);
+        }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
