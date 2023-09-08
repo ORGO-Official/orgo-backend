@@ -18,7 +18,7 @@ public class ClimbingRecordController {
 
     private final ClimbingRecordService climbingRecordService;
 
-    @PostMapping("climbingrecords")
+    @PostMapping("/climbing-records")
     public ResponseEntity<Void> registerClimbingRecords(@AuthenticationPrincipal Long userId, @RequestBody UserPosDto userPosDto) {
         try {
             climbingRecordService.registerClimbingRecord(userId, userPosDto);
@@ -28,7 +28,7 @@ public class ClimbingRecordController {
         }
     }
 
-    @GetMapping("/{userId}/climbingrecords")
+    @GetMapping("/{userId}/climbing-records")
     public ResponseEntity<List<ClimbingRecordDto>> viewClimbingRecords(@PathVariable Long userId) {
         return new ResponseEntity<>(climbingRecordService.viewMyClimbingRecords(userId), HttpStatus.OK);
     }
