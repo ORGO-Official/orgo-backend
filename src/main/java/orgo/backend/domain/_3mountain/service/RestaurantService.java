@@ -1,6 +1,7 @@
 package orgo.backend.domain._3mountain.service;
 
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import orgo.backend.domain._3mountain.service.placelinkfinder.PlaceLinkFinder;
 import orgo.backend.domain._3mountain.service.placesearcher.PlaceSearcher;
@@ -9,7 +10,9 @@ import orgo.backend.domain._3mountain.entity.Location;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._3mountain.entity.PlaceInfo;
 import orgo.backend.domain._3mountain.dto.RestaurantDto;
+import orgo.backend.domain._4climbingRecord.dto.PlaceSearchCondition;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -20,7 +23,8 @@ public class RestaurantService {
     private final PlaceSearcher placeSearcher;
     private final PlaceLinkFinder placeLinkFinder;
 
-    private final static int RADIUS_M = 5000;
+    public final static int RADIUS_M = 5000;
+    public final static int RESTAURANT_RETURN_SIZE = 10;
 
     /**
      * 해당 산 근처의 식당 목록을 조회합니다.
@@ -31,20 +35,46 @@ public class RestaurantService {
      */
     public List<RestaurantDto.Response> findNearbyRestaurant(Long mountainId) {
         Mountain mountain = mountainRepository.findById(mountainId).orElseThrow(RuntimeException::new);
-        Location location = mountain.getLocation();
-        List<PlaceInfo> places = placeSearcher.searchByLocation(location.getLatitude(), location.getLongitude(), RADIUS_M);
-        sortPlacesByDistanceDesc(places);
-        return pick10Places(places);
+        List<PlaceInfo> restaurants = getRestaurants(mountain.getLocation());
+        sortByDistanceDesc(restaurants);
+        return mapToResponse(restaurants);
     }
 
-    private void sortPlacesByDistanceDesc(List<PlaceInfo> places) {
+    private List<PlaceInfo> getRestaurants(Location location) {
+        List<PlaceInfo> result = new ArrayList<>();
+        int count = 0;
+        while (result.size() < RESTAURANT_RETURN_SIZE && count < 3) {
+            List<PlaceInfo> places = placeSearcher.searchByLocation(new PlaceSearchCondition(location.getLatitude(), location.getLongitude(), RADIUS_M), count++);
+            List<PlaceInfo> placesWithLink = findPlacesWithLink(places);
+            int remainingNumber = RESTAURANT_RETURN_SIZE - result.size();
+            for (int i = 0; i < Math.min(placesWithLink.size(), remainingNumber); i++) {
+                result.add(placesWithLink.get(i));
+            }
+        }
+        return result;
+    }
+
+    @NotNull
+    private List<PlaceInfo> findPlacesWithLink(List<PlaceInfo> places) {
+        setAllExternalLinks(places);
+        return places.stream()
+                .filter(PlaceInfo::hasLink)
+                .toList();
+    }
+
+    private void setAllExternalLinks(List<PlaceInfo> places) {
+        for (PlaceInfo place : places) {
+            place.setExternalLink(placeLinkFinder.findLink(place.getAddress()));
+        }
+    }
+
+    private void sortByDistanceDesc(List<PlaceInfo> places) {
         places.sort(Comparator.comparing(PlaceInfo::getDistance));
     }
 
-    private List<RestaurantDto.Response> pick10Places(List<PlaceInfo> places) {
+    private List<RestaurantDto.Response> mapToResponse(List<PlaceInfo> places) {
         return places.stream()
-                .map(info -> new RestaurantDto.Response(info, placeLinkFinder.find(info.getAddress())))
-                .limit(10L)
+                .map(RestaurantDto.Response::new)
                 .toList();
     }
 }

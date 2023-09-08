@@ -18,6 +18,7 @@ public class PlaceInfo {
     private final double mapY;
     private final String contact;
     private final String imageUrl;
+    private String externalLink;
 
     public static PlaceInfo fromOpenPortalPlaceSearcher(OpenPortalPlaceSearcher.ResponseFormat.Response.Body.Items.Item responseData) {
         return PlaceInfo.builder()
@@ -28,6 +29,15 @@ public class PlaceInfo {
                 .mapY(Double.parseDouble(responseData.getMapy()))
                 .contact(responseData.getTel())
                 .imageUrl(responseData.getFirstimage())
+                .externalLink(null)
                 .build();
+    }
+
+    public void setExternalLink(String externalLink) {
+        this.externalLink = externalLink;
+    }
+
+    public boolean hasLink(){
+        return this.externalLink != null;
     }
 }

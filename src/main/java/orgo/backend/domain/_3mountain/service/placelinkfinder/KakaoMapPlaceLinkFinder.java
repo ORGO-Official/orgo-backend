@@ -20,7 +20,7 @@ public class KakaoMapPlaceLinkFinder implements PlaceLinkFinder {
     private final static String KEYWORD_SEARCH_API = "/v2/local/search/keyword";
 
     @Override
-    public String find(String address) {
+    public String findLink(String address) {
         WebClient webClient = WebClient.create();
         KakaoMapPlaceLinkFinder.ResponseData responseData = webClient.method(HttpMethod.GET)
                 .uri(uriBuilder -> uriBuilder

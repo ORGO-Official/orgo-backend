@@ -159,9 +159,9 @@ public class MountainControllerTest {
     void test1() throws Exception {
         //given
         Long mountainId = 1L;
-        RestaurantDto.Response response1 = new RestaurantDto.Response(new PlaceInfo("식당", "주소", 100, 1.1, 1.2, "01012345678", "image.jpg"), "https://www.naver.com");
-        RestaurantDto.Response response2 = new RestaurantDto.Response(new PlaceInfo("식당", "주소", 100, 1.1, 1.2, "01012345678", "image.jpg"), "https://www.naver.com");
-        RestaurantDto.Response response3 = new RestaurantDto.Response(new PlaceInfo("식당", "주소", 100, 1.1, 1.2, "01012345678", "image.jpg"), "https://www.naver.com");
+        RestaurantDto.Response response1 = new RestaurantDto.Response(new PlaceInfo("식당", "주소", 100, 1.1, 1.2, "01012345678", "image.jpg", "www.naver.com"));
+        RestaurantDto.Response response2 = new RestaurantDto.Response(new PlaceInfo("식당", "주소", 100, 1.1, 1.2, "01012345678", "image.jpg", "www.naver.com"));
+        RestaurantDto.Response response3 = new RestaurantDto.Response(new PlaceInfo("식당", "주소", 100, 1.1, 1.2, "01012345678", "image.jpg", "www.naver.com"));
         List<RestaurantDto.Response> response = List.of(response1, response2, response3);
         given(restaurantService.findNearbyRestaurant(mountainId)).willReturn(response);
 
@@ -182,7 +182,7 @@ public class MountainControllerTest {
                                 field("[].mapY").type(JsonFieldType.NUMBER).description("Y좌표(latitude(위도))"),
                                 field("[].contact").description("연락처").optional(),
                                 field("[].imageUrl").description("사진 URL").optional(),
-                                field("[].externalLink").description("외부 링크").optional()
+                                field("[].externalLink").description("외부 링크")
                         )
                 ));
     }

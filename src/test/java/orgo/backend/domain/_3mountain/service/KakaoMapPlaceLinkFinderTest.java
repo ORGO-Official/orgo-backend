@@ -22,7 +22,7 @@ public class KakaoMapPlaceLinkFinderTest {
         String address = "서울특별시 중랑구 용마산로 389 석주빌딩";
 
         // when
-        String link = kakaoMapPlaceLinkFinder.find(address);
+        String link = kakaoMapPlaceLinkFinder.findLink(address);
         log.info("{}", link);
 
         // then

@@ -15,6 +15,7 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import orgo.backend.domain._3mountain.entity.PlaceInfo;
+import orgo.backend.domain._4climbingRecord.dto.PlaceSearchCondition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +42,12 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
     /**
      * 'Tour API - 위치기반 관광정보조회'를 이용하여 장소 정보를 반환합니다.
      *
-     * @param latitude  위도
-     * @param longitude 경도
-     * @param radius    반경
+     * @param placeSearchCondition   검색 조건 (위도, 경도,  반경)
+     * @param page 페이지 번호
      * @return 장소 정보
      */
     @Override
-    public List<PlaceInfo> searchByLocation(double latitude, double longitude, double radius) {
+    public List<PlaceInfo> searchByLocation(PlaceSearchCondition placeSearchCondition, int page) {
         ObjectMapper objectMapper = new ObjectMapper()
                 .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
 
@@ -65,14 +65,14 @@ public class OpenPortalPlaceSearcher implements PlaceSearcher {
                         .host(HOST)
                         .path(LOCATION_SEARCH_API)
                         .queryParam("numOfRows", 50)
-                        .queryParam("pageNo", 1)
+                        .queryParam("pageNo", page)
                         .queryParam("MobileOS", "IOS")
                         .queryParam("MobileApp", "orgo")
                         .queryParam("_type", "json")
                         .queryParam("arrange", "R")
-                        .queryParam("mapX", String.valueOf(longitude))
-                        .queryParam("mapY", String.valueOf(latitude))
-                        .queryParam("radius", String.valueOf(radius))
+                        .queryParam("mapX", String.valueOf(placeSearchCondition.getLongitude()))
+                        .queryParam("mapY", String.valueOf(placeSearchCondition.getLatitude()))
+                        .queryParam("radius", String.valueOf(placeSearchCondition.getRadius()))
                         .queryParam("contentTypeId", RESTAURANT_CONTENT_TYPE)
                         .queryParam("serviceKey", SERVICE_KEY)
                         .build())

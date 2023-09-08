@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import orgo.backend.domain._3mountain.entity.PlaceInfo;
 import orgo.backend.domain._3mountain.service.placesearcher.OpenPortalPlaceSearcher;
+import orgo.backend.domain._4climbingRecord.dto.PlaceSearchCondition;
 
 import java.util.List;
 
@@ -20,9 +21,10 @@ public class OpenPortalPlaceSearcherTest {
     @DisplayName("Tour API로 아차산을 검색한다.")
     void test() {
         // given
+        PlaceSearchCondition placeSearchCondition = new PlaceSearchCondition(37.57149, 127.103764, 10000);
 
         // when
-        List<PlaceInfo> placeInfoList = openPortalPlaceSearcher.searchByLocation(37.57149, 127.103764, 10000);
+        List<PlaceInfo> placeInfoList = openPortalPlaceSearcher.searchByLocation(placeSearchCondition, 1);
         log.info("{}", placeInfoList);
 
         // then
