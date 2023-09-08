@@ -11,6 +11,7 @@ import orgo.backend.domain._4climbingRecord.dao.ClimbingRecordRepository;
 import orgo.backend.domain._4climbingRecord.domain.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
+import orgo.backend.global.error.exception.UserNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class ClimbingRecordService {
      * @return 사용자의 완등 기록 리스트
      */
     public List<ClimbingRecordDto> viewMyClimbingRecords(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         List<ClimbingRecord> climbingRecords = user.getClimbingRecords();
 
         List<ClimbingRecordDto> climbingRecordDtos = new ArrayList<>();
