@@ -110,7 +110,7 @@ class RestaurantServiceTest {
 
     @Test
     @DisplayName("상세 링크가 없는 식당은 포함하지 않는다. ")
-    void test() {
+    void notFindPlacesWithoutExternalLink() {
         // given
         long mountainId = 1L;
         Mountain mountain = MockEntityFactory.mockMountain(mountainId, MockEntityFactory.mockPeak(1L));
