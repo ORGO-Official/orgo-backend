@@ -11,6 +11,8 @@ import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
+import orgo.backend.domain._4climbingRecord.mapper.ClimbingRecordMapper;
+import orgo.backend.global.error.exception.UserNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,23 +54,9 @@ public class ClimbingRecordService {
      * @return 사용자의 완등 기록 리스트
      */
     public List<ClimbingRecordDto> viewMyClimbingRecords(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        List<ClimbingRecord> climbingRecords = user.getClimbingRecords();
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        List<ClimbingRecordDto> climbingRecordDtos = new ArrayList<>();
-
-        for(ClimbingRecord climbingRecord : climbingRecords) {
-            ClimbingRecordDto climbingRecordDto = ClimbingRecordDto.builder()
-                    .id(climbingRecord.getId())
-                    .mountainId(climbingRecord.getMountain().getId())
-                    .mountainName(climbingRecord.getMountain().getName())
-                    .date(climbingRecord.getDate())
-                    .build();
-
-            climbingRecordDtos.add(climbingRecordDto);
-        }
-
-        return climbingRecordDtos;
+        return ClimbingRecordMapper.INSTANCE.toClimbingRecordDtoList(user.getClimbingRecords());
     }
 
     /**
