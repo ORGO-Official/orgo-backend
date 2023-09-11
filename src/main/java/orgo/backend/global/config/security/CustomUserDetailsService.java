@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import orgo.backend.domain._2user.dao.UserRepository;
+import orgo.backend.domain._2user.repository.UserRepository;
 import orgo.backend.global.error.exception.UserNotFoundException;
 
 @Service

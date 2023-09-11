@@ -78,37 +78,7 @@ operation::mountain-get-all[]
 === 🟢 근처 식당 조회
 ----
 산 근처의 식당을 조회합니다.
+외부 링크가 포함된 식당만 조회합니다.
+식당은 산으로부터 떨어진 거리 순으로 정렬됩니다.
 ----
 operation::mountain-achasan-restaurant[]
-
-==== 산 별 식당 목록
-
-===== 1) 아차산
-include::{snippets}/mountain-achasan-restaurant/response-body.adoc[]
-
-===== 2) 인왕산
-include::{snippets}/mountain-inwangsan-restaurant/response-body.adoc[]
-
-===== 3) 청계산
-include::{snippets}/mountain-chungyesan-restaurant/response-body.adoc[]
-
-===== 4) 북한산
-include::{snippets}/mountain-bukhansan-restaurant/response-body.adoc[]
-
-===== 5) 관악산
-include::{snippets}/mountain-gwanaksan-restaurant/response-body.adoc[]
-
-===== 6) 용마산
-include::{snippets}/mountain-yongmasan-restaurant/response-body.adoc[]
-
-===== 7) 수락산
-include::{snippets}/mountain-suraksan-restaurant/response-body.adoc[]
-
-===== 8) 안산
-include::{snippets}/mountain-ansan-restaurant/response-body.adoc[]
-
-===== 9) 도봉산
-include::{snippets}/mountain-dobongsan-restaurant/response-body.adoc[]
-
-===== 10) 불암산
-include::{snippets}/mountain-bullamsan-restaurant/response-body.adoc[]

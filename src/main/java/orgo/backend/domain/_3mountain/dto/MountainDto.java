@@ -1,25 +1,29 @@
 package orgo.backend.domain._3mountain.dto;
 
 import lombok.Getter;
-import orgo.backend.domain._3mountain.domain.Difficulty;
-import orgo.backend.domain._3mountain.domain.FeatureTag;
-import orgo.backend.domain._3mountain.domain.Location;
-import orgo.backend.domain._3mountain.domain.Mountain;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import orgo.backend.domain._3mountain.entity.Difficulty;
+import orgo.backend.domain._3mountain.entity.FeatureTag;
+import orgo.backend.domain._3mountain.entity.Location;
+import orgo.backend.domain._3mountain.entity.Mountain;
 
 public class MountainDto {
+    @NoArgsConstructor
     @Getter
+    @ToString
     public static class Response {
-        private final Long id;
-        private final String name;
-        private final String description;
-        private final String address;
-        private final String contact;
-        private final String mainImage;
-        private final String backgroundImage;
-        private final String requiredTime;
-        private final Difficulty difficulty;
-        private final Location location;
-        private final FeatureTag featureTag;
+        private Long id;
+        private String name;
+        private String description;
+        private String address;
+        private String contact;
+        private String mainImage;
+        private String backgroundImage;
+        private String requiredTime;
+        private Difficulty difficulty;
+        private Location location;
+        private FeatureTag featureTag;
 
         public Response(Mountain mountain) {
             this.id = mountain.getId();
