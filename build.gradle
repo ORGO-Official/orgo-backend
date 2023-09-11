@@ -68,6 +68,10 @@ dependencies {
 
 	//handle LocalDateTime
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
+
+	//Mapstruct
+	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 }
 
 ext { // (5) 생성되는 스니펫들이 생성되는 디렉토리를 설정
