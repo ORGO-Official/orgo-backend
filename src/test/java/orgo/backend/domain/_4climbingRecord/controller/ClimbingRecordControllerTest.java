@@ -51,8 +51,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 public class ClimbingRecordControllerTest {
 
-    private final static String VIEW_CLIMBINGRECORDS_API = "/api/climbingrecords";
-    private final static String REGISTER_CLIMBINGRECORDS_API = "/api/climbingrecords";
+    private final static String VIEW_CLIMBINGRECORDS_API = "/api/climbing-records";
+    private final static String REGISTER_CLIMBINGRECORDS_API = "/api/climbing-records";
 
     @MockBean
     ClimbingRecordService climbingRecordService;

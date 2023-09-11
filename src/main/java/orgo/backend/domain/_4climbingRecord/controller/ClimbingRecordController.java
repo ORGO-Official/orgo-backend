@@ -1,4 +1,4 @@
-package orgo.backend.domain._4climbingRecord.api;
+package orgo.backend.domain._4climbingRecord.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,8 +28,8 @@ public class ClimbingRecordController {
         }
     }
 
-    @GetMapping("/{userId}/climbing-records")
-    public ResponseEntity<List<ClimbingRecordDto>> viewClimbingRecords(@PathVariable Long userId) {
+    @GetMapping("/climbing-records")
+    public ResponseEntity<List<ClimbingRecordDto>> viewClimbingRecords(@AuthenticationPrincipal Long userId) {
         return new ResponseEntity<>(climbingRecordService.viewMyClimbingRecords(userId), HttpStatus.OK);
     }
 }

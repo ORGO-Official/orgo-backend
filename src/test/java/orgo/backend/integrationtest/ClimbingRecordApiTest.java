@@ -20,8 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class ClimbingRecordApiTest extends IntegrationTest {
-    private final static String REGISTER_CLIMBINGRECORDS_API = "/api/climbingrecords";
-    private final static String VIEW_CLIMBINGRECORDS_API = "/api/climbingrecords";
+    private final static String REGISTER_CLIMBINGRECORDS_API = "/api/climbing-records";
+    private final static String VIEW_CLIMBINGRECORDS_API = "/api/climbing-records";
 
     @Autowired
     MountainRepository mountainRepository;
