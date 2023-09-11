@@ -41,3 +41,5 @@ src/main/resources/application-local.yml
 src/main/resources/static/docs/index.html
 src/test/resources/application-test.yml
 src/test/resources/application-inttest.yml
+src/main/resources/application-test.yml
+src/main/resources/application-inttest.yml
