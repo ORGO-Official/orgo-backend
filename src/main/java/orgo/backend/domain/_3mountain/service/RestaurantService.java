@@ -24,7 +24,7 @@ public class RestaurantService {
     private final PlaceLinkFinder placeLinkFinder;
 
     public final static int RADIUS_M = 5000;
-    public final static int RESTAURANT_RETURN_SIZE = 10;
+    public final static int RETURN_CAPACITY = 10;
 
     /**
      * 해당 산 근처의 식당 목록을 조회합니다.
@@ -41,24 +41,28 @@ public class RestaurantService {
     }
 
     private List<PlaceInfo> getRestaurants(Location location) {
-        List<PlaceInfo> result = new ArrayList<>();
+        List<PlaceInfo> restaurants = new ArrayList<>();
         int count = 0;
-        while (result.size() < RESTAURANT_RETURN_SIZE && count < 3) {
-            List<PlaceInfo> places = placeSearcher.searchByLocation(new PlaceSearchCondition(location.getLatitude(), location.getLongitude(), RADIUS_M), count++);
-            List<PlaceInfo> placesWithLink = findPlacesWithLink(places);
-            int remainingNumber = RESTAURANT_RETURN_SIZE - result.size();
-            for (int i = 0; i < Math.min(placesWithLink.size(), remainingNumber); i++) {
-                result.add(placesWithLink.get(i));
-            }
+        while (isLessThanTreeTimes(restaurants, count)) {
+            int remainingNum = RETURN_CAPACITY - restaurants.size();
+            List<PlaceInfo> places = placeSearcher.searchByLocation(new PlaceSearchCondition(location.getLatitude(), location.getLongitude(), RADIUS_M), count);
+            List<PlaceInfo> placesWithExternalLink = filterOutWithExternalLink(places, remainingNum);
+            restaurants.addAll(placesWithExternalLink);
+            count++;
         }
-        return result;
+        return restaurants;
+    }
+
+    boolean isLessThanTreeTimes(List<PlaceInfo> returnList, int count){
+        return count < 3 && returnList.size() < RETURN_CAPACITY;
     }
 
     @NotNull
-    private List<PlaceInfo> findPlacesWithLink(List<PlaceInfo> places) {
+    private List<PlaceInfo> filterOutWithExternalLink(List<PlaceInfo> places, int remainingNum) {
         setAllExternalLinks(places);
         return places.stream()
                 .filter(PlaceInfo::hasLink)
+                .limit(Math.min(places.size(), remainingNum))
                 .toList();
     }
 

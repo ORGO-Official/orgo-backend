@@ -4,8 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
-import orgo.backend.domain._4climbingRecord.domain.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
+import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 
 import java.util.List;
 
