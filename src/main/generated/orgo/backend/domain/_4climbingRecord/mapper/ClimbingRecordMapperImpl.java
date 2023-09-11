@@ -3,10 +3,11 @@ package orgo.backend.domain._4climbingRecord.mapper;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
-import orgo.backend.domain._3mountain.domain.Location;
-import orgo.backend.domain._3mountain.domain.Mountain;
-import orgo.backend.domain._4climbingRecord.domain.ClimbingRecord;
+
+import orgo.backend.domain._3mountain.entity.Location;
+import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
+import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",

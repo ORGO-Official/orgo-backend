@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import orgo.backend.domain._2user.dao.UserRepository;
-import orgo.backend.domain._2user.domain.User;
-import orgo.backend.domain._3mountain.dao.MountainRepository;
-import orgo.backend.domain._3mountain.domain.Mountain;
-import orgo.backend.domain._3mountain.domain.Peak;
-import orgo.backend.domain._4climbingRecord.application.ClimbingRecordService;
-import orgo.backend.domain._4climbingRecord.dao.ClimbingRecordRepository;
-import orgo.backend.domain._4climbingRecord.domain.ClimbingRecord;
+import orgo.backend.domain._2user.repository.UserRepository;
+import orgo.backend.domain._2user.entity.User;
+import orgo.backend.domain._3mountain.repository.MountainRepository;
+import orgo.backend.domain._3mountain.entity.Mountain;
+import orgo.backend.domain._3mountain.entity.Peak;
+import orgo.backend.domain._4climbingRecord.service.ClimbingRecordService;
+import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
+import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.MyClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
@@ -38,9 +38,9 @@ public class ClimbingRecordTest {
     @Autowired
     ClimbingRecordService climbingRecordService;
 
-    Peak peak = MockEntityFactory.mockPeak();
-    Mountain mountain = MockEntityFactory.mockMountain(peak);
-    User user = MockEntityFactory.mockUser();
+    Peak peak = MockEntityFactory.mockPeak(null);
+    Mountain mountain = MockEntityFactory.mockMountain(null, peak);
+    User user = MockEntityFactory.mockUser(null);
     Mountain savedMountain;
 
     @BeforeAll

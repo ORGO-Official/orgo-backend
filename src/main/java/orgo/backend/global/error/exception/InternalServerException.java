@@ -5,10 +5,12 @@ import orgo.backend.global.error.ErrorCode;
 
 @Getter
 public class InternalServerException extends OrgoException {
+    private final Exception originalException;
     private final ErrorCode errorCode;
 
-    public InternalServerException() {
+    public InternalServerException(Exception originalException) {
         super();
-        errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+        this.originalException = originalException;
+        this.errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 }

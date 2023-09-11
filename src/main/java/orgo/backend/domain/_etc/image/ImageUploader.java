@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import orgo.backend.global.error.exception.InternalServerException;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +16,7 @@ import java.util.UUID;
 @Slf4j
 @Component
 public class ImageUploader {
+
     @Value("${orgo-server.path.storage.images}")
     String IMAGE_STORAGE_PATH;
     @Value("${orgo-server.address}")
@@ -33,35 +33,38 @@ public class ImageUploader {
      * @param imageType     이미지 분류
      * @return 이미지 URL
      */
-    public String upload(MultipartFile multipartFile, ImageType imageType) {
+    public String upload(MultipartFile multipartFile, ImageType imageType) throws IOException {
         requireNonNull(multipartFile);
-        String originalName = multipartFile.getOriginalFilename();
-        String storedPath = makeStoredPath(imageType, originalName);
-        transferFile(multipartFile, storedPath);
-        return SERVER_ADDRESS + storedPath;
+        String originalName = Objects.requireNonNullElse(multipartFile.getOriginalFilename(), "image.jpg");
+        String directoryPath = makeDirectoryPath(imageType);
+        makeDirectoriesIfNotExist(directoryPath);
+        String filePath = makeFilePath(directoryPath, originalName);
+        transferFile(multipartFile, filePath);
+        return SERVER_ADDRESS + filePath;
+    }
+
+    private void makeDirectoriesIfNotExist(String directoryPath) {
+        File file = new File(directoryPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
     }
 
     /**
      * 이미지가 저장될 Path를 생성합니다.
      * 이미지 타입에 따라 상위 디렉토리가 결정됩니다.
      *
-     * @param imageType    이미지 타입
-     * @param originalName 원본 이름
+     * @param imageType 이미지 타입
      * @return Path
      */
     @NotNull
-    private String makeStoredPath(ImageType imageType, String originalName) {
-        return IMAGE_STORAGE_PATH + imageType.getDirectory() + makeRandomNameWithExtension(originalName);
+    private String makeDirectoryPath(ImageType imageType) {
+        return IMAGE_STORAGE_PATH + imageType.getDirectory();
     }
 
-    private void transferFile(MultipartFile multipartFile, String storedPath) {
+    private void transferFile(MultipartFile multipartFile, String storedPath) throws IOException {
         File destination = new File(storedPath);
-        try {
-            multipartFile.transferTo(destination);
-        } catch (IOException e) {
-            log.error("파일 업로드에 실패했습니다.");
-            throw new InternalServerException();
-        }
+        multipartFile.transferTo(destination);
     }
 
     private void requireNonNull(MultipartFile multipartFile) {
@@ -74,6 +77,10 @@ public class ImageUploader {
         String extension = fileName.substring(index + 1);
         String uuid = UUID.randomUUID().toString();
         return uuid + "." + extension;
+    }
+
+    private String makeFilePath(String directoryPath, String fileName) {
+        return directoryPath + makeRandomNameWithExtension(fileName);
     }
 
     /**
