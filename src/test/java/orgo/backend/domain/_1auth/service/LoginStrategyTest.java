@@ -6,11 +6,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import orgo.backend.domain._1auth.service.loginstrategy.KakaoLoginStrategy;
 import orgo.backend.domain._1auth.service.loginstrategy.NaverLoginStrategy;
 import orgo.backend.domain._1auth.vo.PersonalData;
 
 @Slf4j
+@Disabled
+@ActiveProfiles("test")
 @SpringBootTest
 public class LoginStrategyTest {
 

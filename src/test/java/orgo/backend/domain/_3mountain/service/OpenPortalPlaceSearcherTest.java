@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import orgo.backend.domain._3mountain.entity.PlaceInfo;
 import orgo.backend.domain._3mountain.service.placesearcher.OpenPortalPlaceSearcher;
 import orgo.backend.domain._4climbingRecord.dto.PlaceSearchCondition;
@@ -12,6 +13,7 @@ import orgo.backend.domain._4climbingRecord.dto.PlaceSearchCondition;
 import java.util.List;
 
 @Slf4j
+@ActiveProfiles("test")
 @SpringBootTest
 public class OpenPortalPlaceSearcherTest {
     @Autowired
