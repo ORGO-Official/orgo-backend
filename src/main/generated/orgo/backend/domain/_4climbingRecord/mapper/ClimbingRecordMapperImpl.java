@@ -3,13 +3,14 @@ package orgo.backend.domain._4climbingRecord.mapper;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
+import orgo.backend.domain._3mountain.domain.Location;
 import orgo.backend.domain._3mountain.domain.Mountain;
 import orgo.backend.domain._4climbingRecord.domain.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-08T15:28:28+0900",
+    date = "2023-09-12T03:34:05+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
 )
 public class ClimbingRecordMapperImpl implements ClimbingRecordMapper {
@@ -24,6 +25,7 @@ public class ClimbingRecordMapperImpl implements ClimbingRecordMapper {
 
         climbingRecordDto.mountainId( climbingRecordMountainId( climbingRecord ) );
         climbingRecordDto.mountainName( climbingRecordMountainName( climbingRecord ) );
+        climbingRecordDto.altitude( climbingRecordMountainLocationAltitude( climbingRecord ) );
         climbingRecordDto.id( climbingRecord.getId() );
         climbingRecordDto.date( climbingRecord.getDate() );
 
@@ -72,5 +74,21 @@ public class ClimbingRecordMapperImpl implements ClimbingRecordMapper {
             return null;
         }
         return name;
+    }
+
+    private double climbingRecordMountainLocationAltitude(ClimbingRecord climbingRecord) {
+        if ( climbingRecord == null ) {
+            return 0.0d;
+        }
+        Mountain mountain = climbingRecord.getMountain();
+        if ( mountain == null ) {
+            return 0.0d;
+        }
+        Location location = mountain.getLocation();
+        if ( location == null ) {
+            return 0.0d;
+        }
+        double altitude = location.getAltitude();
+        return altitude;
     }
 }

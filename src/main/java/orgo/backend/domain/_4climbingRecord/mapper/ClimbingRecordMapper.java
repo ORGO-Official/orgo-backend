@@ -15,7 +15,8 @@ public interface ClimbingRecordMapper {
 
     @Mappings({
             @Mapping(source = "mountain.id",  target = "mountainId"),
-            @Mapping(source = "mountain.name", target = "mountainName")
+            @Mapping(source = "mountain.name", target = "mountainName"),
+            @Mapping(source = "mountain.location.altitude", target = "altitude")
     })
     ClimbingRecordDto toClimbingRecordDto(ClimbingRecord climbingRecord);
 
