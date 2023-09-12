@@ -3,7 +3,6 @@ package orgo.backend.domain._4climbingRecord.mapper;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
-
 import orgo.backend.domain._3mountain.entity.Location;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
@@ -11,7 +10,7 @@ import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-12T03:34:05+0900",
+    date = "2023-09-12T09:47:20+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
 )
 public class ClimbingRecordMapperImpl implements ClimbingRecordMapper {

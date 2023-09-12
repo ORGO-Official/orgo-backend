@@ -17,7 +17,7 @@ public class ClimbingRecordDto {
     private LocalDateTime date;
 
     private double altitude;
-    private Long climbingOrder;
+    private Long climbingOrder=0L;
 
     public void setClimbingOrder(Long climbingOrder) {
         this.climbingOrder = climbingOrder;
