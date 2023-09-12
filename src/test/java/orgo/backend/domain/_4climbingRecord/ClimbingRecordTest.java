@@ -15,6 +15,7 @@ import orgo.backend.domain._4climbingRecord.service.ClimbingRecordService;
 import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
+import orgo.backend.domain._4climbingRecord.dto.MyClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
 import orgo.backend.setting.MockEntityFactory;
 
@@ -125,14 +126,17 @@ public class ClimbingRecordTest {
         Long userId=1L;
 
         climbingRecordService.registerClimbingRecord(savedUser.getId(), userPosDto);
-        List<ClimbingRecordDto> climbingRecordDtos = climbingRecordService.viewMyClimbingRecords(userId);
+        climbingRecordService.registerClimbingRecord(savedUser.getId(), userPosDto);
+        //List<ClimbingRecordDto> climbingRecordDtos = climbingRecordService.viewMyClimbingRecords(userId);
+        MyClimbingRecordDto myClimbingRecordDto = climbingRecordService.viewMyClimbingRecords(userId);
 
         //then
-        Long expectedClimbingRecordCnt = 1L;
-        Long expectedMountainId=1L;
+        Long expectedClimbingCnt = 2L;
+        double expectedClimbedAltitude = mountain.getLocation().getAltitude() * expectedClimbingCnt;
 
-        Assertions.assertEquals(expectedClimbingRecordCnt, climbingRecordDtos.size());
-        Assertions.assertEquals(expectedMountainId, climbingRecordDtos.get(0).getMountainId());
-        Assertions.assertEquals(mountain.getName(), climbingRecordDtos.get(0).getMountainName());
+        Assertions.assertEquals(expectedClimbingCnt, myClimbingRecordDto.getClimbingCnt());
+        Assertions.assertEquals(expectedClimbedAltitude, myClimbingRecordDto.getClimbedAltitude());
+        Assertions.assertEquals(1L, myClimbingRecordDto.getClimbingRecordDtoList().get(0).getClimbingOrder());
+        Assertions.assertEquals(2L, myClimbingRecordDto.getClimbingRecordDtoList().get(1).getClimbingOrder());
     }
 }

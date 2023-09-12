@@ -19,6 +19,7 @@ import orgo.backend.domain._2user.entity.User;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._3mountain.entity.Peak;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
+import orgo.backend.domain._4climbingRecord.dto.MyClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.service.ClimbingRecordService;
@@ -107,9 +108,15 @@ public class ClimbingRecordControllerTest {
         ClimbingRecord climbingRecord1 = new ClimbingRecord(1L, LocalDateTime.now(), user, mountain);
         ClimbingRecord climbingRecord2 = new ClimbingRecord(2L, LocalDateTime.now(), user, mountain);
         ClimbingRecord climbingRecord3 = new ClimbingRecord(3L, LocalDateTime.now(), user, mountain);
-        List<ClimbingRecordDto> response = Stream.of(climbingRecord1, climbingRecord2, climbingRecord3)
+        List<ClimbingRecordDto> climbingRecordDtoList = Stream.of(climbingRecord1, climbingRecord2, climbingRecord3)
                 .map(ClimbingRecordDto::new)
                 .toList();
+        MyClimbingRecordDto response = MyClimbingRecordDto.builder()
+                .climbingRecordDtoList(climbingRecordDtoList)
+                .build();
+        response.setClimbedAltitudeByMyClimbingRecordList();
+        response.setClimbingCntByMyClimbingRecordList();
+
         given(climbingRecordService.viewMyClimbingRecords(user.getId())).willReturn(response);
         ResultActions actions = mvc.perform(get(VIEW_CLIMBINGRECORDS_API)
                 .with(csrf()));
@@ -119,10 +126,14 @@ public class ClimbingRecordControllerTest {
         actions.andExpect(status().isOk())
                 .andDo(docs("climbingRecords-get-all",
                         responseFields(
-                                field("[].id").type(JsonFieldType.NUMBER).description("아이디넘버"),
-                                field("[].mountainId").type(JsonFieldType.NUMBER).description("산 아이디넘버"),
-                                field("[].mountainName").description("산 이름"),
-                                field("[].date").description("완등 날짜")
+                                field("climbedAltitude").type(JsonFieldType.NUMBER).description("총 고도"),
+                                field("climbingCnt").type(JsonFieldType.NUMBER).description("총 완등 횟수"),
+                                field("climbingRecordDtoList[].id").type(JsonFieldType.NUMBER).description("아이디넘버"),
+                                field("climbingRecordDtoList[].mountainId").type(JsonFieldType.NUMBER).description("산 아이디넘버"),
+                                field("climbingRecordDtoList[].mountainName").description("산 이름"),
+                                field("climbingRecordDtoList[].date").description("완등 날짜"),
+                                field("climbingRecordDtoList[].altitude").type(JsonFieldType.NUMBER).description("산 고도"),
+                                field("climbingRecordDtoList[].climbingOrder").type(JsonFieldType.NUMBER).description("등반 회차")
                         )
                 ));
     }

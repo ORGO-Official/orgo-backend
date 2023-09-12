@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
+import orgo.backend.domain._4climbingRecord.dto.MyClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
 import orgo.backend.domain._4climbingRecord.service.ClimbingRecordService;
 
@@ -29,7 +30,7 @@ public class ClimbingRecordController {
     }
 
     @GetMapping("/climbing-records")
-    public ResponseEntity<List<ClimbingRecordDto>> viewClimbingRecords(@AuthenticationPrincipal Long userId) {
+    public ResponseEntity<MyClimbingRecordDto> viewClimbingRecords(@AuthenticationPrincipal Long userId) {
         return new ResponseEntity<>(climbingRecordService.viewMyClimbingRecords(userId), HttpStatus.OK);
     }
 }

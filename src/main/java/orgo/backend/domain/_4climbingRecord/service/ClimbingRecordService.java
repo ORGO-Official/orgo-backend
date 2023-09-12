@@ -10,12 +10,13 @@ import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
+import orgo.backend.domain._4climbingRecord.dto.MyClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
 import orgo.backend.domain._4climbingRecord.mapper.ClimbingRecordMapper;
 import orgo.backend.global.error.exception.UserNotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,12 +52,56 @@ public class ClimbingRecordService {
      * 사용자의 모든 완등 기록을 조회합니다.
      *
      * @param userId 사용자 Id
-     * @return 사용자의 완등 기록 리스트
+     * @return 사용자의 완등 기록
      */
-    public List<ClimbingRecordDto> viewMyClimbingRecords(Long userId) {
+    public MyClimbingRecordDto viewMyClimbingRecords(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        return ClimbingRecordMapper.INSTANCE.toClimbingRecordDtoList(user.getClimbingRecords());
+        List<ClimbingRecordDto> climbingRecordDtoList = ClimbingRecordMapper.INSTANCE.toClimbingRecordDtoList(user.getClimbingRecords());
+
+        //TODO : 리스트를 시간순 정렬
+        climbingRecordDtoList.sort(Comparator.comparing(ClimbingRecordDto::getDate));
+
+        //TODO : 등반 회차 추가를 위해 Map으로 변환
+        Map<String, List<ClimbingRecordDto>> climbingRecordDtoMap = new HashMap<>();
+
+        climbingRecordDtoList.forEach(climbingRecordDto -> {
+            if (climbingRecordDtoMap.containsKey(climbingRecordDto.getMountainName())) {
+                List<ClimbingRecordDto> existedClimbingRecordDtoList = climbingRecordDtoMap.get(climbingRecordDto.getMountainName());
+                existedClimbingRecordDtoList.add(climbingRecordDto);
+                climbingRecordDtoMap.put(climbingRecordDto.getMountainName(), existedClimbingRecordDtoList);
+            }else {
+                List<ClimbingRecordDto> emptyClimbingRecordDtoList = new ArrayList<>();
+                emptyClimbingRecordDtoList.add(climbingRecordDto);
+                climbingRecordDtoMap.put(climbingRecordDto.getMountainName(), emptyClimbingRecordDtoList);
+            }
+        });
+
+        // TODO : 등반 회차 추가
+        for (Map.Entry<String, List<ClimbingRecordDto>> entry : climbingRecordDtoMap.entrySet()) {
+            List<ClimbingRecordDto> climbingRecords = entry.getValue();
+
+            for(int i=0; i< climbingRecords.size(); i++) {
+                climbingRecords.get(i).setClimbingOrder((long) (i+1));
+            }
+        }
+
+        // TODO : 다시 시간순 정렬
+        List<ClimbingRecordDto> indexedClimbingRecordDtoList = new ArrayList<>();
+
+        for (List<ClimbingRecordDto> records : climbingRecordDtoMap.values()) {
+            indexedClimbingRecordDtoList.addAll(records);
+        }
+
+        indexedClimbingRecordDtoList.sort(Comparator.comparing(ClimbingRecordDto::getDate));
+
+        MyClimbingRecordDto myClimbingRecordDto = MyClimbingRecordDto.builder()
+                .climbingRecordDtoList(climbingRecordDtoList)
+                .build();
+        myClimbingRecordDto.setClimbingCntByMyClimbingRecordList();
+        myClimbingRecordDto.setClimbedAltitudeByMyClimbingRecordList();
+
+        return myClimbingRecordDto;
     }
 
     /**
