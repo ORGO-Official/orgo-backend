@@ -47,6 +47,7 @@ public class UserService {
 
     private String getImageUrl(MultipartFile imageFile) throws IOException {
         if (imageFile == null) {
+            log.info("이미지 파일이 null이므로 기본 프로필 사진으로 대체합니다. ");
             return imageUploader.getDefaultProfileImage();
         }
         return imageUploader.upload(imageFile, ImageType.PROFILE);
