@@ -5,10 +5,12 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import orgo.backend.domain._3mountain.dto.MountainDto;
+import orgo.backend.global.constant.Header;
 import orgo.backend.setting.IntegrationTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,6 +61,29 @@ public class MountainApiTest extends IntegrationTest {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(jsonPath.getObject("", MountainDto.Response.class).getId()).isEqualTo(1L)
+        );
+
+    }
+
+    @Test
+    @Disabled
+    @DisplayName("토큰을 넣어서 api를 호출한다. ")
+    void getAllMountainsWithToken() {
+        // given
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .header(Header.AUTH, "abc")
+                .when().get(GET_ALL_MOUNTAINS_API)
+                .then().log().all()
+                .extract();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(jsonPath.getList("", MountainDto.Response.class)).hasSize(10)
         );
 
     }

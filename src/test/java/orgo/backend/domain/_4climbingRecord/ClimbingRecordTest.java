@@ -1,5 +1,6 @@
 package orgo.backend.domain._4climbingRecord;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
