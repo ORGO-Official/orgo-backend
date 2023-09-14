@@ -1,5 +1,6 @@
 package orgo.backend.domain._2user.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class UserService {
      * @param userId     사용자 아이디넘버
      * @param requestDto 수정할 항목
      */
+    @Transactional
     public void updateProfile(Long userId, UserProfileDto.Request requestDto, MultipartFile imageFile) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         String imageUrl = getImageUrl(imageFile);
