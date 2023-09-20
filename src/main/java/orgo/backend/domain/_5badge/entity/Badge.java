@@ -15,6 +15,8 @@ public abstract class Badge extends BaseTimeEntity {
     @Id
     @GeneratedValue
     protected Long id;
+
+    @Enumerated(value = EnumType.STRING)
     protected BadgeGroup mainGroup;
 
     public Badge(BadgeGroup mainGroup){
