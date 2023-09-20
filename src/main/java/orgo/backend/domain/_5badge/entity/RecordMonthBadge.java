@@ -21,13 +21,15 @@ public class RecordMonthBadge extends Badge{
     @OneToOne
     @JoinColumn
     private Mountain mountain;
-    private YearMonth yearMonth;
+    private int year;
+    private int month;
 
     @Builder
     public RecordMonthBadge(Mountain mountain, YearMonth yearMonth, BadgeGroup mainGroup){
         super(mainGroup);
         this.mountain = mountain;
-        this.yearMonth = yearMonth;
+        this.year = yearMonth.getYear();
+        this.month = yearMonth.getMonthValue();
     }
 
     public boolean check(List<Record> records){
@@ -39,11 +41,15 @@ public class RecordMonthBadge extends Badge{
         
     }
 
+    public YearMonth getYearMonth(){
+        return YearMonth.of(this.year, this.month);
+    }
+
     @Override
     public String toString() {
         return "RecordCountBadge{" +
                 "mountain=" + mountain.getName() +
-                ", yearMonth=" + yearMonth.toString() +
+                ", yearMonth=" + year + month+
                 ", id=" + id +
                 ", group=" + mainGroup +
                 '}';
