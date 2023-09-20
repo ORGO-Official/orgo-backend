@@ -108,4 +108,27 @@ public class MountainApiTest extends IntegrationTest {
                 () -> assertThat(jsonPath.getList("", MountainDto.Response.class)).hasSize(1)
         );
     }
+
+
+    @Test
+    @DisplayName("산 근처의 식당을 조회한다.")
+    void getRestaurant(){
+        // given
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .when().get(GET_RESTAURANT_API, 1L)
+                .then().log().all()
+                .extract();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
+//                () -> assertThat(jsonPath.getList("$[0:].externalLink", String.class)).containsNull()
+        );
+    }
+
+
 }
