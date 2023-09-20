@@ -75,6 +75,13 @@ operation::climbingRecords-get-all[]
 ----
 operation::mountain-get-all[]
 
+
+=== 🟢 산 단건 조회
+----
+산 하나를 조회합니다.
+----
+operation::mountain-get[]
+
 === 🟢 근처 식당 조회
 ----
 산 근처의 식당을 조회합니다.
