@@ -42,7 +42,7 @@ public class RecordHeightBadge extends Badge{
     public String toString() {
         return "RecordCountBadge{" +
                 "mountain=" + mountain.getName() +
-                ", count=" + height +
+                ", height=" + height +
                 ", id=" + id +
                 ", group=" + mainGroup +
                 '}';
