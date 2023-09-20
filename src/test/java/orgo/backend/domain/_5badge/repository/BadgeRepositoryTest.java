@@ -1,10 +1,11 @@
-package orgo.backend.domain._5badge.entity;
+package orgo.backend.domain._5badge.repository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._3mountain.repository.MountainRepository;
+import orgo.backend.domain._5badge.entity.*;
 import orgo.backend.domain._5badge.repository.BadgeRepository;
 import orgo.backend.setting.MockEntityFactory;
 import orgo.backend.setting.RepositoryTest;
