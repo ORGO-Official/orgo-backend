@@ -9,6 +9,7 @@ import orgo.backend.domain._5badge.repository.BadgeRepository;
 import orgo.backend.setting.MockEntityFactory;
 import orgo.backend.setting.RepositoryTest;
 
+import java.time.YearMonth;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,27 +38,33 @@ public class BadgeRepositoryTest extends RepositoryTest {
     @DisplayName("RECORD 그룹에 속한 뱃지 목록을 조회한다.")
     void getAllRecordBadges(){
         //given
-        Mountain mountain1 = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
-        RecordCountBadge recordCountBadge1 = RecordCountBadge.builder()
+        Mountain mountain = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
+        RecordCountBadge recordCountBadge = RecordCountBadge.builder()
                 .mainGroup(BadgeGroup.RECORD)
-                .mountain(mountain1)
+                .mountain(mountain)
                 .count(1)
                 .build();
-        badgeRepository.save(recordCountBadge1);
+        badgeRepository.save(recordCountBadge);
 
-        Mountain mountain2 = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
-        RecordCountBadge recordCountBadge2 = RecordCountBadge.builder()
+        RecordHeightBadge recordHeightBadge = RecordHeightBadge.builder()
                 .mainGroup(BadgeGroup.RECORD)
-                .mountain(mountain2)
-                .count(3)
+                .mountain(mountain)
+                .height(100.2)
                 .build();
-        badgeRepository.save(recordCountBadge2);
+        badgeRepository.save(recordHeightBadge);
+
+        RecordMonthBadge recordMonthBadge = RecordMonthBadge.builder()
+                .mainGroup(BadgeGroup.RECORD)
+                .mountain(mountain)
+                .yearMonth(YearMonth.of(2023, 9))
+                .build();
+        badgeRepository.save(recordMonthBadge);
 
         //when
         List<Badge> badges = badgeRepository.findByMainGroup(BadgeGroup.RECORD);
 
         //then
-        assertThat(badges).hasSize(2);
+        assertThat(badges).hasSize(3);
     }
 
 
