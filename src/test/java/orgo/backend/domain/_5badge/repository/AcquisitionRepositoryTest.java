@@ -37,7 +37,7 @@ class AcquisitionRepositoryTest extends RepositoryTest {
         //given
         User user = userRepository.save(MockEntityFactory.mockUser(null));
         Mountain mountain = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
-        Badge badge = badgeRepository.save(RecordCountBadge.builder().mainGroup(BadgeGroup.RECORD).mountain(mountain).count(1).build());
+        Badge badge = badgeRepository.save(RecordCountBadge.builder().mountain(mountain).count(1).build());
 
         //when
         Acquisition acquisition = acquisitionRepository.save(new Acquisition(badge, user));

@@ -32,7 +32,6 @@ public class RecordCountBadgeRepositoryTest extends RepositoryTest {
         //given
         Mountain mountain = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
         RecordCountBadge recordCountBadge = RecordCountBadge.builder()
-                .mainGroup(BadgeGroup.RECORD)
                 .mountain(mountain)
                 .count(1)
                 .build();

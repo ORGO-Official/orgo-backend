@@ -32,7 +32,6 @@ public class RecordMonthBadgeRepositoryTest extends RepositoryTest {
         //given
         Mountain mountain = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
         RecordMonthBadge recordCountBadge = RecordMonthBadge.builder()
-                .mainGroup(BadgeGroup.RECORD)
                 .mountain(mountain)
                 .yearMonth(YearMonth.of(2023, 9))
                 .build();

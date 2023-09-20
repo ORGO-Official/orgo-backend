@@ -23,8 +23,8 @@ public class RecordHeightBadge extends Badge{
     private double height;
 
     @Builder
-    public RecordHeightBadge(Mountain mountain, double height, BadgeGroup mainGroup){
-        super(mainGroup);
+    public RecordHeightBadge(Mountain mountain, double height){
+        super(BadgeGroup.RECORD);
         this.mountain = mountain;
         this.height = height;
     }

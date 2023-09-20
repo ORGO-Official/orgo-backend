@@ -41,21 +41,18 @@ public class BadgeRepositoryTest extends RepositoryTest {
         //given
         Mountain mountain = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
         RecordCountBadge recordCountBadge = RecordCountBadge.builder()
-                .mainGroup(BadgeGroup.RECORD)
                 .mountain(mountain)
                 .count(1)
                 .build();
         badgeRepository.save(recordCountBadge);
 
         RecordHeightBadge recordHeightBadge = RecordHeightBadge.builder()
-                .mainGroup(BadgeGroup.RECORD)
                 .mountain(mountain)
                 .height(100.2)
                 .build();
         badgeRepository.save(recordHeightBadge);
 
         RecordMonthBadge recordMonthBadge = RecordMonthBadge.builder()
-                .mainGroup(BadgeGroup.RECORD)
                 .mountain(mountain)
                 .yearMonth(YearMonth.of(2023, 9))
                 .build();

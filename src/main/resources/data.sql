@@ -59,11 +59,11 @@ VALUES (1, '아차산 정상', 1, 37.57149, 127.103764, 287, true),
 
 
 -- <Badge> --
-INSERT INTO badge (id, main_group, created_time, modified_time, sub_group)
+INSERT INTO badge (id, created_time, modified_time, sub_group)
 VALUES
-    (1, 'RECORD', '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'record_count'),
-    (2, 'RECORD', '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'record_height'),
-    (3, 'RECORD', '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'record_month');
+    (1, '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'record_count'),
+    (2, '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'record_height'),
+    (3, '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'record_month');
 
 
 INSERT INTO record_count_badge (id, count, mountain_id) -- 1 3 5 --

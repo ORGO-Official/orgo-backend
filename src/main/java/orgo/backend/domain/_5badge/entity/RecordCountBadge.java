@@ -20,8 +20,8 @@ public class RecordCountBadge extends Badge{
     private int count;
 
     @Builder
-    public RecordCountBadge(Mountain mountain, int count, BadgeGroup mainGroup){
-        super(mainGroup);
+    public RecordCountBadge(Mountain mountain, int count){
+        super(BadgeGroup.RECORD);
         this.mountain = mountain;
         this.count = count;
     }
