@@ -22,8 +22,9 @@ public class RecordHeightBadge extends Badge{
     private double height;
 
     @Builder
-    public RecordHeightBadge(String condition, String description, double height){
+    public RecordHeightBadge(Long id, String condition, String description, double height){
         super(BadgeGroup.RECORD, condition, description);
+        this.id = id;
         this.height = height;
     }
 

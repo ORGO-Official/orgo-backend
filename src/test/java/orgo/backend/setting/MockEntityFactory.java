@@ -9,6 +9,7 @@ import orgo.backend.domain._2user.entity.User;
 import orgo.backend.domain._3mountain.entity.*;
 import orgo.backend.domain._5badge.entity.Badge;
 import orgo.backend.domain._5badge.entity.RecordCountBadge;
+import orgo.backend.domain._5badge.entity.RecordHeightBadge;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -58,11 +59,12 @@ public class MockEntityFactory {
 
     }
 
-    public static Badge mockBadge(Long id, Mountain mountain){
-        return RecordCountBadge.builder()
+    public static Badge mockBadge(Long id){
+        return RecordHeightBadge.builder()
                 .id(id)
-                .mountain(mountain)
-                .count(1)
+                .height(500)
+                .condition("완등 500m")
+                .description("높이 500m를 달성하면 얻을 수 있는 뱃지입니다.")
                 .build();
     }
 

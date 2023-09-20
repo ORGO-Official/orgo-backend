@@ -38,8 +38,8 @@ class BadgeServiceTest {
         //given
         long userId = 1L;
         User user = MockEntityFactory.mockUser(userId);
-        Badge recordCountBadge = MockEntityFactory.mockBadge(1L, MockEntityFactory.mockMountain(1L, MockEntityFactory.mockPeak(1L)));
-        Acquisition acquisition = new Acquisition(recordCountBadge, user);
+        Badge recordHeightBadge = MockEntityFactory.mockBadge(1L);
+        Acquisition acquisition = new Acquisition(recordHeightBadge, user);
 
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
         given(acquisitionRepository.findByUser(user)).willReturn(List.of(acquisition));
