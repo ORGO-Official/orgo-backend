@@ -36,7 +36,7 @@ public class KakaoMapPlaceLinkFinder implements PlaceLinkFinder {
                 .block();
         List<ResponseData.Document> documents = Objects.requireNonNull(responseData).getDocuments();
         if (documents.isEmpty()) {
-            return "";
+            return null;
         }
         return documents.get(0).getPlace_url();
     }
