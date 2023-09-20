@@ -22,8 +22,9 @@ public class RecordCountBadge extends Badge {
     private int count;
 
     @Builder
-    public RecordCountBadge(Mountain mountain, int count) {
-        super(BadgeGroup.RECORD);
+    public RecordCountBadge(Long id, String condition, String description, Mountain mountain, int count) {
+        super(BadgeGroup.RECORD, condition, description);
+        this.id = id;
         this.mountain = mountain;
         this.count = count;
     }

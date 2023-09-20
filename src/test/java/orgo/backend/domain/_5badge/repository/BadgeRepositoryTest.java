@@ -64,7 +64,4 @@ public class BadgeRepositoryTest extends RepositoryTest {
         //then
         assertThat(badges).hasSize(3);
     }
-
-
-
 }

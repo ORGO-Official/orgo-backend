@@ -60,6 +60,7 @@ public class MockEntityFactory {
 
     public static Badge mockBadge(Long id, Mountain mountain){
         return RecordCountBadge.builder()
+                .id(id)
                 .mountain(mountain)
                 .count(1)
                 .build();

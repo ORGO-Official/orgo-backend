@@ -24,8 +24,8 @@ public class RecordHeightBadge extends Badge{
     private double height;
 
     @Builder
-    public RecordHeightBadge(Mountain mountain, double height){
-        super(BadgeGroup.RECORD);
+    public RecordHeightBadge(String condition, String description, Mountain mountain, double height){
+        super(BadgeGroup.RECORD, condition, description);
         this.mountain = mountain;
         this.height = height;
     }

@@ -26,8 +26,8 @@ public class RecordMonthBadge extends Badge{
     private int month;
 
     @Builder
-    public RecordMonthBadge(Mountain mountain, YearMonth yearMonth){
-        super(BadgeGroup.RECORD);
+    public RecordMonthBadge(String condition, String description, Mountain mountain, YearMonth yearMonth){
+        super(BadgeGroup.RECORD, condition, description);
         this.mountain = mountain;
         this.year = yearMonth.getYear();
         this.month = yearMonth.getMonthValue();

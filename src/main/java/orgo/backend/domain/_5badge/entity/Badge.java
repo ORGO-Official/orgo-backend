@@ -20,8 +20,14 @@ public abstract class Badge extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     protected BadgeGroup mainGroup;
 
-    public Badge(BadgeGroup mainGroup){
+    protected String objective;
+
+    protected String description;
+
+    public Badge(BadgeGroup mainGroup, String objective, String description){
         this.mainGroup = mainGroup;
+        this.objective = objective;
+        this.description = description;
     }
 
     /**
