@@ -15,7 +15,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-public class BadgeRepositoryTest extends RepositoryTest {
+public class RecordCountBadgeRepositoryTest extends RepositoryTest {
 
     @Autowired
     BadgeRepository<Badge> badgeRepository;
