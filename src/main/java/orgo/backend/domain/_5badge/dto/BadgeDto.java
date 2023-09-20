@@ -13,15 +13,15 @@ public class BadgeDto {
     @AllArgsConstructor
     public static class Acquired{
         private long id;
-        private String condition;
+        private String objective;
         private String description;
         private LocalDateTime acquiredTime;
 
         public Acquired(Acquisition acquisition){
             Badge badge = acquisition.getBadge();
             this.id = badge.getId();
-            this.condition = "";
-            this.description = "";
+            this.objective = badge.getObjective();
+            this.description = badge.getDescription();
             this.acquiredTime = acquisition.getCreatedTime();
         }
     }

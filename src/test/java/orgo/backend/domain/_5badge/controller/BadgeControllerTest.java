@@ -77,7 +77,7 @@ class BadgeControllerTest {
                         ),
                         responseFields(
                                 field("[].id").type(JsonFieldType.NUMBER).description("뱃지 아이디 넘버"),
-                                field("[].condition").description("뱃지 발급 조건"),
+                                field("[].objective").description("뱃지 획득을 위한 목표"),
                                 field("[].description").description("뱃지 설명"),
                                 field("[].acquiredTime").description("뱃지 획득 시간")
                         )));
