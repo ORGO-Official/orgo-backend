@@ -56,3 +56,28 @@ VALUES (1, '아차산 정상', 1, 37.57149, 127.103764, 287, true),
        (8, '봉수대', 8, 37.576655, 126.945002, 296, true),
        (9, '자운봉', 9, 37.6981, 127.015, 740.2, true),
        (10, '불암산 주봉', 10, 37.6636719, 127.0952714, 509.7, true);
+
+
+-- <Badge> --
+INSERT INTO badge (id, main_group, created_time, modified_time, sub_group)
+VALUES
+    (1, 'RECORD', '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'record_count'),
+    (2, 'RECORD', '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'record_height'),
+    (3, 'RECORD', '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'record_month');
+
+
+INSERT INTO record_count_badge (id, count, mountain_id) -- 1 3 5 --
+VALUES
+    (1, 1, 1);
+
+INSERT INTO record_height_badge (id, height, mountain_id)  -- 500 1000 3000--
+VALUES
+    (2, 500, 1);
+
+INSERT INTO record_month_badge (id, year, month, mountain_id)
+VALUES
+    (3, 2023, 9, 1);
+
+
+
+
