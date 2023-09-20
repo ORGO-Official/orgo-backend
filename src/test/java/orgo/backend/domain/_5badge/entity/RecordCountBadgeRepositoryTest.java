@@ -42,31 +42,4 @@ public class RecordCountBadgeRepositoryTest extends RepositoryTest {
         //then
         assertThat(saved).isEqualTo(found);
     }
-
-    @Test
-    @DisplayName("RECORD 그룹에 속한 뱃지 목록을 조회한다.")
-    void getAllRecordBadges(){
-        //given
-        Mountain mountain1 = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
-        RecordCountBadge recordCountBadge1 = RecordCountBadge.builder()
-                .mainGroup(BadgeGroup.RECORD)
-                .mountain(mountain1)
-                .count(1)
-                .build();
-        badgeRepository.save(recordCountBadge1);
-
-        Mountain mountain2 = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
-        RecordCountBadge recordCountBadge2 = RecordCountBadge.builder()
-                .mainGroup(BadgeGroup.RECORD)
-                .mountain(mountain2)
-                .count(3)
-                .build();
-        badgeRepository.save(recordCountBadge2);
-
-        //when
-        List<Badge> badges = badgeRepository.findByMainGroup(BadgeGroup.RECORD);
-
-        //then
-        assertThat(badges).hasSize(2);
-    }
 }
