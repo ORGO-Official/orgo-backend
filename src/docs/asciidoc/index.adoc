@@ -91,7 +91,7 @@ operation::mountain-get[]
 operation::mountain-achasan-restaurant[]
 
 
-== 🙈 4-1. 등산
+== 🙈 4-1. 뱃지
 
 === 🟢 보유 뱃지 조회
 ----

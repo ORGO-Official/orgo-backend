@@ -70,13 +70,13 @@ INSERT INTO record_count_badge (id, count, mountain_id) -- 1 3 5 --
 VALUES
     (1, 1, 1);
 
-INSERT INTO record_height_badge (id, height, mountain_id)  -- 500 1000 3000--
+INSERT INTO record_height_badge (id, height)  -- 500 1000 3000--
 VALUES
-    (2, 500, 1);
+    (2, 500);
 
-INSERT INTO record_month_badge (id, year, month, mountain_id)
+INSERT INTO record_month_badge (id, year, month)
 VALUES
-    (3, 2023, 9, 1);
+    (3, 2023, 9);
 
 
 

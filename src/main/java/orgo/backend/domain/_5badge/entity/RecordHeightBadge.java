@@ -18,15 +18,12 @@ import java.util.List;
 @NoArgsConstructor
 @DiscriminatorValue("record_height")
 public class RecordHeightBadge extends Badge{
-    @OneToOne
-    @JoinColumn
-    private Mountain mountain;
+
     private double height;
 
     @Builder
-    public RecordHeightBadge(String condition, String description, Mountain mountain, double height){
+    public RecordHeightBadge(String condition, String description, double height){
         super(BadgeGroup.RECORD, condition, description);
-        this.mountain = mountain;
         this.height = height;
     }
 
@@ -42,7 +39,6 @@ public class RecordHeightBadge extends Badge{
     @Override
     public String toString() {
         return "RecordCountBadge{" +
-                "mountain=" + mountain.getName() +
                 ", height=" + height +
                 ", id=" + id +
                 ", group=" + mainGroup +

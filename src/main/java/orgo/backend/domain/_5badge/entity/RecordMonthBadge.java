@@ -19,16 +19,13 @@ import java.util.List;
 @NoArgsConstructor
 @DiscriminatorValue("record_month")
 public class RecordMonthBadge extends Badge{
-    @OneToOne
-    @JoinColumn
-    private Mountain mountain;
+
     private int year;
     private int month;
 
     @Builder
-    public RecordMonthBadge(String condition, String description, Mountain mountain, YearMonth yearMonth){
+    public RecordMonthBadge(String condition, String description,  YearMonth yearMonth){
         super(BadgeGroup.RECORD, condition, description);
-        this.mountain = mountain;
         this.year = yearMonth.getYear();
         this.month = yearMonth.getMonthValue();
     }
@@ -49,7 +46,6 @@ public class RecordMonthBadge extends Badge{
     @Override
     public String toString() {
         return "RecordCountBadge{" +
-                "mountain=" + mountain.getName() +
                 ", yearMonth=" + year + month+
                 ", id=" + id +
                 ", group=" + mainGroup +

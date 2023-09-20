@@ -47,13 +47,11 @@ public class BadgeRepositoryTest extends RepositoryTest {
         badgeRepository.save(recordCountBadge);
 
         RecordHeightBadge recordHeightBadge = RecordHeightBadge.builder()
-                .mountain(mountain)
                 .height(100.2)
                 .build();
         badgeRepository.save(recordHeightBadge);
 
         RecordMonthBadge recordMonthBadge = RecordMonthBadge.builder()
-                .mountain(mountain)
                 .yearMonth(YearMonth.of(2023, 9))
                 .build();
         badgeRepository.save(recordMonthBadge);
