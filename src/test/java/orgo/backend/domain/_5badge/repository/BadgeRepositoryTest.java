@@ -27,12 +27,16 @@ public class BadgeRepositoryTest extends RepositoryTest {
     @DisplayName("모든 뱃지를 조회한다.")
     void getAllBadges(){
         //given
+        Badge badge1 = MockEntityFactory.mockBadge(null);
+        Badge badge2 = MockEntityFactory.mockBadge(null);
+        Badge badge3 = MockEntityFactory.mockBadge(null);
+        badgeRepository.saveAll(List.of(badge1, badge2, badge3));
 
         //when
-        badgeRepository.findAll();
+        List<Badge> badges = badgeRepository.findAll();
 
         //then
-
+        assertThat(badges).hasSize(3);
     }
 
     @Test

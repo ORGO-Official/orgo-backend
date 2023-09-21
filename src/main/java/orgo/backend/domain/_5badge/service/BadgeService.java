@@ -1,6 +1,8 @@
 package orgo.backend.domain._5badge.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import orgo.backend.domain._2user.entity.User;
 import orgo.backend.domain._2user.repository.UserRepository;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BadgeService {
@@ -35,6 +38,7 @@ public class BadgeService {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Set<Badge> wholeBadges = findWholeBadges();
         Set<Badge> acquiredBadges = findAcquiredBadges(user);
+
         wholeBadges.removeAll(acquiredBadges);
         return wholeBadges.stream()
                 .map(BadgeDto.NotAcquired::new)

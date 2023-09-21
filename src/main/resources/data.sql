@@ -59,11 +59,11 @@ VALUES (1, '아차산 정상', 1, 37.57149, 127.103764, 287, true),
 
 
 -- <Badge> --
-INSERT INTO badge (id, created_time, modified_time, sub_group, objective, description)
+INSERT INTO badge (id, created_time, modified_time, main_group, sub_group, objective, description)
 VALUES
-    (1, '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'record_count', "아차산 등반 1회하기", "아차산 등반 1회 달성 시 얻을 수 있는 뱃지입니다."),
-    (2, '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'record_height', "완등 500m", "높이 500m를 달성하면 얻을 수 있는 뱃지입니다."),
-    (3, '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'record_month', "2023년 9월에 완등하기", "2023년 9월에 한번이라도 완등하면 얻을 수 있는 뱃지입니다.");
+    (1, '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'RECORD', 'record_count', "아차산 등반 1회하기", "아차산 등반 1회 달성 시 얻을 수 있는 뱃지입니다."),
+    (2, '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'RECORD', 'record_height', "완등 500m", "높이 500m를 달성하면 얻을 수 있는 뱃지입니다."),
+    (3, '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'RECORD', 'record_month', "2023년 9월에 완등하기", "2023년 9월에 한번이라도 완등하면 얻을 수 있는 뱃지입니다.");
 
 
 INSERT INTO record_count_badge (id, count, mountain_id) -- 1 3 5 --

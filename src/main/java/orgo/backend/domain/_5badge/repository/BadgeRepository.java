@@ -8,5 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface BadgeRepository<T extends Badge> extends JpaRepository<T, Long> {
+
     List<Badge> findByMainGroup(BadgeGroup mainGroup);
 }

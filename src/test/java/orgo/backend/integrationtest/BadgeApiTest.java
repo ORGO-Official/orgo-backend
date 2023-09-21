@@ -18,9 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 public class BadgeApiTest extends IntegrationTest {
 
     private final static String GET_ACQUIRED_BADGES = "/api/badges/acquired";
+    private final static String GET_NOT_ACQUIRED_BADGES = "/api/badges/not-acquired";
 
     @Test
-    @DisplayName("보유한 뱃지 목록을 조회한다.")
+    @DisplayName("획득한 뱃지 목록을 조회한다.")
     void getAcquiredBadges(){
         //given
 
@@ -38,5 +39,27 @@ public class BadgeApiTest extends IntegrationTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(jsonPath.getList("$", BadgeDto.Acquired.class)).isEmpty()
         );
+    }
+
+    @Test
+    @DisplayName("획득하지 못한 뱃지 목록을 조회한다.")
+    void getNotAcquiredBadges(){
+        //given
+
+        //when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .header(Header.AUTH, getAccessToken())
+                .when().get(GET_NOT_ACQUIRED_BADGES)
+                .then().log().all()
+                .extract();
+
+        //then
+        JsonPath jsonPath = response.jsonPath();
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(jsonPath.getList("$", BadgeDto.NotAcquired.class)).hasSize(3)
+        );
+
     }
 }
