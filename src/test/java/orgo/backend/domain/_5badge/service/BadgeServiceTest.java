@@ -62,21 +62,16 @@ class BadgeServiceTest {
         //given
         long userId = 1L;
         User user = MockEntityFactory.mockUser(userId);
-        Badge badge1 = MockEntityFactory.mockBadge(1L);
-        Badge badge2 = MockEntityFactory.mockBadge(2L);
-
-        Acquisition acquisition = new Acquisition(badge1, user);
+        Badge badge = MockEntityFactory.mockBadge(1L);
 
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
-        given(badgeRepository.findAll()).willReturn(List.of(badge1, badge2));
-        given(acquisitionRepository.findByUser(user)).willReturn(List.of(acquisition));
+        given(acquisitionRepository.findNotAcquired(user)).willReturn(List.of(badge));
 
         //when
         badgeService.getNotAcquiredBadges(userId);
 
         //then
         verify(userRepository).findById(userId);
-        verify(badgeRepository).findAll();
-        verify(acquisitionRepository).findByUser(user);
+        verify(acquisitionRepository).findNotAcquired(user);
     }
 }
