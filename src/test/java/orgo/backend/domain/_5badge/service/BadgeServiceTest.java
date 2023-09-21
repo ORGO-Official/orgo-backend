@@ -11,6 +11,7 @@ import orgo.backend.domain._5badge.entity.Badge;
 import orgo.backend.domain._5badge.entity.RecordCountBadge;
 import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 import orgo.backend.domain._5badge.repository.AcquisitionRepository;
+import orgo.backend.domain._5badge.repository.BadgeRepository;
 import orgo.backend.setting.MockEntityFactory;
 import orgo.backend.setting.ServiceTest;
 
@@ -32,6 +33,9 @@ class BadgeServiceTest {
     @Mock
     UserRepository userRepository;
 
+    @Mock
+    BadgeRepository<Badge> badgeRepository;
+
     @Test
     @DisplayName("사용자가 획득한 뱃지를 조회한다.")
     void getAcquiredBadges(){
@@ -49,8 +53,30 @@ class BadgeServiceTest {
 
         //then
         verify(userRepository).findById(userId);
-//        verify(acquisitionRepository.findByUser(user));
+        verify(acquisitionRepository).findByUser(user);
     }
 
+    @Test
+    @DisplayName("사용자가 획득하지 못한 뱃지를 조회한다.")
+    void getNotAcquiredBadges(){
+        //given
+        long userId = 1L;
+        User user = MockEntityFactory.mockUser(userId);
+        Badge badge1 = MockEntityFactory.mockBadge(1L);
+        Badge badge2 = MockEntityFactory.mockBadge(2L);
 
+        Acquisition acquisition = new Acquisition(badge1, user);
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        given(badgeRepository.findAll()).willReturn(List.of(badge1, badge2));
+        given(acquisitionRepository.findByUser(user)).willReturn(List.of(acquisition));
+
+        //when
+        badgeService.getNotAcquiredBadges(userId);
+
+        //then
+        verify(userRepository).findById(userId);
+        verify(badgeRepository).findAll();
+        verify(acquisitionRepository).findByUser(user);
+    }
 }

@@ -5,6 +5,7 @@ import orgo.backend.domain._2user.entity.User;
 import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 
 import java.util.List;
+import java.util.Set;
 
 public interface AcquisitionRepository extends JpaRepository<Acquisition, Long> {
     List<Acquisition> findByUser(User user);
