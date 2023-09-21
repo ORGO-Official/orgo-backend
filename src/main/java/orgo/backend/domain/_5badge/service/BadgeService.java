@@ -23,4 +23,8 @@ public class BadgeService {
                 .map(BadgeDto.Acquired::new)
                 .toList();
     }
+
+    public List<BadgeDto.NotAcquired> getNotAcquiredBadges(Long userId) {
+        return null;
+    }
 }

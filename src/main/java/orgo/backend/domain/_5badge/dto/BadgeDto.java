@@ -26,4 +26,15 @@ public class BadgeDto {
         }
     }
 
+    @Getter
+    @AllArgsConstructor
+    public static class NotAcquired {
+        private long id;
+        private String objective;
+
+        public NotAcquired(Badge badge){
+            this.id = badge.getId();
+            this.objective = badge.getObjective();
+        }
+    }
 }

@@ -22,4 +22,11 @@ public class BadgeController {
         List<BadgeDto.Acquired> responseDto =  badgeService.getAcquiredBadges(userId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/api/badges/not-acquired")
+    public ResponseEntity<List<BadgeDto.NotAcquired>> getNotAcquiredBadges(@AuthenticationPrincipal Long userId){
+        List<BadgeDto.NotAcquired> responseDto =  badgeService.getNotAcquiredBadges(userId);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 }

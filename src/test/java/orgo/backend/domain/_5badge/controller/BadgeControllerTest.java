@@ -45,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BadgeControllerTest {
 
     private final static String GET_ACQUIRED_BADGES = "/api/badges/acquired";
+    private final static String GET_NOT_ACQUIRED_BADGES = "/api/badges/not-acquired";
 
     @MockBean
     BadgeService badgeService;
@@ -80,6 +81,32 @@ class BadgeControllerTest {
                                 field("[].objective").description("뱃지 획득을 위한 목표"),
                                 field("[].description").description("뱃지 설명"),
                                 field("[].acquiredTime").description("뱃지 획득 시간")
+                        )));
+    }
+
+    @Test
+    @WithCustomMockUser(userId = "1")
+    @DisplayName("[미보유 뱃지 조회]")
+    void getNotAcquiredBadges() throws Exception {
+        //given
+        String accessToken = "accessToken";
+        BadgeDto.NotAcquired responseDto = new BadgeDto.NotAcquired(1L, "아차산 등반 1회");
+        given(badgeService.getNotAcquiredBadges(1L)).willReturn(List.of(responseDto));
+
+        //when
+        ResultActions actions = mvc.perform(get(GET_NOT_ACQUIRED_BADGES)
+                .header(Header.AUTH, accessToken)
+                .with(csrf()));
+
+        //then
+        actions.andExpect(status().isOk())
+                .andDo(docs("badge-not-acquired",
+                        requestHeaders(
+                                header(Header.AUTH).description("액세스 토큰")
+                        ),
+                        responseFields(
+                                field("[].id").type(JsonFieldType.NUMBER).description("뱃지 아이디 넘버"),
+                                field("[].objective").description("뱃지 획득을 위한 목표")
                         )));
     }
 
