@@ -66,9 +66,9 @@ VALUES
     (3, '2023-08-15 09:00:00', '2023-08-15 09:00:00', 'RECORD', 'record_month', "2023년 9월에 완등하기", "2023년 9월에 한번이라도 완등하면 얻을 수 있는 뱃지입니다.");
 
 
-INSERT INTO record_count_badge (id, count, mountain_id) -- 1 3 5 --
+INSERT INTO record_count_badge (id, mountain, count) -- 1 3 5 --
 VALUES
-    (1, 1, 1);
+    (1, '아차산', 1);
 
 INSERT INTO record_height_badge (id, height)  -- 500 1000 3000--
 VALUES

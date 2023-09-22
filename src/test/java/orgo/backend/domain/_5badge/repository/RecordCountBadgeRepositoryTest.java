@@ -30,9 +30,8 @@ public class RecordCountBadgeRepositoryTest extends RepositoryTest {
     @DisplayName("RecordCountBadge를 저장하고, 조회한다.")
     void saveAndFind() {
         //given
-        Mountain mountain = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
         RecordCountBadge recordCountBadge = RecordCountBadge.builder()
-                .mountain(mountain)
+                .mountain("아차산")
                 .count(1)
                 .build();
 
@@ -44,4 +43,25 @@ public class RecordCountBadgeRepositoryTest extends RepositoryTest {
         //then
         assertThat(saved).isEqualTo(found);
     }
+
+
+    @Test
+    @DisplayName("특정 산에 대해 1회, 3회, 5회 완등 조건을 가지는 RecordCountBadge를 저장한다.")
+    void test(){
+        //given
+        Mountain mountain = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
+        RecordCountBadge countOneBadge = RecordCountBadge.builder().mountain("아차산").count(1).build();
+        RecordCountBadge countThreeBadge = RecordCountBadge.builder().mountain("아차산").count(3).build();
+        RecordCountBadge countFiveBadge = RecordCountBadge.builder().mountain("아차산").count(5).build();
+
+        //when
+        badgeRepository.save(countOneBadge);
+        badgeRepository.save(countThreeBadge);
+        badgeRepository.save(countFiveBadge);
+
+        //then
+        assertThat(badgeRepository.findAll()).hasSize(3);
+    }
+
+
 }

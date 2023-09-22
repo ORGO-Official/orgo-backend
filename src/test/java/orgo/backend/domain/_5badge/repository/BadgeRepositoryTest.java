@@ -43,9 +43,8 @@ public class BadgeRepositoryTest extends RepositoryTest {
     @DisplayName("RECORD 그룹에 속한 뱃지 목록을 조회한다.")
     void getAllRecordBadges(){
         //given
-        Mountain mountain = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
         RecordCountBadge recordCountBadge = RecordCountBadge.builder()
-                .mountain(mountain)
+                .mountain("아차산")
                 .count(1)
                 .build();
         badgeRepository.save(recordCountBadge);
