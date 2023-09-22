@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import orgo.backend.domain._2user.entity.User;
 import orgo.backend.domain._3mountain.entity.Mountain;
+import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
+import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 
 import java.util.List;
 
@@ -13,26 +15,34 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @DiscriminatorValue("record_count")
-public class RecordCountBadge extends Badge{
+public class RecordCountBadge extends Badge {
     @OneToOne
     @JoinColumn
     private Mountain mountain;
     private int count;
 
     @Builder
-    public RecordCountBadge(Mountain mountain, int count, BadgeGroup mainGroup){
-        super(mainGroup);
+    public RecordCountBadge(Long id, String condition, String description, Mountain mountain, int count) {
+        super(BadgeGroup.RECORD, condition, description);
+        this.id = id;
         this.mountain = mountain;
         this.count = count;
     }
 
-    public boolean check(List<Record> records){
+    /**
+     * 뱃지를 발급 가능한지 확인합니다.
+     *
+     * @param object 사용자의 전체 완등 기록
+     * @return 뱃지 발급 가능 여부
+     */
+    @Override
+    public boolean canIssue(Object object) {
         return true;
     }
-    
+
     @Override
-    public void issue(User user) {
-        
+    public Acquisition issue(User user) {
+        return null;
     }
 
     @Override

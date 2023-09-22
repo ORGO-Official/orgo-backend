@@ -9,10 +9,7 @@ import orgo.backend.domain._1auth.entity.LoginType;
 import orgo.backend.domain._1auth.vo.PersonalData;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -90,5 +87,22 @@ public class User implements UserDetails {
     public void updateProfile(String nickname, String profileImage) {
         this.nickname = nickname;
         this.profileImage = profileImage;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        User user = (User) object;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

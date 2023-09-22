@@ -55,7 +55,7 @@ public class UserControllerTest {
     ObjectMapper objectMapper;
 
     @Test
-    @WithCustomMockUser
+    @WithCustomMockUser(userId = "1")
     @DisplayName("[프로필 조회] - 성공")
     void test() throws Exception {
         // given

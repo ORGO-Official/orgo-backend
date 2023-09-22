@@ -1,4 +1,4 @@
-package orgo.backend.domain._5badge.entity;
+package orgo.backend.domain._5badge.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._3mountain.repository.MountainRepository;
+import orgo.backend.domain._5badge.entity.Badge;
+import orgo.backend.domain._5badge.entity.BadgeGroup;
+import orgo.backend.domain._5badge.entity.RecordMonthBadge;
 import orgo.backend.domain._5badge.repository.BadgeRepository;
 import orgo.backend.setting.MockEntityFactory;
 import orgo.backend.setting.RepositoryTest;
@@ -27,10 +30,7 @@ public class RecordMonthBadgeRepositoryTest extends RepositoryTest {
     @DisplayName("RecordMonthBadge를 저장하고, 조회한다.")
     void saveAndFind() {
         //given
-        Mountain mountain = mountainRepository.save(MockEntityFactory.mockMountain(null, MockEntityFactory.mockPeak(null)));
         RecordMonthBadge recordCountBadge = RecordMonthBadge.builder()
-                .mainGroup(BadgeGroup.RECORD)
-                .mountain(mountain)
                 .yearMonth(YearMonth.of(2023, 9))
                 .build();
 

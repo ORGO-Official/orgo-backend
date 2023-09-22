@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import orgo.backend.domain._2user.entity.User;
 import orgo.backend.domain._3mountain.entity.Mountain;
+import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 
 import java.time.YearMonth;
 import java.util.List;
@@ -18,27 +19,25 @@ import java.util.List;
 @NoArgsConstructor
 @DiscriminatorValue("record_month")
 public class RecordMonthBadge extends Badge{
-    @OneToOne
-    @JoinColumn
-    private Mountain mountain;
+
     private int year;
     private int month;
 
     @Builder
-    public RecordMonthBadge(Mountain mountain, YearMonth yearMonth, BadgeGroup mainGroup){
-        super(mainGroup);
-        this.mountain = mountain;
+    public RecordMonthBadge(Long id, String condition, String description,  YearMonth yearMonth){
+        super(BadgeGroup.RECORD, condition, description);
+        this.id = id;
         this.year = yearMonth.getYear();
         this.month = yearMonth.getMonthValue();
     }
 
-    public boolean check(List<Record> records){
+    public boolean canIssue(Object object){
         return true;
     }
     
     @Override
-    public void issue(User user) {
-        
+    public Acquisition issue(User user) {
+        return null;
     }
 
     public YearMonth getYearMonth(){
@@ -48,7 +47,6 @@ public class RecordMonthBadge extends Badge{
     @Override
     public String toString() {
         return "RecordCountBadge{" +
-                "mountain=" + mountain.getName() +
                 ", yearMonth=" + year + month+
                 ", id=" + id +
                 ", group=" + mainGroup +
