@@ -36,7 +36,7 @@ public class RecordCountBadge extends Badge {
      * @return 뱃지 발급 가능 여부
      */
     @Override
-    public boolean check(Object object) {
+    public boolean canIssue(Object object) {
         return true;
     }
 

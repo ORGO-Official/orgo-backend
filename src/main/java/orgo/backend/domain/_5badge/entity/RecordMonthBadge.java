@@ -31,7 +31,7 @@ public class RecordMonthBadge extends Badge{
         this.month = yearMonth.getMonthValue();
     }
 
-    public boolean check(Object object){
+    public boolean canIssue(Object object){
         return true;
     }
     
