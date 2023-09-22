@@ -52,8 +52,12 @@ public abstract class Badge extends BaseTimeEntity {
 
     @Override
     public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
         Badge badge = (Badge) object;
         return Objects.equals(id, badge.id);
     }
