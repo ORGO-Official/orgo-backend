@@ -1,14 +1,12 @@
 package orgo.backend.domain._3mountain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.global.config.jpa.BaseTimeEntity;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @AllArgsConstructor
@@ -37,4 +35,21 @@ public class Mountain extends BaseTimeEntity {
     List<Peak> peaks;
     @OneToMany(mappedBy = "mountain", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     List<ClimbingRecord> climbingRecords;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        Mountain mountain = (Mountain) object;
+        return Objects.equals(id, mountain.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

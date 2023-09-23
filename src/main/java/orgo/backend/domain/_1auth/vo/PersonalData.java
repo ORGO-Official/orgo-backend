@@ -45,7 +45,7 @@ public class PersonalData {
 
     public static PersonalData fromApple(AppleLoginStrategy.AppleProfile appleProfile) {
         return PersonalData.builder()
-                .nickname("팀쿡과김태현의기묘한모험")
+                .nickname("오르고")
                 .email(appleProfile.getEmail())
                 .socialId(String.valueOf(appleProfile.getId()))
                 .loginType(LoginType.APPLE)

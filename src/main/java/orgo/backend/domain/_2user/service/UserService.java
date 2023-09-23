@@ -1,5 +1,6 @@
 package orgo.backend.domain._2user.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class UserService {
      * @param userId     사용자 아이디넘버
      * @param requestDto 수정할 항목
      */
+    @Transactional
     public void updateProfile(Long userId, UserProfileDto.Request requestDto, MultipartFile imageFile) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         String imageUrl = getImageUrl(imageFile);
@@ -47,6 +49,7 @@ public class UserService {
 
     private String getImageUrl(MultipartFile imageFile) throws IOException {
         if (imageFile == null) {
+            log.info("이미지 파일이 null이므로 기본 프로필 사진으로 대체합니다. ");
             return imageUploader.getDefaultProfileImage();
         }
         return imageUploader.upload(imageFile, ImageType.PROFILE);

@@ -41,7 +41,6 @@ public class UserApiTest extends IntegrationTest {
     }
 
     @Test
-    @Disabled
     @DisplayName("회원이 프로필을 수정한다.  ")
     void updateProfile()  {
         String accessToken = getAccessToken();

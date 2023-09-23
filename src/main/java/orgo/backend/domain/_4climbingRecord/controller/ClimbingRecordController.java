@@ -25,7 +25,7 @@ public class ClimbingRecordController {
             climbingRecordService.registerClimbingRecord(userId, userPosDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
 
