@@ -26,12 +26,6 @@ public class ClimbingRecordService {
     private final ClimbingRecordRepository climbingRecordRepository;
     private final UserRepository userRepository;
 
-    /**
-     * 등산 완등 인증 요청을 처리합니다.
-     *
-     * @param userId 사용자 Id
-     * @param userPosDto 사용자의 위치 정보
-     */
     @Transactional
     public void registerClimbingRecord(Long userId, UserPosDto userPosDto) {
         if(isTop(userPosDto)) {
@@ -48,12 +42,6 @@ public class ClimbingRecordService {
         }
     }
 
-    /**
-     * 사용자의 모든 완등 기록을 조회합니다.
-     *
-     * @param userId 사용자 Id
-     * @return 사용자의 완등 기록
-     */
     public MyClimbingRecordDto viewMyClimbingRecords(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
