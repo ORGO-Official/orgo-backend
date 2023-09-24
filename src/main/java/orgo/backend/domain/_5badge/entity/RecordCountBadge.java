@@ -16,13 +16,11 @@ import java.util.List;
 @NoArgsConstructor
 @DiscriminatorValue("record_count")
 public class RecordCountBadge extends Badge {
-    @OneToOne
-    @JoinColumn
-    private Mountain mountain;
+    private String mountain;
     private int count;
 
     @Builder
-    public RecordCountBadge(Long id, String condition, String description, Mountain mountain, int count) {
+    public RecordCountBadge(Long id, String condition, String description, String mountain, int count) {
         super(BadgeGroup.RECORD, condition, description);
         this.id = id;
         this.mountain = mountain;
@@ -48,7 +46,7 @@ public class RecordCountBadge extends Badge {
     @Override
     public String toString() {
         return "RecordCountBadge{" +
-                "mountain=" + mountain.getName() +
+                "mountain=" + mountain +
                 ", count=" + count +
                 ", id=" + id +
                 ", group=" + mainGroup +
