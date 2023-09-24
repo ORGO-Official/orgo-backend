@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,19 +26,14 @@ import java.security.Key;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${spring.jwt.secret}")
-    private String SECRET_KEY;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
-
-    private Key getSigningKey(String secretKey) {
-        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-    }
+    private final JwtProvider jwtProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
         String jwt = request.getHeader(Header.AUTH);
         if (StringUtils.isNotEmpty(jwt)) {
-            Claims claims = JwtValidator.validateJwt(jwt, getSigningKey(SECRET_KEY));
+            Claims claims = jwtProvider.parseToClaims(jwt);
             Long userId = Long.parseLong(claims.getSubject());
             Authentication unauthenticatedToken = JwtAuthenticationToken.unauthenticated(userId);
             Authentication authenticatedToken = jwtAuthenticationProvider.authenticate(unauthenticatedToken);
