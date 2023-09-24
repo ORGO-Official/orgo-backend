@@ -154,4 +154,27 @@ public class AuthApiTest extends IntegrationTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value())
         );
     }
+
+
+    @Test
+    @DisplayName("올바른 토큰 형식이 아닌 경우, 로그인에 실패한다.")
+    void notValidToken(){
+        // given
+        String socialToken = "social-token";
+        String accessToken = "not-valid-access-token";
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .header(Header.SOCIAL, socialToken)
+                .header(Header.AUTH, accessToken)
+                .when().post(LOGOUT_API)
+                .then().log().all()
+                .extract();
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value())
+        );
+    }
 }

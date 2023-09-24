@@ -38,11 +38,17 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     private void setResponseBody(HttpServletResponse response, ErrorCode errorCode) throws IOException {
         final ObjectMapper mapper = new ObjectMapper();
         final Map<String, Object> body = new HashMap<>();
+        fillBody(response, errorCode, body);
+        mapper.writeValue(response.getOutputStream(), body);
+    }
+
+    private void fillBody(HttpServletResponse response, ErrorCode errorCode, Map<String, Object> body) {
         body.put("status", errorCode.getHttpStatus().value());
         body.put("code", errorCode.getCode());
         body.put("name", errorCode.name());
         body.put("message", errorCode.getMessage());
-        mapper.writeValue(response.getOutputStream(), body);
+        response.setStatus(errorCode.getHttpStatus().value());
+        response.setContentType("application/json;charset=UTF-8");
     }
 
     private ErrorCode extractErrorCode(Throwable e) {
