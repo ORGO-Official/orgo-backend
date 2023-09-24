@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import orgo.backend.domain._1auth.entity.LoginType;
 import orgo.backend.domain._1auth.service.AuthService;
+import orgo.backend.domain._1auth.service.ReissueService;
 import orgo.backend.domain._1auth.vo.ServiceToken;
 import orgo.backend.global.config.security.JwtAuthenticationFilter;
 import orgo.backend.global.config.security.SecurityConfig;
@@ -43,9 +44,13 @@ public class AuthControllerTest {
     private final static String LOGIN_API = "/api/auth/login/{loginType}";
     private final static String LOGOUT_API = "/api/auth/logout";
     private final static String WITHDRAW_API = "/api/auth/withdraw";
+    private final static String REISSUE_API = "/api/auth/reissue";
 
     @MockBean
     AuthService authService;
+
+    @MockBean
+    ReissueService reissueService;
 
     @Autowired
     MockMvc mvc;
@@ -128,4 +133,30 @@ public class AuthControllerTest {
                                 header(Header.AUTH).description("액세스 토큰")
                         )));
     }
+
+    @Test
+    @WithMockUser
+    @DisplayName("[액세스 토큰 재발급]")
+    void reissue() throws Exception {
+        // given
+        String accessToken = "access-token";
+        String refreshToken = "refresh-token";
+        given(reissueService.reissueAccessToken(accessToken, refreshToken)).willReturn("new=refresh-token");
+
+        // when
+        ResultActions actions = mvc.perform(post(REISSUE_API)
+                .with(csrf())
+                .header(Header.AUTH, accessToken)
+                .header(Header.REFRESH, refreshToken)
+        );
+
+        // then
+        actions.andExpect(status().isOk())
+                .andDo(docs("auth-reissue",
+                        requestHeaders(
+                                header(Header.AUTH).description("액세스 토큰"),
+                                header(Header.REFRESH).description("리프레시 토큰")
+                        )));
+    }
+
 }
