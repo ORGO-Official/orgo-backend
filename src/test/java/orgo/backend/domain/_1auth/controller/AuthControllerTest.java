@@ -46,6 +46,7 @@ public class AuthControllerTest {
     private final static String WITHDRAW_API = "/api/auth/withdraw";
     private final static String REISSUE_API = "/api/auth/reissue";
 
+
     @MockBean
     AuthService authService;
 
@@ -141,7 +142,7 @@ public class AuthControllerTest {
         // given
         String accessToken = "access-token";
         String refreshToken = "refresh-token";
-        given(reissueService.reissueAccessToken(accessToken, refreshToken)).willReturn("new=refresh-token");
+        given(reissueService.reissueAccessToken(accessToken, refreshToken)).willReturn("new-access-token");
 
         // when
         ResultActions actions = mvc.perform(post(REISSUE_API)

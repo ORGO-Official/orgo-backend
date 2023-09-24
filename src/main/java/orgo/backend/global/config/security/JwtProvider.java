@@ -2,6 +2,7 @@ package orgo.backend.global.config.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
@@ -9,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import orgo.backend.domain._1auth.vo.ServiceToken;
 import orgo.backend.domain._2user.entity.User;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtProvider {
 
     @Value("${spring.jwt.secret}")
@@ -29,6 +32,7 @@ public class JwtProvider {
     public static final String AUTHORITIES = "authorities";
     public static final Long ACCESS_SEC = 31536000000L; // 1000 * 60 * 60 * 24 * 365 (1년)
     public static final Long REFRESH_SEC = 31536000000L; // 1000 * 60 * 60 * 24 * 365 (1년)
+    private final UserDetailsService userDetailsService;
 
     private Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
@@ -76,5 +80,13 @@ public class JwtProvider {
         } catch (SecurityException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
             throw new JwtWrongFormatException();
         }
+    }
+
+    public Authentication getAuthentication(Claims claims) {
+        if (claims.get(AUTHORITIES) == null) {
+            throw new AccessDeniedException("권한이 없습니다.");
+        }
+        UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }

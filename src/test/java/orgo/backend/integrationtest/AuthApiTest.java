@@ -12,6 +12,7 @@ import orgo.backend.domain._1auth.entity.LoginType;
 import orgo.backend.domain._1auth.service.loginstrategy.AppleLoginStrategy;
 import orgo.backend.domain._1auth.service.loginstrategy.NaverLoginStrategy;
 import orgo.backend.domain._1auth.vo.PersonalData;
+import orgo.backend.domain._1auth.vo.ServiceToken;
 import orgo.backend.global.constant.Header;
 import orgo.backend.setting.IntegrationTest;
 
@@ -25,6 +26,8 @@ public class AuthApiTest extends IntegrationTest {
     private final static String LOGIN_API = "/api/auth/login/{loginType}";
     private final static String LOGOUT_API = "/api/auth/logout";
     private final static String WITHDRAW_API = "/api/auth/withdraw";
+    private final static String REISSUE_API = "/api/auth/reissue";
+
 
     @MockBean
     NaverLoginStrategy naverLoginStrategy;
@@ -174,7 +177,28 @@ public class AuthApiTest extends IntegrationTest {
 
         // then
         assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value())
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+        );
+    }
+
+    @Test
+    @DisplayName("액세스 토큰을 재발급한다. ")
+    void reissueAccessToken(){
+        // given
+        ServiceToken serviceToken = getTokenSet();
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .header(Header.AUTH, serviceToken.getAccessToken())
+                .header(Header.REFRESH, serviceToken.getRefreshToken())
+                .when().post(REISSUE_API)
+                .then().log().all()
+                .extract();
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
         );
     }
 }

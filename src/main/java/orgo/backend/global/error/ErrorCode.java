@@ -17,7 +17,7 @@ public enum ErrorCode {
     ACCESS_TOKEN_EXPIRED("0007", "만료된 액세스 토큰입니다.", HttpStatus.UNAUTHORIZED),
     REFRESH_TOKEN_EXPIRED("0008", "만료된 리프레시 토큰입니다.", HttpStatus.UNAUTHORIZED),
     MOUNTAIN_NOT_FOUND("0009", "해당 산을 조회할 수 없습니다.", HttpStatus.NOT_FOUND),
-
+    REISSUE_FAILED("0010", "토큰 재발급에 실패했습니다.", HttpStatus.BAD_REQUEST),
     ;
 
     private final String code;
