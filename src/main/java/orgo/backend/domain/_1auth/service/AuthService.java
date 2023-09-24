@@ -1,5 +1,6 @@
 package orgo.backend.domain._1auth.service;
 
+import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class AuthService {
         LoginStrategy strategy = loginManager.findStrategy(LoginType.findBy(method));
         PersonalData personalData = strategy.getPersonalData(socialToken);
         User user = createOrGetUser(personalData);
-        return jwtProvider.createServiceToken(user);
+        return new ServiceToken(jwtProvider.createAccessToken(user), jwtProvider.createRefreshToken(user));
     }
 
     /**

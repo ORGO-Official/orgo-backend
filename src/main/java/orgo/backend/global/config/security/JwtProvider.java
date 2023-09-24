@@ -4,12 +4,15 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import orgo.backend.domain._1auth.vo.ServiceToken;
 import orgo.backend.domain._2user.entity.User;
-import orgo.backend.global.error.ErrorCode;
-import orgo.backend.global.error.exception.OrgoJwtException;
+import orgo.backend.global.error.exception.JwtWrongFormatException;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -32,10 +35,12 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public ServiceToken createServiceToken(User user) {
-        String accessToken = generateJwt(user, ACCESS_SEC);
-        String refreshToken = generateJwt(user, REFRESH_SEC);
-        return new ServiceToken(accessToken, refreshToken);
+    public String createAccessToken(User user){
+        return generateJwt(user, ACCESS_SEC);
+    }
+
+    public String createRefreshToken(User user){
+        return generateJwt(user, REFRESH_SEC);
     }
 
     private String generateJwt(User user, Long expireTime) {
@@ -61,25 +66,15 @@ public class JwtProvider {
         return claims;
     }
 
-    public Claims parseToClaims(String jwt) {
+    public Claims parseToClaims(String jwt) throws ExpiredJwtException{
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(getSigningKey(SECRET_KEY))
                     .build()
                     .parseClaimsJws(jwt)
                     .getBody();
-        } catch (SecurityException e) {
-            log.error("잘못된 시그니처");
-            throw new OrgoJwtException(ErrorCode.WRONG_SIGNATURE_JWT);
-        } catch (ExpiredJwtException e) {
-            log.error("Jwt 만료");
-            throw new OrgoJwtException(ErrorCode.EXPIRED_JWT);
-        } catch (UnsupportedJwtException e) {
-            log.error("지원하지 않는 토큰 형식");
-            throw new OrgoJwtException(ErrorCode.UNSUPPORTED_JWT);
-        } catch (MalformedJwtException | IllegalArgumentException e) {
-            log.error("유효하지 않은 JWT 토큰");
-            throw new OrgoJwtException(ErrorCode.INVALID_JWT);
+        } catch (SecurityException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
+            throw new JwtWrongFormatException();
         }
     }
 }
