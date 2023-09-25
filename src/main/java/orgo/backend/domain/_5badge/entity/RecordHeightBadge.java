@@ -28,7 +28,7 @@ public class RecordHeightBadge extends Badge{
         this.height = height;
     }
 
-    public boolean canIssue(Object object){
+    public boolean canIssue(User user){
         return true;
     }
     

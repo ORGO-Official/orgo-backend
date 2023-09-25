@@ -43,7 +43,7 @@ public class MockEntityFactory {
     public static Mountain mockMountain(Long id, Peak... peaks) {
         return Mountain.builder()
                 .id(id)
-                .name("에베레스트산")
+                .name("아차산")
                 .description("세계에서 가장 높은 산")
                 .address("경상북도 구미시 여헌로 15-11")
                 .contact("010-1234-5678")

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import orgo.backend.domain._2user.entity.User;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
+import orgo.backend.domain._5badge.vo.CheckCondition;
 
 import java.time.YearMonth;
 import java.util.List;
@@ -31,7 +32,7 @@ public class RecordMonthBadge extends Badge{
         this.month = yearMonth.getMonthValue();
     }
 
-    public boolean canIssue(Object object){
+    public boolean canIssue(User user){
         return true;
     }
     

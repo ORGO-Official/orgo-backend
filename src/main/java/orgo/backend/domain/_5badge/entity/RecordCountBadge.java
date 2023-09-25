@@ -8,6 +8,7 @@ import orgo.backend.domain._2user.entity.User;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
+import orgo.backend.domain._5badge.vo.CheckCondition;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class RecordCountBadge extends Badge {
      * @return 뱃지 발급 가능 여부
      */
     @Override
-    public boolean canIssue(Object object) {
+    public boolean canIssue(User user) {
         return true;
     }
 
