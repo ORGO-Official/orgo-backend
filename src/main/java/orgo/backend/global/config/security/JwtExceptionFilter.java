@@ -1,6 +1,7 @@
 package orgo.backend.global.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,8 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import orgo.backend.global.error.ErrorCode;
-import orgo.backend.global.error.exception.UserNotFoundException;
-import orgo.backend.global.error.exception.OrgoJwtException;
+import orgo.backend.global.error.exception.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,13 +23,16 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (OrgoJwtException | UserNotFoundException e) {
+        } catch (ExpiredJwtException | JwtWrongFormatException | UserNotFoundException e) {
+            if (e instanceof ExpiredJwtException){
+                setErrorResponse(response, new AccessTokenExpiredException());
+            }
             setErrorResponse(response, e);
         }
     }
 
     public void setErrorResponse(HttpServletResponse response, Throwable e) throws IOException {
-        ErrorCode errorCode = extractErrorCode(e);
+        ErrorCode errorCode = ((OrgoException) e).getErrorCode();
         setResponseBody(response, errorCode);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(errorCode.getHttpStatus().value());
@@ -38,17 +41,16 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     private void setResponseBody(HttpServletResponse response, ErrorCode errorCode) throws IOException {
         final ObjectMapper mapper = new ObjectMapper();
         final Map<String, Object> body = new HashMap<>();
+        fillBody(response, errorCode, body);
+        mapper.writeValue(response.getOutputStream(), body);
+    }
+
+    private void fillBody(HttpServletResponse response, ErrorCode errorCode, Map<String, Object> body) {
         body.put("status", errorCode.getHttpStatus().value());
         body.put("code", errorCode.getCode());
         body.put("name", errorCode.name());
         body.put("message", errorCode.getMessage());
-        mapper.writeValue(response.getOutputStream(), body);
-    }
-
-    private ErrorCode extractErrorCode(Throwable e) {
-        if (e instanceof UserNotFoundException) {
-            return ((UserNotFoundException) e).getErrorCode();
-        }
-        return ((OrgoJwtException) e).getErrorCode();
+        response.setStatus(errorCode.getHttpStatus().value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     }
 }

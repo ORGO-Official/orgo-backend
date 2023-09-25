@@ -13,6 +13,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import orgo.backend.domain._1auth.entity.LoginType;
 import orgo.backend.domain._1auth.service.loginstrategy.KakaoLoginStrategy;
 import orgo.backend.domain._1auth.vo.PersonalData;
+import orgo.backend.domain._1auth.vo.ServiceToken;
 import orgo.backend.global.constant.Header;
 
 import static org.mockito.BDDMockito.given;
@@ -52,5 +53,23 @@ public class IntegrationTest {
         // then
         JsonPath jsonPath = response.jsonPath();
         return jsonPath.getString("accessToken");
+    }
+
+    protected ServiceToken getTokenSet(){
+        String socialToken = "social-token";
+        PersonalData personalData = new PersonalData("김철수", "chul@naver.com", "xyzabc", LoginType.KAKAO);
+        given(kakaoLoginStrategy.getPersonalData(socialToken)).willReturn(personalData);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .header(Header.SOCIAL, socialToken)
+                .when().post(LOGIN_API, LoginType.KAKAO.getName())
+                .then().log().all()
+                .extract();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        return jsonPath.getObject("$", ServiceToken.class);
     }
 }

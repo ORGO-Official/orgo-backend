@@ -1,7 +1,6 @@
 package orgo.backend.global.config.security;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.security.Keys;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -9,35 +8,29 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import orgo.backend.global.constant.Header;
+import orgo.backend.global.error.exception.AccessTokenExpiredException;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${spring.jwt.secret}")
-    private String SECRET_KEY;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
-
-    private Key getSigningKey(String secretKey) {
-        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-    }
+    private final JwtProvider jwtProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException, AccessTokenExpiredException {
         String jwt = request.getHeader(Header.AUTH);
         if (StringUtils.isNotEmpty(jwt)) {
-            Claims claims = JwtValidator.validateJwt(jwt, getSigningKey(SECRET_KEY));
+            Claims claims = jwtProvider.parseToClaims(jwt);
             Long userId = Long.parseLong(claims.getSubject());
             Authentication unauthenticatedToken = JwtAuthenticationToken.unauthenticated(userId);
             Authentication authenticatedToken = jwtAuthenticationProvider.authenticate(unauthenticatedToken);
