@@ -8,7 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import orgo.backend.domain._1auth.entity.LoginType;
 import orgo.backend.domain._1auth.vo.PersonalData;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
+import orgo.backend.domain._5badge.entity.Badge;
+import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 
+import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,6 +38,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<ClimbingRecord> climbingRecords = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Acquisition> acquisitions = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -87,6 +94,29 @@ public class User implements UserDetails {
     public void updateProfile(String nickname, String profileImage) {
         this.nickname = nickname;
         this.profileImage = profileImage;
+    }
+
+
+    public boolean hasBadge(Badge badge) {
+        return this.acquisitions.stream()
+                .anyMatch(acquisition -> acquisition.getBadge().equals(badge));
+    }
+
+    public long countOfMountainClimbed(String mountainName) {
+        return this.climbingRecords.stream()
+                .filter(record -> record.getMountain().getName().equals(mountainName))
+                .count();
+    }
+
+    public double sumHeightOfRecords() {
+        return this.climbingRecords.stream()
+                .mapToDouble(record -> record.getMountain().getLocation().getAltitude())
+                .sum();
+    }
+
+    public boolean hasClimbedAt(YearMonth yearMonth){
+        return this.climbingRecords.stream()
+                .anyMatch(record -> yearMonth.equals(YearMonth.from(record.getDate())));
     }
 
     @Override

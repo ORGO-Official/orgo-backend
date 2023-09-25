@@ -13,6 +13,7 @@ import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.MyClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
 import orgo.backend.domain._4climbingRecord.mapper.ClimbingRecordMapper;
+import orgo.backend.domain._5badge.service.RecordBadgeFactory;
 import orgo.backend.global.error.exception.UserNotFoundException;
 
 import java.util.*;
@@ -25,25 +26,28 @@ public class ClimbingRecordService {
     private final MountainRepository mountainRepository;
     private final ClimbingRecordRepository climbingRecordRepository;
     private final UserRepository userRepository;
+    private final RecordBadgeFactory recordBadgeFactory;
 
     /**
      * 등산 완등 인증 요청을 처리합니다.
+     * 이후 발급 가능한 뱃지가 있으면, 발급합니다.
      *
-     * @param userId 사용자 Id
+     * @param userId     사용자 Id
      * @param userPosDto 사용자의 위치 정보
      */
     @Transactional
     public void registerClimbingRecord(Long userId, UserPosDto userPosDto) {
-        if(isTop(userPosDto)) {
-
+        if (isTop(userPosDto)) {
+            User user = userRepository.findById(userId).orElseThrow();
             ClimbingRecord climbingRecord = ClimbingRecord.builder()
                     .date(userPosDto.getDate())
-                    .user(userRepository.findById(userId).orElseThrow())
+                    .user(user)
                     .mountain(mountainRepository.findById(userPosDto.getMountainId()).orElseThrow())
                     .build();
 
             climbingRecordRepository.save(climbingRecord);
-        }else {
+            recordBadgeFactory.issueAvailableBadges(user);
+        } else {
             throw new RuntimeException();
         }
     }
@@ -70,7 +74,7 @@ public class ClimbingRecordService {
                 List<ClimbingRecordDto> existedClimbingRecordDtoList = climbingRecordDtoMap.get(climbingRecordDto.getMountainName());
                 existedClimbingRecordDtoList.add(climbingRecordDto);
                 climbingRecordDtoMap.put(climbingRecordDto.getMountainName(), existedClimbingRecordDtoList);
-            }else {
+            } else {
                 List<ClimbingRecordDto> emptyClimbingRecordDtoList = new ArrayList<>();
                 emptyClimbingRecordDtoList.add(climbingRecordDto);
                 climbingRecordDtoMap.put(climbingRecordDto.getMountainName(), emptyClimbingRecordDtoList);
@@ -81,8 +85,8 @@ public class ClimbingRecordService {
         for (Map.Entry<String, List<ClimbingRecordDto>> entry : climbingRecordDtoMap.entrySet()) {
             List<ClimbingRecordDto> climbingRecords = entry.getValue();
 
-            for(int i=0; i< climbingRecords.size(); i++) {
-                climbingRecords.get(i).setClimbingOrder((long) (i+1));
+            for (int i = 0; i < climbingRecords.size(); i++) {
+                climbingRecords.get(i).setClimbingOrder((long) (i + 1));
             }
         }
 
@@ -118,7 +122,7 @@ public class ClimbingRecordService {
         double distanceDiff = calDistance(userPosDto.getLatitude(), userPosDto.getLongitude(),
                 mountain.getLocation().getLatitude(), mountain.getLocation().getLongitude());
 
-        if(distanceDiff > distanceDiffRange || Math.abs(userPosDto.getAltitude()-mountain.getLocation().getAltitude()) > altitudeDiffRange) {
+        if (distanceDiff > distanceDiffRange || Math.abs(userPosDto.getAltitude() - mountain.getLocation().getAltitude()) > altitudeDiffRange) {
             return false;
         }
 
@@ -128,9 +132,9 @@ public class ClimbingRecordService {
     /**
      * Haversine공식을 기반으로 두 장소간의 거리를 계산합니다.
      *
-     * @param latitude1 위도1
+     * @param latitude1  위도1
      * @param longitude1 경도1
-     * @param latitude2 위도1
+     * @param latitude2  위도1
      * @param longitude2 경도1
      * @return 두 거리간의 거리
      */

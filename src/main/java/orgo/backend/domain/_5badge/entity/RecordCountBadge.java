@@ -1,15 +1,11 @@
 package orgo.backend.domain._5badge.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import orgo.backend.domain._2user.entity.User;
-import orgo.backend.domain._3mountain.entity.Mountain;
-import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
-import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -27,20 +23,11 @@ public class RecordCountBadge extends Badge {
         this.count = count;
     }
 
-    /**
-     * 뱃지를 발급 가능한지 확인합니다.
-     *
-     * @param object 사용자의 전체 완등 기록
-     * @return 뱃지 발급 가능 여부
-     */
     @Override
-    public boolean canIssue(Object object) {
-        return true;
-    }
-
-    @Override
-    public Acquisition issue(User user) {
-        return null;
+    public boolean canIssue(User user) {
+        boolean notHave = !user.hasBadge(this);
+        boolean achieved = this.count <= user.countOfMountainClimbed(this.mountain);
+        return notHave && achieved;
     }
 
     @Override
