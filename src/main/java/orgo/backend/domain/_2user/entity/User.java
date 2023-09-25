@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import orgo.backend.domain._1auth.entity.LoginType;
 import orgo.backend.domain._1auth.vo.PersonalData;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
+import orgo.backend.domain._5badge.entity.Badge;
+import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,6 +37,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<ClimbingRecord> climbingRecords = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Acquisition> acquisitions = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -88,6 +94,7 @@ public class User implements UserDetails {
         this.nickname = nickname;
         this.profileImage = profileImage;
     }
+
 
     @Override
     public boolean equals(Object object) {
