@@ -96,12 +96,16 @@ public class User implements UserDetails {
     }
 
 
-    public boolean haveBadge(Badge badge) {
+    public boolean haveBadge(Badge badge) {가
         return this.acquisitions.stream()
                 .anyMatch(acquisition -> acquisition.getBadge().equals(badge));
     }
 
-
+    public long countOfMountainClimbed(String mountainName) {
+        return this.climbingRecords.stream()
+                .filter(record -> record.getMountain().getName().equals(mountainName))
+                .count();
+    }
 
     @Override
     public boolean equals(Object object) {
