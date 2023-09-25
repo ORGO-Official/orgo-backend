@@ -38,7 +38,7 @@ public class RecordCountBadge extends Badge {
 
     @Override
     public Acquisition issue(User user) {
-        return null;
+        return new Acquisition(this, user);
     }
 
     @Override
