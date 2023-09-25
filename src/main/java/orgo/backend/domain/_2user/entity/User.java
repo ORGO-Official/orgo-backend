@@ -108,7 +108,9 @@ public class User implements UserDetails {
     }
 
     public double sumHeightOfRecords() {
-        return 0L;
+        return this.climbingRecords.stream()
+                .mapToDouble(record -> record.getMountain().getLocation().getAltitude())
+                .sum();
     }
 
     @Override

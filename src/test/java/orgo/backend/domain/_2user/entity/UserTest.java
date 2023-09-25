@@ -59,5 +59,31 @@ class UserTest {
         Assertions.assertThat(result).isEqualTo(2L);
     }
 
+    @Test
+    @DisplayName("사용자가 총 오른 높이를 계산한다.")
+    void sumHeightOfRecord(){
+        //given
+        User user = MockEntityFactory.mockUser(1L);
+        Mountain mountain = MockEntityFactory.mockMountain(1L, MockEntityFactory.mockPeak(1L));
+        ClimbingRecord record1 = ClimbingRecord.builder()
+                .id(1L)
+                .user(user)
+                .mountain(mountain)
+                .date(LocalDateTime.of(2023, 9, 1, 15, 23, 44))
+                .build();
+
+        ClimbingRecord record2 = ClimbingRecord.builder()
+                .id(2L)
+                .user(user)
+                .mountain(mountain)
+                .date(LocalDateTime.of(2023, 9, 2, 15, 23, 44))
+                .build();
+
+        //when
+        double result = user.sumHeightOfRecords();
+
+        //then
+        Assertions.assertThat(result).isEqualTo(mountain.getLocation().getAltitude() * 2);
+    }
 
 }
