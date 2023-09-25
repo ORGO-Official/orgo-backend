@@ -37,7 +37,7 @@ public abstract class Badge extends BaseTimeEntity {
     /**
      * 뱃지를 발급 가능한지 확인합니다.
      *
-     * @param user 메서드 호출에 필요한 파라미터
+     * @param user 사용자
      * @return 뱃지 발급 가능 여부
      */
     public abstract boolean canIssue(User user);
