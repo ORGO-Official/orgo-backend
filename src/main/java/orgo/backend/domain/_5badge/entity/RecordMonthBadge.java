@@ -27,7 +27,8 @@ public class RecordMonthBadge extends Badge{
     }
 
     public boolean canIssue(User user){
-        return true;
+        boolean notHave = !user.hasBadge(this);
+        return notHave && user.hasClimbedAt(getYearMonth());
     }
 
 

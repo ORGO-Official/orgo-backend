@@ -11,6 +11,7 @@ import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._5badge.entity.Badge;
 import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 
+import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -111,6 +112,10 @@ public class User implements UserDetails {
         return this.climbingRecords.stream()
                 .mapToDouble(record -> record.getMountain().getLocation().getAltitude())
                 .sum();
+    }
+
+    public boolean hasClimbedAt(YearMonth yearMonth){
+        return true;
     }
 
     @Override
