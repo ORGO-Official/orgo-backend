@@ -11,6 +11,7 @@ import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 import orgo.backend.setting.MockEntityFactory;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 
 @Slf4j
 class UserTest {
@@ -86,4 +87,30 @@ class UserTest {
         Assertions.assertThat(result).isEqualTo(mountain.getLocation().getAltitude() * 2);
     }
 
+    @Test
+    @DisplayName("사용자가 해당 월에 등반했는지 확인한다.")
+    void hasClimbedAt(){
+        //given
+        User user = MockEntityFactory.mockUser(1L);
+        Mountain mountain = MockEntityFactory.mockMountain(1L, MockEntityFactory.mockPeak(1L));
+        ClimbingRecord record1 = ClimbingRecord.builder()
+                .id(1L)
+                .user(user)
+                .mountain(mountain)
+                .date(LocalDateTime.of(2023, 8, 1, 15, 23, 44))
+                .build();
+
+        ClimbingRecord record2 = ClimbingRecord.builder()
+                .id(2L)
+                .user(user)
+                .mountain(mountain)
+                .date(LocalDateTime.of(2023, 9, 2, 15, 23, 44))
+                .build();
+
+        //when
+        boolean result = user.hasClimbedAt(YearMonth.of(2023, 9));
+
+        //then
+        Assertions.assertThat(result).isTrue();
+    }
 }

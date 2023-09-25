@@ -115,7 +115,8 @@ public class User implements UserDetails {
     }
 
     public boolean hasClimbedAt(YearMonth yearMonth){
-        return true;
+        return this.climbingRecords.stream()
+                .anyMatch(record -> yearMonth.equals(YearMonth.from(record.getDate())));
     }
 
     @Override
