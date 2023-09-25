@@ -28,7 +28,7 @@ public abstract class Badge extends BaseTimeEntity {
 
     protected String description;
 
-    public Badge(BadgeGroup mainGroup, String objective, String description){
+    public Badge(BadgeGroup mainGroup, String objective, String description) {
         this.mainGroup = mainGroup;
         this.objective = objective;
         this.description = description;
@@ -44,11 +44,14 @@ public abstract class Badge extends BaseTimeEntity {
 
     /**
      * Acquisition 엔티티를 생성합니다.
+     * 하위 클래스에서 재정의할 수 없습니다.
      *
      * @param user 사용자
      * @return 해당 뱃지의 획득 정보
      */
-    public abstract Acquisition issue(User user);
+    public final Acquisition issue(User user) {
+        return new Acquisition(this, user);
+    }
 
     @Override
     public boolean equals(Object object) {

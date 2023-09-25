@@ -35,11 +35,6 @@ public class RecordHeightBadge extends Badge {
     }
 
     @Override
-    public Acquisition issue(User user) {
-        return null;
-    }
-
-    @Override
     public String toString() {
         return "RecordCountBadge{" +
                 ", height=" + height +

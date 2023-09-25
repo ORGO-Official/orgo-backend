@@ -35,11 +35,7 @@ public class RecordMonthBadge extends Badge{
     public boolean canIssue(User user){
         return true;
     }
-    
-    @Override
-    public Acquisition issue(User user) {
-        return null;
-    }
+
 
     public YearMonth getYearMonth(){
         return YearMonth.of(this.year, this.month);

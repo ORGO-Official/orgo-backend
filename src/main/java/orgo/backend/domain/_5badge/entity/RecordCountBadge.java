@@ -37,11 +37,6 @@ public class RecordCountBadge extends Badge {
     }
 
     @Override
-    public Acquisition issue(User user) {
-        return new Acquisition(this, user);
-    }
-
-    @Override
     public String toString() {
         return "RecordCountBadge{" +
                 "mountain=" + mountain +
