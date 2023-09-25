@@ -19,12 +19,9 @@ class UserTest {
         user.getAcquisitions().add(acquisition);
 
         //when
-        boolean result = user.haveBadge(badge);
+        boolean result = user.hasBadge(badge);
 
         //then
         Assertions.assertThat(result).isTrue();
     }
-
-
-
 }

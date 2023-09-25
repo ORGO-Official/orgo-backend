@@ -31,7 +31,7 @@ public class RecordCountBadge extends Badge {
      */
     @Override
     public boolean canIssue(User user) {
-        boolean notHave = !user.haveBadge(this);
+        boolean notHave = !user.hasBadge(this);
         boolean achieved = this.count <= user.countOfMountainClimbed(this.mountain);
         return notHave && achieved;
     }
