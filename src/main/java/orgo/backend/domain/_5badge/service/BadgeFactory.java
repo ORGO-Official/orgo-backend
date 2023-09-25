@@ -1,6 +1,7 @@
 package orgo.backend.domain._5badge.service;
 
-public interface BadgeFactory {
+import orgo.backend.domain._2user.entity.User;
 
-    void issueAvailableBadges();
+public interface BadgeFactory {
+    void issueAvailableBadges(User user);
 }

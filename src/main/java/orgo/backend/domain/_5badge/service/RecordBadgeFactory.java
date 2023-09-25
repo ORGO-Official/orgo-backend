@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class RecordBadgeFactory  {
+public class RecordBadgeFactory implements BadgeFactory {
     private final BadgeRepository<Badge> badgeRepository;
     private final AcquisitionRepository acquisitionRepository;
     public void issueAvailableBadges(User user) {
