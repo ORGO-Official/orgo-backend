@@ -27,6 +27,6 @@ public class RecordBadgeFactory  {
         if (badge.canIssue(user)){
             Acquisition acquisition = badge.issue(user);
             acquisitionRepository.save(acquisition);
-        }ㅎ
+        }
     }
 }

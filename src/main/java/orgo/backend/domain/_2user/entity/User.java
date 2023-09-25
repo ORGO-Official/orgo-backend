@@ -96,7 +96,7 @@ public class User implements UserDetails {
     }
 
 
-    public boolean haveBadge(Badge badge) {가
+    public boolean haveBadge(Badge badge) {
         return this.acquisitions.stream()
                 .anyMatch(acquisition -> acquisition.getBadge().equals(badge));
     }
