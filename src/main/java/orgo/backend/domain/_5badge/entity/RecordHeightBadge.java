@@ -17,21 +17,23 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @DiscriminatorValue("record_height")
-public class RecordHeightBadge extends Badge{
+public class RecordHeightBadge extends Badge {
 
     private double height;
 
     @Builder
-    public RecordHeightBadge(Long id, String condition, String description, double height){
+    public RecordHeightBadge(Long id, String condition, String description, double height) {
         super(BadgeGroup.RECORD, condition, description);
         this.id = id;
         this.height = height;
     }
 
-    public boolean canIssue(User user){
-        return true;
+    public boolean canIssue(User user) {
+        boolean notHave = !user.hasBadge(this);
+        boolean achieved = this.height <= user.sumHeightOfRecords();
+        return notHave && achieved;
     }
-    
+
     @Override
     public Acquisition issue(User user) {
         return null;

@@ -107,6 +107,10 @@ public class User implements UserDetails {
                 .count();
     }
 
+    public double sumHeightOfRecords() {
+        return 0L;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) {

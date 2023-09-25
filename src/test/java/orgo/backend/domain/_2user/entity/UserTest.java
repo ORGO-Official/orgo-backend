@@ -7,12 +7,10 @@ import org.junit.jupiter.api.Test;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._5badge.entity.Badge;
-import orgo.backend.domain._5badge.entity.RecordCountBadge;
 import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 import orgo.backend.setting.MockEntityFactory;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 class UserTest {
