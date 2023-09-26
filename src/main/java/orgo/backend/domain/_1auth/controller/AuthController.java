@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import orgo.backend.domain._1auth.service.AuthService;
+import orgo.backend.domain._1auth.service.ReissueService;
 import orgo.backend.domain._1auth.vo.ServiceToken;
 import orgo.backend.global.constant.Header;
 
@@ -16,6 +17,7 @@ import orgo.backend.global.constant.Header;
 @RequestMapping("/api")
 public class AuthController {
     private final AuthService authService;
+    private final ReissueService reissueService;
 
     @PermitAll
     @PostMapping("/auth/login/{loginType}")
@@ -36,5 +38,12 @@ public class AuthController {
     public ResponseEntity<Void> withdraw(@RequestHeader(name = Header.SOCIAL) String socialToken, @RequestHeader(name = Header.AUTH) String accessToken, @AuthenticationPrincipal Long userId) {
         authService.withdraw(socialToken, userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/auth/reissue")
+    public ResponseEntity<String> reissue(@RequestHeader(name = Header.AUTH) String accessToken, @RequestHeader(name = Header.REFRESH) String refreshToken) {
+        String newAccessToken = reissueService.reissueAccessToken(accessToken, refreshToken);
+        return new ResponseEntity<>(newAccessToken, HttpStatus.OK);
     }
 }

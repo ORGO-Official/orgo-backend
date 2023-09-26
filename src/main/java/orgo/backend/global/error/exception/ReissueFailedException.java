@@ -4,10 +4,11 @@ import lombok.Getter;
 import orgo.backend.global.error.ErrorCode;
 
 @Getter
-public class OrgoJwtException extends RuntimeException{
+public class ReissueFailedException extends OrgoException {
     private final ErrorCode errorCode;
 
-    public OrgoJwtException(ErrorCode errorCode) {
-        this.errorCode = errorCode;
+    public ReissueFailedException() {
+        super();
+        errorCode = ErrorCode.REISSUE_FAILED;
     }
 }
