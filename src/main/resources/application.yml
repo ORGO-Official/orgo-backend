@@ -6,3 +6,7 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+fcm:
+  key:
+    path: fcm-key.json
+    scope: https://www.googleapis.com/auth/cloud-platform
