@@ -7,6 +7,7 @@ import orgo.backend.domain._2user.repository.UserRepository;
 import orgo.backend.domain._2user.entity.User;
 import orgo.backend.domain._3mountain.repository.MountainRepository;
 import orgo.backend.domain._3mountain.entity.Mountain;
+import orgo.backend.domain._4climbingRecord.dto.Position;
 import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
