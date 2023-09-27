@@ -16,22 +16,22 @@ public class Notification {
 
     private Message message;
 
-    public static Notification basicNotification(String token, String title, String body) {
+    public static Notification basicNotification(User user, String title, String body) {
         Message message = Message.builder()
                 .putData(TITLE_FIELD, title)
                 .putData(BODY_FIELD, body)
-                .setToken(token)
+                .setToken(user.getFcmToken())
                 .build();
         return new Notification(message);
     }
 
-    public static Notification badgeNotification(String token, long badgeId) {
+    public static Notification badgeNotification(User user, long badgeId) {
         final String title = "새로운 뱃지를 획득했어요!";
         final String body = "지금 눌러서 확인하기";
         Message message = Message.builder()
                 .putData(TITLE_FIELD, title)
                 .putData(BODY_FIELD, body)
-                .setToken(token)
+                .setToken(user.getFcmToken())
                 .build();
         return new Notification(message);
     }
