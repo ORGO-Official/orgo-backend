@@ -1,11 +1,9 @@
-package orgo.backend.domain._6notification;
+package orgo.backend.domain._6notification.vo;
 
 import com.google.firebase.messaging.Message;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import orgo.backend.domain._2user.entity.User;
-
-import java.util.Map;
 
 @Getter
 @AllArgsConstructor
@@ -13,6 +11,7 @@ public class Notification {
 
     private final static String TITLE_FIELD = "title";
     private final static String BODY_FIELD = "body";
+    private final static String TYPE_FIELD = "type";
 
     private Message message;
 
@@ -20,6 +19,7 @@ public class Notification {
         Message message = Message.builder()
                 .putData(TITLE_FIELD, title)
                 .putData(BODY_FIELD, body)
+                .putData(TYPE_FIELD, NotificationType.BASIC.value())
                 .setToken(user.getFcmToken())
                 .build();
         return new Notification(message);
@@ -31,6 +31,7 @@ public class Notification {
         Message message = Message.builder()
                 .putData(TITLE_FIELD, title)
                 .putData(BODY_FIELD, body)
+                .putData(TYPE_FIELD, NotificationType.BADGE.value())
                 .setToken(user.getFcmToken())
                 .build();
         return new Notification(message);
