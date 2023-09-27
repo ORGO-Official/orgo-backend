@@ -12,6 +12,7 @@ public class Notification {
     private final static String TITLE_FIELD = "title";
     private final static String BODY_FIELD = "body";
     private final static String TYPE_FIELD = "type";
+    private final static String BADGE_FIELD = "badgeId";
 
     private Message message;
 
@@ -32,6 +33,7 @@ public class Notification {
                 .putData(TITLE_FIELD, title)
                 .putData(BODY_FIELD, body)
                 .putData(TYPE_FIELD, NotificationType.BADGE.value())
+                .putData(BADGE_FIELD, String.valueOf(badgeId))
                 .setToken(user.getFcmToken())
                 .build();
         return new Notification(message);
