@@ -11,25 +11,29 @@ import orgo.backend.domain._5badge.repository.BadgeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class RecordBadgeFactory implements BadgeFactory {
     private final BadgeRepository<Badge> badgeRepository;
     private final AcquisitionRepository acquisitionRepository;
+
+    @Override
     public List<Acquisition> issueAvailableBadges(User user) {
         List<Acquisition> newBadges = new ArrayList<>();
         List<Badge> badgesInRecordGroup = badgeRepository.findByMainGroup(BadgeGroup.RECORD);
         for (Badge badge : badgesInRecordGroup) {
-            newBadges.add(issueIfAvailable(user, badge));
+            issueBadge(user, badge).ifPresent(newBadges::add);
         }
         return newBadges;
     }
 
-    private Acquisition issueIfAvailable(User user, Badge badge) {
+    private Optional<Acquisition> issueBadge(User user, Badge badge) {
         if (badge.canIssue(user)){
             Acquisition acquisition = badge.issue(user);
-            return acquisitionRepository.save(acquisition);
+            return Optional.of(acquisitionRepository.save(acquisition));
         }
+        return Optional.empty();
     }
 }
