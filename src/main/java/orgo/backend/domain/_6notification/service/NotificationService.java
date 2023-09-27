@@ -6,11 +6,11 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import orgo.backend.domain._6notification.vo.Notification;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -45,35 +45,20 @@ public class NotificationService {
         }
     }
 
-    public static Message notificationMessage(String token, String title, String body) {
-        Notification notification = Notification.builder()
-                .setTitle(title)
-                .setBody(body)
-                .build();
-        return Message.builder()
-                .setNotification(notification)
-                .setToken(token)
-                .build();
-    }
-
-    public static Message dataMessage(String token, Map<String, String> content) {
-        return Message.builder()
-                .putAllData(content)
-                .setToken(token)
-                .build();
-    }
-
-    public void sendMessage(Message message) {
+    public void sendMessage(Notification notification) {
         try {
-            FirebaseMessaging.getInstance().send(message);
+            FirebaseMessaging.getInstance().send(notification.getMessage());
         } catch (FirebaseMessagingException e) {
             log.error("메시지 전송에 실패했습니다. : {}", e.getMessage());
             throw new RuntimeException();
         }
     }
 
-    public void sendAllMessages(List<Message> messages) {
+    public void sendAllMessages(List<Notification> notifications) {
         try {
+            List<Message> messages = notifications.stream()
+                    .map(Notification::getMessage)
+                    .toList();
             FirebaseMessaging.getInstance().sendAll(messages);
         } catch (FirebaseMessagingException e) {
             log.error("메시지 전송에 실패했습니다. : {}", e.getMessage());

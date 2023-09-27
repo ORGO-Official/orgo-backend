@@ -14,7 +14,7 @@ public class Notification {
     private final static String TYPE_FIELD = "type";
     private final static String BADGE_FIELD = "badgeId";
 
-    private Message message;
+    private final Message message;
 
     public static Notification basicNotification(User user, String title, String body) {
         Message message = Message.builder()
