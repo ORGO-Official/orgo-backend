@@ -13,6 +13,7 @@ import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.MyClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
 import orgo.backend.domain._4climbingRecord.mapper.ClimbingRecordMapper;
+import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 import orgo.backend.domain._5badge.service.RecordBadgeFactory;
 import orgo.backend.global.error.exception.UserNotFoundException;
 
@@ -46,7 +47,7 @@ public class ClimbingRecordService {
                     .build();
 
             climbingRecordRepository.save(climbingRecord);
-            recordBadgeFactory.issueAvailableBadges(user);
+            List<Acquisition> acquisitions = recordBadgeFactory.issueAvailableBadges(user);
         } else {
             throw new RuntimeException();
         }
