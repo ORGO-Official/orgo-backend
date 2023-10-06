@@ -10,6 +10,18 @@ public class Position {
     private double longitude;
     private double altitude;
 
+    public boolean isDistanceWithinRange(Position otherPosition, double distanceRange) {
+        double distanceDiff = calDistanceFrom(otherPosition);
+
+        return distanceDiff <= distanceRange;
+    }
+
+    public boolean isAltitudeWithinRange(Position otherPosition, double altitudeRange) {
+        double altitudeDiff = otherPosition.calAltitudeFrom(otherPosition);
+
+        return altitudeDiff <= altitudeRange;
+    }
+
     //Haversine 공식을 기반으로 두 장소간의 거리를 계산합니다.
     public double calDistanceFrom(Position position) {
         final double RADIUS_OF_EARTH_KM = 6371.0;
@@ -24,5 +36,9 @@ public class Position {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return RADIUS_OF_EARTH_KM * c;
+    }
+
+    public double calAltitudeFrom(Position position) {
+        return Math.abs(this.altitude - position.altitude);
     }
 }
