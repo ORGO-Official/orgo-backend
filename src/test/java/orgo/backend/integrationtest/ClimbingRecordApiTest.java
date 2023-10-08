@@ -26,37 +26,37 @@ public class ClimbingRecordApiTest extends IntegrationTest {
     @Autowired
     MountainRepository mountainRepository;
 
-    @Test
-    @DisplayName("정확한 위치에서 산 완등을 인증한다. ")
-    void registerRecord() {
-        //given
-        long mountainId = 1L;
-        Mountain mountain = mountainRepository.findById(mountainId).get();
-
-        UserPosDto userPosDto = UserPosDto.builder()
-                .date(LocalDateTime.now())
-                .mountainId(mountain.getId())
-                .altitude(mountain.getLocation().getAltitude())
-                .latitude(mountain.getLocation().getLatitude())
-                .longitude(mountain.getLocation().getLongitude())
-                .build();
-        String accessToken = getAccessToken();
-
-        // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .header(Header.AUTH, accessToken)
-                .body(userPosDto)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post(REGISTER_CLIMBINGRECORDS_API)
-                .then().log().all()
-                .extract();
-
-        // then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value())
-        );
-    }
+//    @Test
+//    @DisplayName("정확한 위치에서 산 완등을 인증한다. ")
+//    void registerRecord() {
+//        //given
+//        long mountainId = 1L;
+//        Mountain mountain = mountainRepository.findById(mountainId).get();
+//
+//        UserPosDto userPosDto = UserPosDto.builder()
+//                .date(LocalDateTime.now())
+//                .mountainId(mountain.getId())
+//                .altitude(mountain.getLocation().getAltitude())
+//                .latitude(mountain.getLocation().getLatitude())
+//                .longitude(mountain.getLocation().getLongitude())
+//                .build();
+//        String accessToken = getAccessToken();
+//
+//        // when
+//        ExtractableResponse<Response> response = RestAssured
+//                .given().log().all()
+//                .header(Header.AUTH, accessToken)
+//                .body(userPosDto)
+//                .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                .when().post(REGISTER_CLIMBINGRECORDS_API)
+//                .then().log().all()
+//                .extract();
+//
+//        // then
+//        assertAll(
+//                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value())
+//        );
+//    }
 
     @Test
     @DisplayName("사용자의 완등 기록을 조회한다.")

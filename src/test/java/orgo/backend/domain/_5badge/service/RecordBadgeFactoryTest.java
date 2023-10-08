@@ -9,6 +9,7 @@ import orgo.backend.domain._2user.entity.User;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._5badge.entity.*;
+import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 import orgo.backend.domain._5badge.repository.AcquisitionRepository;
 import orgo.backend.domain._5badge.repository.BadgeRepository;
 import orgo.backend.setting.MockEntityFactory;
@@ -17,7 +18,9 @@ import orgo.backend.setting.ServiceTest;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ServiceTest
@@ -52,6 +55,7 @@ class RecordBadgeFactoryTest {
                 .build();
 
         List<Badge> badgesInRecordGroup = List.of(recordCountBadge);
+        given(acquisitionRepository.save(any())).willReturn(new Acquisition(recordCountBadge, user));
         given(badgeRepository.findByMainGroup(BadgeGroup.RECORD)).willReturn(badgesInRecordGroup);
 
         //when
@@ -81,6 +85,7 @@ class RecordBadgeFactoryTest {
                 .build();
 
         List<Badge> badgesInRecordGroup = List.of(recordHeightBadge);
+        given(acquisitionRepository.save(any())).willReturn(new Acquisition(recordHeightBadge, user));
         given(badgeRepository.findByMainGroup(BadgeGroup.RECORD)).willReturn(badgesInRecordGroup);
 
         //when
@@ -110,6 +115,7 @@ class RecordBadgeFactoryTest {
                 .build();
 
         List<Badge> badgesInRecordGroup = List.of(recordMonthBadge);
+        given(acquisitionRepository.save(any())).willReturn(new Acquisition(recordMonthBadge, user));
         given(badgeRepository.findByMainGroup(BadgeGroup.RECORD)).willReturn(badgesInRecordGroup);
 
         //when

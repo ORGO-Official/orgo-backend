@@ -30,7 +30,7 @@ public class User implements UserDetails {
     String email;
     String socialId;
     String profileImage;
-    String fcmToken;
+    String fcmToken = "abc";
     @Enumerated(value = EnumType.STRING)
     LoginType loginType;
     @ElementCollection(fetch = FetchType.LAZY)
