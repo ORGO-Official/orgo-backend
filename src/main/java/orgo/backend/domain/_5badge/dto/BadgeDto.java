@@ -1,12 +1,13 @@
 package orgo.backend.domain._5badge.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import orgo.backend.domain._5badge.entity.Badge;
 import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 
 import java.time.LocalDateTime;
-
 
 public class BadgeDto {
     @Getter
@@ -28,6 +29,7 @@ public class BadgeDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class NotAcquired {
         private long id;
         private String objective;

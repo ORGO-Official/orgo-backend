@@ -1,27 +1,25 @@
 package orgo.backend.domain._4climbingRecord;
 
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import orgo.backend.domain._2user.repository.UserRepository;
 import orgo.backend.domain._2user.entity.User;
-import orgo.backend.domain._3mountain.repository.MountainRepository;
+import orgo.backend.domain._2user.repository.UserRepository;
 import orgo.backend.domain._3mountain.entity.Mountain;
 import orgo.backend.domain._3mountain.entity.Peak;
-import orgo.backend.domain._4climbingRecord.service.ClimbingRecordService;
-import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
-import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
-import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
+import orgo.backend.domain._3mountain.repository.MountainRepository;
 import orgo.backend.domain._4climbingRecord.dto.MyClimbingRecordDto;
+import orgo.backend.domain._4climbingRecord.dto.Position;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
+import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
+import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
+import orgo.backend.domain._4climbingRecord.service.ClimbingRecordService;
 import orgo.backend.setting.MockEntityFactory;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -50,24 +48,35 @@ public class ClimbingRecordTest {
     }
 
     @Test
-    @DisplayName("두 위도 경도 간의 거리 계산 - [0]")
+    @DisplayName("두 위도 경도 간의 거리 계산")
     void calDistanceTest() {
         //given
-        double mountainLatitude = mountain.getLocation().getLatitude();
-        double mountainLongitude = mountain.getLocation().getLongitude();
+        Position mountainPosition = Position.builder()
+                .longitude(10)
+                .latitude(10)
+                .build();
+
+        Position userPosition = Position.builder()
+                .latitude(0)
+                .longitude(0)
+                .build();
 
         //when
-        double actualDistance = climbingRecordService.calDistance(mountainLatitude,mountainLongitude,mountainLatitude,mountainLongitude);
+        double distanceFromMountainToUser = mountainPosition.calDistanceFrom(userPosition);
+        double distanceFromMountainToMountain = mountainPosition.calDistanceFrom(mountainPosition);
 
         //then
-        Assertions.assertEquals(0, actualDistance);
+        Assertions.assertEquals(0, distanceFromMountainToMountain);
+        Assertions.assertNotEquals(0, distanceFromMountainToUser);
     }
 
+
+
     @Test
-    @DisplayName("등반 완등 인증 가능한 위치인지 테스트 - [성공]")
+    @DisplayName("등반 완등 인증 가능한 위치인지 테스트")
     void isTopTest() {
         //given
-        UserPosDto userPosDto = UserPosDto.builder()
+        UserPosDto userPosAtTopDto = UserPosDto.builder()
                 .date(LocalDateTime.now())
                 .mountainId(savedMountain.getId())
                 .altitude(mountain.getLocation().getAltitude())
@@ -75,20 +84,30 @@ public class ClimbingRecordTest {
                 .longitude(mountain.getLocation().getLongitude())
                 .build();
 
+        UserPosDto userPosNotAtTopDto = UserPosDto.builder()
+                .date(LocalDateTime.now())
+                .mountainId(savedMountain.getId())
+                .altitude(mountain.getLocation().getAltitude()+10)
+                .latitude(mountain.getLocation().getLatitude()+10)
+                .longitude(mountain.getLocation().getLongitude()+10)
+                .build();
+
         //when
-        boolean actualIsTopResult = climbingRecordService.isTop(userPosDto);
+        boolean isTopResult = climbingRecordService.isTop(userPosAtTopDto);
+        boolean isTopResult2 = climbingRecordService.isTop(userPosNotAtTopDto);
 
         //then
-        Assertions.assertTrue(actualIsTopResult);
+        Assertions.assertTrue(isTopResult);
+        Assertions.assertFalse(isTopResult2);
     }
 
     @Test
-    @DisplayName("등산 완등 인증 - [성공]")
+    @DisplayName("등산 완등 인증")
     void registerClimbingRecordTest() {
         //given
         User savedUser = userRepository.save(user);
 
-        UserPosDto userPosDto = UserPosDto.builder()
+        UserPosDto userPosAtTopDto = UserPosDto.builder()
                 .date(LocalDateTime.now())
                 .mountainId(savedMountain.getId())
                 .altitude(mountain.getLocation().getAltitude())
@@ -96,8 +115,16 @@ public class ClimbingRecordTest {
                 .longitude(mountain.getLocation().getLongitude())
                 .build();
 
+        UserPosDto userPosNotAtTopDto = UserPosDto.builder()
+                .date(LocalDateTime.now())
+                .mountainId(savedMountain.getId())
+                .altitude(mountain.getLocation().getAltitude()+10)
+                .latitude(mountain.getLocation().getLatitude()+10)
+                .longitude(mountain.getLocation().getLongitude()+10)
+                .build();
+
         //when
-        climbingRecordService.registerClimbingRecord(savedUser.getId(), userPosDto);
+        climbingRecordService.registerClimbingRecord(savedUser.getId(), userPosAtTopDto);
 
         //then
         Long expectedUserId=1L;
@@ -107,6 +134,8 @@ public class ClimbingRecordTest {
 
         Assertions.assertEquals(expectedUserId, savedClimbingRecord.getUser().getId());
         Assertions.assertEquals(expectedMountainId, savedClimbingRecord.getMountain().getId());
+        Assertions.assertThrows(RuntimeException.class, ()-> climbingRecordService.registerClimbingRecord(savedUser.getId(),
+                userPosNotAtTopDto));
     }
 
     @Test
