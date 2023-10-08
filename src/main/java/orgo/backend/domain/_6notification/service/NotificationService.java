@@ -55,6 +55,9 @@ public class NotificationService {
     }
 
     public void sendAllMessages(List<Notification> notifications) {
+        if (notifications.isEmpty()){
+            return;
+        }
         try {
             List<Message> messages = notifications.stream()
                     .map(Notification::getMessage)

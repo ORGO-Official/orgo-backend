@@ -10,8 +10,8 @@ import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-12T09:47:20+0900",
-    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
+    date = "2023-10-05T10:17:43+0900",
+    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 19.0.2 (Amazon.com Inc.)"
 )
 public class ClimbingRecordMapperImpl implements ClimbingRecordMapper {
 
