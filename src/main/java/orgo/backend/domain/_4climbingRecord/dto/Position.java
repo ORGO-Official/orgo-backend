@@ -17,7 +17,7 @@ public class Position {
     }
 
     public boolean isAltitudeWithinRange(Position otherPosition, double altitudeRange) {
-        double altitudeDiff = otherPosition.calAltitudeFrom(otherPosition);
+        double altitudeDiff = calAltitudeFrom(otherPosition);
 
         return altitudeDiff <= altitudeRange;
     }
