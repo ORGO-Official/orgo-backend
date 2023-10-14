@@ -23,7 +23,7 @@ public class ClimbingRecordController {
     public ResponseEntity<Void> registerClimbingRecords(@AuthenticationPrincipal Long userId, @RequestBody UserPosDto userPosDto) {
         try {
             climbingRecordService.registerClimbingRecord(userId, userPosDto);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
