@@ -3,6 +3,7 @@ package orgo.backend.domain._4climbingRecord.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
@@ -19,6 +20,7 @@ public class ClimbingRecordController {
 
     private final ClimbingRecordService climbingRecordService;
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/climbing-records")
     public ResponseEntity<Void> registerClimbingRecords(@AuthenticationPrincipal Long userId, @RequestBody UserPosDto userPosDto) {
         try {
@@ -29,6 +31,7 @@ public class ClimbingRecordController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/climbing-records")
     public ResponseEntity<MyClimbingRecordDto> viewClimbingRecords(@AuthenticationPrincipal Long userId) {
         return new ResponseEntity<>(climbingRecordService.viewMyClimbingRecords(userId), HttpStatus.OK);
