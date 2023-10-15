@@ -52,13 +52,13 @@ public class ClimbingRecordTest {
     void calDistanceTest() {
         //given
         Position mountainPosition = Position.builder()
-                .longitude(10)
-                .latitude(10)
+                .latitude(37.57149)
+                .longitude(127.103764)
                 .build();
 
         Position userPosition = Position.builder()
-                .latitude(0)
-                .longitude(0)
+                .latitude(35.8714354)
+                .longitude(128.601445)
                 .build();
 
         //when
