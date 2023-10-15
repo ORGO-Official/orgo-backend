@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-@Builder
 @Entity
 public class ClimbingRecord extends BaseTimeEntity {
 
@@ -21,8 +20,9 @@ public class ClimbingRecord extends BaseTimeEntity {
     Long id;
     private LocalDateTime date;
     @ManyToOne
+    @JoinColumn
     private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="mountain_id")
     private Mountain mountain;
 

@@ -5,6 +5,7 @@ import lombok.*;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.global.config.jpa.BaseTimeEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,8 +34,9 @@ public class Mountain extends BaseTimeEntity {
     FeatureTag featureTag;
     @OneToMany(mappedBy = "mountain", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     List<Peak> peaks;
+    @Builder.Default
     @OneToMany(mappedBy = "mountain", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    List<ClimbingRecord> climbingRecords;
+    List<ClimbingRecord> climbingRecords = new ArrayList<>();
 
     @Override
     public boolean equals(Object object) {

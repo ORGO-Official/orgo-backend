@@ -8,8 +8,8 @@ import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-26T13:23:00+0900",
-    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
+    date = "2023-10-08T17:39:48+0900",
+    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 19.0.2 (Amazon.com Inc.)"
 )
 public class PositionMapperImpl implements PositionMapper {
 

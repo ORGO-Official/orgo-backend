@@ -29,6 +29,10 @@ ext {
 }
 
 dependencies {
+
+	//fcm
+	implementation 'com.google.firebase:firebase-admin:9.1.1'
+
 	//rest assured
 	testImplementation 'io.rest-assured:rest-assured:5.1.1'
 

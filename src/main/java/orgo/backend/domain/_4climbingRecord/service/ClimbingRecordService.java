@@ -15,7 +15,10 @@ import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.mapper.ClimbingRecordMapper;
 import orgo.backend.domain._4climbingRecord.mapper.PositionMapper;
 import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
+import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 import orgo.backend.domain._5badge.service.RecordBadgeFactory;
+import orgo.backend.domain._6notification.service.NotificationService;
+import orgo.backend.domain._6notification.vo.Notification;
 import orgo.backend.global.error.exception.UserNotFoundException;
 
 import java.util.*;
@@ -28,7 +31,15 @@ public class ClimbingRecordService {
     private final ClimbingRecordRepository climbingRecordRepository;
     private final UserRepository userRepository;
     private final RecordBadgeFactory recordBadgeFactory;
+    private final NotificationService notificationService;
 
+    /**
+     * 등산 완등 인증 요청을 처리합니다.
+     * 이후 발급 가능한 뱃지가 있으면, 발급합니다.
+     *
+     * @param userId     사용자 Id
+     * @param userPosDto 사용자의 위치 정보
+     */
     @Transactional
     public void registerClimbingRecord(Long userId, UserPosDto userPosDto) {
         if (isTop(userPosDto)) {
@@ -40,14 +51,27 @@ public class ClimbingRecordService {
                     .build();
 
             climbingRecordRepository.save(climbingRecord);
-            recordBadgeFactory.issueAvailableBadges(user);
-
+            List<Acquisition> newBadges = recordBadgeFactory.issueAvailableBadges(user);
+//            sendNotification(newBadges, user);
             return;
         }
 
         throw new RuntimeException();
     }
 
+    private void sendNotification(List<Acquisition> newBadges, User user) {
+        List<Notification> badgeNotifications = newBadges.stream()
+                .map(acquisition -> Notification.badgeNotification(user, acquisition))
+                .toList();
+        notificationService.sendAllMessages(badgeNotifications);
+    }
+
+    /**
+     * 사용자의 모든 완등 기록을 조회합니다.
+     *
+     * @param userId 사용자 Id
+     * @return 사용자의 완등 기록
+     */
     public MyClimbingRecordDto viewMyClimbingRecords(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
