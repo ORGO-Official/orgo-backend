@@ -13,14 +13,12 @@ import orgo.backend.domain._4climbingRecord.dto.Position;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
 import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.mapper.ClimbingRecordMapper;
-import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
-import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 import orgo.backend.domain._4climbingRecord.mapper.PositionMapper;
 import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
+import orgo.backend.domain._5badge.entity.acquisition.Acquisition;
 import orgo.backend.domain._5badge.service.RecordBadgeFactory;
 import orgo.backend.domain._6notification.service.NotificationService;
 import orgo.backend.domain._6notification.vo.Notification;
-import orgo.backend.domain._6notification.service.NotificationService;
 import orgo.backend.global.error.exception.UserNotFoundException;
 
 import java.util.*;

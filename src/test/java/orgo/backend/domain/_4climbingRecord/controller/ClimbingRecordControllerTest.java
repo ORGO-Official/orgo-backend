@@ -88,7 +88,7 @@ public class ClimbingRecordControllerTest {
                 .with(csrf()));
 
         //then
-        actions.andExpect(status().isCreated())
+        actions.andExpect(status().isNoContent())
                 .andDo(docs("climbingRecords-post",
                         requestFields(
                                 field("mountainId").type(JsonFieldType.NUMBER).description("산 아이디넘버"),
