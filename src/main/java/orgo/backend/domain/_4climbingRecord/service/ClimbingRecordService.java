@@ -3,23 +3,22 @@ package orgo.backend.domain._4climbingRecord.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import orgo.backend.domain._2user.repository.UserRepository;
 import orgo.backend.domain._2user.entity.User;
-import orgo.backend.domain._3mountain.repository.MountainRepository;
+import orgo.backend.domain._2user.repository.UserRepository;
 import orgo.backend.domain._3mountain.entity.Mountain;
-import orgo.backend.domain._4climbingRecord.dto.Position;
-import orgo.backend.domain._4climbingRecord.mapper.PositionMapper;
-import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
-import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
+import orgo.backend.domain._3mountain.repository.MountainRepository;
 import orgo.backend.domain._4climbingRecord.dto.ClimbingRecordDto;
 import orgo.backend.domain._4climbingRecord.dto.MyClimbingRecordDto;
+import orgo.backend.domain._4climbingRecord.dto.Position;
 import orgo.backend.domain._4climbingRecord.dto.UserPosDto;
+import orgo.backend.domain._4climbingRecord.entity.ClimbingRecord;
 import orgo.backend.domain._4climbingRecord.mapper.ClimbingRecordMapper;
+import orgo.backend.domain._4climbingRecord.mapper.PositionMapper;
+import orgo.backend.domain._4climbingRecord.repository.ClimbingRecordRepository;
 import orgo.backend.domain._5badge.service.RecordBadgeFactory;
 import orgo.backend.global.error.exception.UserNotFoundException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -100,13 +99,13 @@ public class ClimbingRecordService {
     }
 
     public boolean isTop(UserPosDto userPosDto) {
-        final double distanceRange = 500;
-        final double altitudeRange = 50;
+        final double distanceRangeKilometers = 0.5;
+        final double altitudeRangeMeters = 50;
         Mountain mountain = mountainRepository.findById(userPosDto.getMountainId()).orElseThrow();
         Position userPosition = PositionMapper.INSTANCE.toPostion(userPosDto);
         Position mountainPosition = PositionMapper.INSTANCE.toPostion(mountain);
 
-        return mountainPosition.isDistanceWithinRange(userPosition, distanceRange) &&
-                mountainPosition.isAltitudeWithinRange(userPosition, altitudeRange);
+        return mountainPosition.isDistanceWithinRange(userPosition, distanceRangeKilometers) &&
+                mountainPosition.isAltitudeWithinRange(userPosition, altitudeRangeMeters);
     }
 }
