@@ -55,7 +55,7 @@ public class ClimbingRecordService {
 
             climbingRecordRepository.save(climbingRecord);
             List<Acquisition> newBadges = recordBadgeFactory.issueAvailableBadges(user);
-            sendNotification(newBadges, user);
+//            sendNotification(newBadges, user);
             return;
         }
 
